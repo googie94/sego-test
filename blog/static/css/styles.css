@@ -1,0 +1,139 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+/* CSS Document */
+body, html {
+	margin: 0;
+	font-family:'Apple SD Gothic Neo','Noto Sans CJK KR', 'Malgun Gothic', 'dotum', 'gulim',sans-serif;
+	color: #333;
+	background-color: white;
+	width:100%;
+	height: 100%;
+	transition: 0.25s;
+	-webkit-transition: 0.25s;
+	-moz-transition: 0.25s;
+	-o-transition: 0.25s;
+}
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+}
+* {
+	box-sizing: border-box;
+	outline: none;
+}
+img {
+	border:0 none;
+}
+a {
+	outline:none;
+	color:#333;
+	text-decoration:none;
+	cursor: pointer;
+}
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	vertical-align: baseline;
+}
+ol, ul, li {
+	list-style:none
+}
+pre {
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	word-break: keep-all;
+	overflow: auto;
+	font-family:'Apple SD Gothic Neo','Noto Sans CJK KR', 'Malgun Gothic', 'dotum', 'gulim',sans-serif;
+}
+pre a {
+    color: #3534A5;
+    text-decoration: underline;
+}
+.clear {
+	clear: both;
+}
+
+/* 초기화 */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display:block}
+/*legend {position:absolute;margin:0;padding:0;font-size:0;line-height:0;text-indent:-9999em;overflow:hidden}*/
+img {vertical-align:middle;}
+input, button {margin:0;padding:0;font-family:'Malgun Gothic', dotum, sans-serif;font-size:1em}
+input[type="submit"]{cursor:pointer}
+button {cursor:pointer; border:none;}
+
+select {margin:0}
+p {margin:0;padding:0;word-break:break-all}
+hr {display:none}
+pre {font-size:1.1em}
+
+*, :after, :before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+/*FORM*/
+form p {
+	font-size: 12px;
+	margin-top: 20px;
+	margin-left: 5px;
+}
+
+/*INPUT*/
+input[type=text],input[type=password], textarea, select {
+	-webkit-transition: all 0.30s ease-in-out;
+	-moz-transition: all 0.30s ease-in-out;
+	-ms-transition: all 0.30s ease-in-out;
+	-o-transition: all 0.30s ease-in-out;
+	outline: none;
+}
+
+input[type=text]:focus,input[type=password]:focus, textarea:focus, select:focus{
+	border: 1px solid #3540A5 !important;
+}
+input {
+	padding: 15px 10px;
+	border-radius: 6px;
+	border: 1px solid #ddd;
+	box-shadow: none;
+	outline: none;
+	background-color: #fafafa;
+	-webkit-appearance: none;
+    appearance: none;
+	font-size: 16px;
+	color: #333333;
+}
+select {
+    background: url('./../img/ic_arrow.png') no-repeat 95% 50%;
+	padding: 15px 10px;
+	border-radius: 6px;
+	border: 1px solid #ddd;
+	box-shadow: none;
+	outline: none;
+	color: #333333;
+	background-color: #fafafa;
+	-webkit-appearance: none;
+	font-size: 16px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+input.inputFull, select.inputFull {
+	width: 100%;
+}
+
+
+
+
+
+/*main*/
+
+
+

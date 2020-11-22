@@ -1,31 +1,24 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>SEGO, 세상 모든 고민을 담습니다</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	</head>
-<body>
-	<div>
-		<h1>SEGO, 세상 모든 고민을 담습니다</h1>
-		<div style="display: flex; justify-content: space-around;">
-			<a href="{% url 'post_detail' %}">팀 소개</a>
-			<a href="">테스트</a>
-		</div>
-	</div>
+{% extends 'blog/base.html' %}
+{% block content %}
 
-	<div>
-		<h1>post list</h1>
-		<div>
-			{% for post in posts %}
-			    <div>
-			        <p>published: {{ post.published_date }}</p>
-			        <h1><a href="">{{ post.title }}</a></h1>
-			        <p>{{ post.text|linebreaksbr }}</p>
-			    </div>
-			{% endfor %}
-		</div>
+<div style="padding: 15px;">
+	<div style="padding-left: 20px;">
+		<text style="border-bottom: 2px solid gold;"><strong>나의 노트</strong></text>
 	</div>
-</body>
-</html>
+	<div style="display: flex; overflow-x: scroll; white-space: nowrap;">
+		{% for post in posts %}
+				<a href="" style="padding: 0px 15px 70px 15px; margin: 20px 10px; background-color: #3534A5; border-radius: 10px; color: #f4f4f4;">
+			    	<div>
+			    		<div style="padding: 20% 0%;">
+			    			<h2 style="color: #f4f4f4;">{{ post.title }}</h2>
+			    		</div>
+			        	<!-- <p>published: {{ post.published_date }}</p> -->
+			        	<pre>{{ post.text|linebreaksbr }}</pre>
+			    	</div>
+			    </a>
+		{% endfor %}
+	</div>
+</div>
 
+
+{% endblock %}
