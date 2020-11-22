@@ -25,7 +25,7 @@ SECRET_KEY = '(p46oggljoq)im-m-!h13j$jr&(n+b!mo9a9)_7h2kg&bomo%g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', '.letsego.site']
+ALLOWED_HOSTS = ['letsego.site', 'www.letsego.site']
 
 
 # Application definition
