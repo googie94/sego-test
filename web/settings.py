@@ -26,7 +26,7 @@ SECRET_KEY = '(p46oggljoq)im-m-!h13j$jr&(n+b!mo9a9)_7h2kg&bomo%g'
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['letsego.site', 'www.letsego.site']
+ALLOWED_HOSTS = ['letsego.site', 'www.letsego.site', 'localhost']
 
 
 # Application definition
