@@ -58,10 +58,10 @@ def register(request):
 			user = Segouser(
 				username=username,
 				email=email,
-				password=make_password(password),
+				password=password,
 			)
 			res_data['error']=user.password
 
-			# user.save()
+			user.save()
 
 		return render(request, 'register.html', res_data)
