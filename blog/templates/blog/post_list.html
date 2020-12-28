@@ -23,7 +23,7 @@
 			console.log(res.data)
 			var a = document.getElementById('title')
 			for (var i = 0; i < res.data.length; i++) {
-				a.innerHTML += '<a href="/post/'+res.data[i].id+'"><li>'+res.data[i].title+'</li><li>'+res.data[i].text+'</li></a><br>'
+				a.innerHTML += '<a href="/post/'+res.data[i].id+'"><div><li>'+res.data[i].title+'</li><li>'+res.data[i].text+'</li></div></a><br>'
 			}
 		})
 		.catch(function(err){})
