@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 {% block content %}
 
-<div>
+<!-- <div>
 	<div>
 		{% for post in posts %}
 		    	<div>
@@ -12,6 +12,30 @@
 		    	</div>
 		{% endfor %}
 	</div>
+<div> -->
 
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+	function aa () {
+		axios.get('/api/v1/blog/')
+		.then(function(res){
+			console.log(res.data)
+			var a = document.getElementById('title')
+			for (var i = 0; i < res.data.length; i++) {
+				a.innerHTML += '<a href="/post/'+res.data[i].id+'"><li>'+res.data[i].title+'</li><li>'+res.data[i].text+'</li></a><br>'
+			}
+		})
+		.catch(function(err){})
+	}
+	aa()
+	function paging () {
+		return window.location.href = '/post/1'
+	}
+</script>
+
+<div style="padding: 20px; margin: 20px; text-align: center; background-color: #f4f4f4; border-radius: 10px;">
+	<div id="title"></div>
+</div>
 
 {% endblock %}
