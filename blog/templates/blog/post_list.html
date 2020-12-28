@@ -1,4 +1,5 @@
 {% extends 'blog/base.html' %}
+{% load static %}
 {% block content %}
 
 <!-- <div>
@@ -14,28 +15,48 @@
 	</div>
 <div> -->
 
+<div id="postApp" v-cloak>
+	<div v-for="post in posts"
+		 class="card--container">
+		<a :href="'/post/'+post.id+'/'">
+			<div class="card--profile">
+				<img src="{% static '/img/ic_fair_limit_2w.svg' %}"></img>
+				<p>맥국</p>
+			</div>
+			<ul class="card--wrapper">
+				<li class="card--title">[[ post.title ]]</li>
+				<pre class="card--content">[[ post.text ]]</pre>
+			</ul>
+		</a>
+	</div>
+</div>
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript">
-	function aa () {
-		axios.get('/api/v1/blog/')
-		.then(function(res){
-			console.log(res.data)
-			var a = document.getElementById('title')
-			for (var i = 0; i < res.data.length; i++) {
-				a.innerHTML += '<a href="/post/'+res.data[i].id+'"><div><li>'+res.data[i].title+'</li><li>'+res.data[i].text+'</li></div></a><br>'
-			}
-		})
-		.catch(function(err){})
+
+var post_app = new Vue({
+	delimiters: ['[[',']]'],
+	el: '#postApp',
+	data: {
+		posts: [],
+	},
+	created() {
+		this.getPost()
+	},
+	methods: {
+
+		getPost() {
+			var v=this;
+			axios.get('/api/v1/blog/')
+			.then(function(res){
+				v.posts=res.data
+			})
+			.catch(function(err){})
+		}
 	}
-	aa()
-	function paging () {
-		return window.location.href = '/post/1'
-	}
+})
+
 </script>
 
-<div style="padding: 20px; margin: 20px; text-align: center; background-color: #f4f4f4; border-radius: 10px;">
-	<div id="title"></div>
-</div>
 
 {% endblock %}

@@ -1,9 +1,12 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-    <h1>New post</h1>
-    <form method="POST" class="post-form">{% csrf_token %}
+<div style="padding: 20px;">
+	<h1 style="font-family:'Lato', sans-serif; font-size: 24px;">New post</h1>
+    <form method="POST" class="post-form" style="padding: 10px 0px;">
+    	{% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
+</div>
 {% endblock %}
