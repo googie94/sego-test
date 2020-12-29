@@ -122,12 +122,12 @@ a.button {
 	font-size: 18px;
 	font-family:'Lato', sans-serif;
 }
-.navbar .icon {
-	padding-left: 8px;
-  cursor: pointer;
-}
 @media only screen and (min-width: 1024px) {
 	.navContainer {
+		max-width: 1024px;
+		margin: 0 auto;
+	}
+	.bt50 {
 		max-width: 1024px;
 		margin: 0 auto;
 	}
