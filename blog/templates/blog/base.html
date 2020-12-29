@@ -19,9 +19,12 @@
                 <a href="/"><img src="{% static '/img/ic_fair_limit_2w.svg' %}"></a>
             </div>
             <div>
-				<a href="/segouser/login">로그인 |</a>
-				<a href="/segouser/register">회원가입</a>
-				<!-- <a href="/segouser/logout">로그아웃</a> -->
+            	{% if not user.is_authenticated %}
+					<a>로그인 |</a>
+					<a>회원가입</a>
+				{% else %}
+					<a>로그아웃</a>
+				{% endif %}
 			</div>
         </div>
     </div>
