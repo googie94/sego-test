@@ -51,14 +51,14 @@ pre a {
 }
 
 p, div, th, td, select, input {
-	color: #333;
+	/*color: #333;*/
 }
 a:link, a:visited {
-	color: #666;
+	/*color: #666;*/
 	text-decoration: none;
 }
 a:active, a:hover {
-	color: #000;
+	/*color: #000;*/
 	text-decoration: none;
 }
 a img, 
@@ -161,6 +161,42 @@ a.button {
 	font-size: 12px;
 	padding: 10px 0px;
 }
+.card--date {
+	font-size: 12px;
+	padding-top: 5px;
+	color: #999999;
+	text-align: end;	
+}
 .bt50 {
 	margin-bottom: 50px;
 }
+.comment {
+}
+.comment-btn {
+	padding: 10px;
+	background-color: #FFA135;
+	color: white;
+	margin: 20px 20px;
+}
+.radius10 {
+	border-radius: 10px;
+}
+.no--comment {
+	text-align: center;
+	background-color: #eee;
+	padding: 20px;
+	margin: 20px;
+	border-radius: 20px;
+}
+.no--comment p {
+	font-size: 14px;
+}
+.no--comment span {
+	font-size: 54px;
+}
+
+
+
+
+
+

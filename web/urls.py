@@ -23,10 +23,9 @@ from blog import views
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-
+#
 
 schema_url_patterns = [ path('api/v1/', include('web.urls')), ]
-
 schema_view = get_schema_view(
    openapi.Info(
       title="SEGO API",
@@ -38,9 +37,11 @@ schema_view = get_schema_view(
    permission_classes=(permissions.AllowAny,), 
    patterns=schema_url_patterns,
 )
-
 router = routers.DefaultRouter()
 router.register(r'blog', views.PostViewSet)
+router.register(r'comment', views.CommentViewSet)
+#
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
