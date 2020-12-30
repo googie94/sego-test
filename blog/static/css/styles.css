@@ -135,10 +135,15 @@ a.button {
 .intro {
 	padding: 20px; 
 }
-.blog-title {
+.hello {
 	font-family:'Lato', sans-serif;
 	font-weight: 900;
 	font-size: 24px;
+}
+.feeds {
+	font-family:'Lato', sans-serif;
+	font-weight: 900;
+	font-size: 24px;	
 }
 .card--container {
 	padding: 20px; 
