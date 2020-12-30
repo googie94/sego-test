@@ -63,6 +63,7 @@ var post_app = new Vue({
 			var v=this;
 			axios.get('/api/v1/blog/')
 			.then(function(res){
+				res.data.reverse()
 				v.posts=res.data
 				for (var i=0; i < v.posts.length; i++) {
 					Vue.set(v.posts[i], 'comment', [])
