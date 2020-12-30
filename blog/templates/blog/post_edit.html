@@ -6,11 +6,11 @@
     <form method="POST" class="post-form" style="padding: 10px 0px;">
     	{% csrf_token %}
     	<div class="inputWrap">
-    		<label>닉네임</label>
-    		{{ form.author }}
-    		<label>제목</label>
-        	{{ form.title }}
-        	<label>내용</label>
+    		<label>닉네임</label><br>
+    		{{ form.author }}<br>
+    		<label>제목</label><br>
+        	{{ form.title }}<br>
+        	<label>내용</label><br>
         	{{ form.text }}
     	</div>
         <button type="submit" class="comment-btn radius10" style="margin: auto; border: none;">글 올리기</button>

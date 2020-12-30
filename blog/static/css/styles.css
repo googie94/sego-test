@@ -146,6 +146,9 @@ input.inputFull, select.inputFull {
 		max-width: 1024px;
 		margin: 0 auto;
 	}
+	input.inputFull, select.inputFull {
+		width: 20%;
+	}
 }
 .intro {
 	padding: 20px; 
