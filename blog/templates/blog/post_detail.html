@@ -55,13 +55,14 @@
 		<div class="card--container" style="padding: 5px 10px;">
 			<div class="card--content" style="padding: 0px;">
 				<!-- <strong>[[ comment.author ]]</strong> -->
-				<pre>[[ comment.text ]]</pre>
+				<pre id="comment_text">[[ comment.text ]]</pre>
 				<p class="card--date">[[ moment(comment.created_date).format('M월 D일 HH:mm') ]]</p>
 			</div>
 		</div>
 	</div>
 </div>
 
+<!-- <script>autolink('comment_text');</script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/locale/ko.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -76,8 +77,8 @@
 			post: [],
 		},
 		created() {
-			this.getComment()
 			this.getPost()
+			this.getComment()
 		},
 		methods: {
 
@@ -92,7 +93,6 @@
 							}
 						}
 					}
-					console.log(v.comments)
 				})
 				.catch(function(err){})
 			},
@@ -102,11 +102,21 @@
 				axios.get('/api/v1/blog/'+post_id+'/')
 				.then(function(res){
 					v.post=res.data
+					setTimeout(function() { v.autolink() }, 1000)
 				})
 				.catch(function(err){})
 			},
 
-		}
+			autolink() {
+				var v=this;
+				var container = document.getElementById('comment_text');
+		        var doc = container.innerHTML;
+		        var regURL = new RegExp("(http|https|ftp|telnet|news|irc)://([-/.a-zA-Z0-9_~#%$?&=:200-377()]+)","gi");
+		        var regEmail = new RegExp("([xA1-xFEa-z0-9_-]+@[xA1-xFEa-z0-9-]+\.[a-z0-9-]+)","gi");
+		        container.innerHTML = doc.replace(regURL,"<a href='$1://$2' target='_blank'>$1://$2</a>").replace(regEmail,"<a href='mailto:$1'>$1</a>");
+			}
+
+		},
 	})
 </script>
 
