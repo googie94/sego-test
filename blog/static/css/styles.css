@@ -77,12 +77,12 @@ textarea:hover,
 textarea:focus, 
 select:hover, 
 select:active {
-	background-color: #ffd;
+	/*background-color: #ffd;*/
 }
 input, select, textarea {
 	vertical-align: middle;
 	font-size: 1em;
-	color: #333;
+	/*color: #333;*/
 }
 select {
 	font-size: 11px;
@@ -93,6 +93,21 @@ img.button,
 a.button {
 	cursor: pointer;
 	vertical-align: middle;
+}
+input.inputFull, select.inputFull {
+	width: 100%;
+}
+.inputWrap {
+	margin: 5px 0;
+	/**display: inline-flex;**/
+	width: 100%;
+	overflow: auto;
+}
+.height250 {
+	height: 250px;
+}
+.mb10 {
+	margin-bottom: 10px;
 }
 
 .navbar {
@@ -141,6 +156,11 @@ a.button {
 	font-size: 24px;
 }
 .feeds {
+	font-family:'Lato', sans-serif;
+	font-weight: 900;
+	font-size: 24px;	
+}
+.newtitle {
 	font-family:'Lato', sans-serif;
 	font-weight: 900;
 	font-size: 24px;	
@@ -207,7 +227,9 @@ a.button {
 .no--comment span {
 	font-size: 54px;
 }
-
+.post-form label {
+	font-size: 14px;
+}
 
 
 

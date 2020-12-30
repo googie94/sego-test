@@ -2,11 +2,22 @@
 
 {% block content %}
 <div style="padding: 20px;">
-	<h1 style="font-family:'Lato', sans-serif; font-size: 24px;">New post</h1>
+	<h1 class="newtitle">New post</h1>
     <form method="POST" class="post-form" style="padding: 10px 0px;">
     	{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Save</button>
+    	<div class="inputWrap">
+    		<label>닉네임</label>
+    		{{ form.author }}
+    		<label>제목</label>
+        	{{ form.title }}
+        	<label>내용</label>
+        	{{ form.text }}
+    	</div>
+        <button type="submit" class="comment-btn radius10" style="margin: auto; border: none;">글 올리기</button>
     </form>
 </div>
 {% endblock %}
+
+
+
+

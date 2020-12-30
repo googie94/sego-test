@@ -2,9 +2,15 @@
 
 {% block content %}
 	<br/>
-    <h1>New comment</h1>
-    <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Send</button>
-    </form>
+	<div style="padding: 20px;">
+	    <h1 class="newtitle">New comment</h1>
+	    <form method="POST" class="post-form" style="padding: 10px 0px;">
+	    	{% csrf_token %}
+	        <div class="inputWrap">
+	        	<label>내용</label><br>
+	        	{{ form.text }}
+	    	</div>
+	        <button type="submit" class="comment-btn radius10" style="margin: auto; border: none;">등록하기</button>
+	    </form>
+	</div>
 {% endblock %}
