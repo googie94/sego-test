@@ -15,6 +15,21 @@
 		</div>
 	</div>
 
+	<div class="hitpost">
+		<div>
+			<p class="hitsego">Sego🌀</p>
+		</div>
+		<div class="hit-content">
+			<ul>
+				<li v-for="hit_post in hit_posts">
+					<a :href="'/post/'+hit_post.id+'/'">
+						<p>[[ hit_post.title ]]</p>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
 	<div>
 		<br>
 		<div style="padding: 20px;">
@@ -63,10 +78,13 @@ var post_app = new Vue({
 	el: '#postApp',
 	data: {
 		posts: [],
+		posts2: [],
 		comments_cnt: [],
+		hit_posts: [],
 	},
 	created() {
 		this.getPost()
+		this.getPost2()
 	},
 	methods: {
 
@@ -100,6 +118,36 @@ var post_app = new Vue({
 			})
 			.catch(function(err){})
 		},
+
+		getPost2() {
+			var v=this;
+			axios.get('/api/v1/blog/')
+			.then(function(res){
+				v.posts2=res.data
+				for (var i=0; i < v.posts2.length; i++) {
+					Vue.set(v.posts2[i], 'comment', [])
+				}
+				for (var i=0; i < v.posts2.length; i++) {
+					for (var j=0; j < v.posts.length; j++) {
+						if (v.posts[i].comment.length == v.posts2[j].comment.length) {
+							v.posts2[j].comment=v.posts[i].comment
+						}
+					}
+				}
+				v.hitPost(v.posts2)
+			})
+			.catch(function(err){})
+		},
+
+		hitPost(post) {
+			var v=this;
+			post.sort(function(a, b) {
+				return b.comment.length - a.comment.length
+			})
+			post.splice(3)
+			console.log(post)
+			v.hit_posts=post
+		}
 
 	}
 })

@@ -158,6 +158,35 @@ input.inputFull, select.inputFull {
 	font-weight: 900;
 	font-size: 24px;
 }
+.hitpost {
+	padding: 20px; 
+}
+.hitsego {
+	font-family:'Lato', sans-serif;
+	font-weight: 900;
+	font-size: 24px;
+}
+.hit-content {
+	display: flex;
+	justify-content: space-between;
+}
+.hit-content ul {
+	overflow-x: scroll;
+	white-space: nowrap;
+	-webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+}
+.hit-content ul li {
+	text-align: center;
+    display: inline-block;
+	background-color: #eee;
+	padding: 15px;
+	border-radius: 10px;
+	margin: 15px;
+}
+.hit-content p {
+	font-size: 12px;
+}
 .feeds {
 	font-family:'Lato', sans-serif;
 	font-weight: 900;
