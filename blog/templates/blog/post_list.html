@@ -55,19 +55,6 @@
 	</div>
 </div>
 
-<!-- <div>
-	<div>
-		{% for post in posts %}
-		    	<div>
-		    		<div>
-		    			<h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
-		    		</div>
-		        	<pre>{{ post.text|linebreaksbr }}</pre>
-		    	</div>
-		{% endfor %}
-	</div>
-<div> -->
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/locale/ko.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -84,7 +71,6 @@ var post_app = new Vue({
 	},
 	created() {
 		this.getPost()
-		this.getPost2()
 	},
 	methods: {
 
@@ -115,6 +101,7 @@ var post_app = new Vue({
 						}
 					}
 				}
+				v.getPost2()
 			})
 			.catch(function(err){})
 		},
@@ -124,13 +111,13 @@ var post_app = new Vue({
 			axios.get('/api/v1/blog/')
 			.then(function(res){
 				v.posts2=res.data
-				for (var i=0; i < v.posts2.length; i++) {
-					Vue.set(v.posts2[i], 'comment', [])
+				for (var x=0; x < v.posts2.length; x++) {
+					Vue.set(v.posts2[x], 'comment', [])
 				}
 				for (var i=0; i < v.posts2.length; i++) {
 					for (var j=0; j < v.posts.length; j++) {
-						if (v.posts[i].comment.length == v.posts2[j].comment.length) {
-							v.posts2[j].comment=v.posts[i].comment
+						if (v.posts[i].id == v.posts2[j].id) {
+							v.posts2[j].comment=v.posts[i].comment.length
 						}
 					}
 				}
@@ -142,7 +129,7 @@ var post_app = new Vue({
 		hitPost(post) {
 			var v=this;
 			post.sort(function(a, b) {
-				return b.comment.length - a.comment.length
+				return b.comment - a.comment
 			})
 			post.splice(3)
 			v.hit_posts=post
