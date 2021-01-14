@@ -18,7 +18,8 @@ from django.urls import path, include
 from django.conf.urls import url
 #
 from rest_framework import routers
-from blog import views
+from blog.views import PostViewSet, CommentViewSet
+from okr.views import TeamViewSet, UserViewSet, ObjectiveViewSet, KeyResultViewSet, OkrProgressViewSet
 #
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -38,14 +39,21 @@ schema_view = get_schema_view(
    patterns=schema_url_patterns,
 )
 router = routers.DefaultRouter()
-router.register(r'blog', views.PostViewSet)
-router.register(r'comment', views.CommentViewSet)
+router.register(r'blog', PostViewSet)
+router.register(r'comment', CommentViewSet)
 #
+router.register(r'team', TeamViewSet)
+router.register(r'user', UserViewSet)
+router.register(r'objective', ObjectiveViewSet)
+router.register(r'keyresult', KeyResultViewSet)
+router.register(r'okrprogress', OkrProgressViewSet)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),
+    path('polls/', include('polls.urls')),
+    path('okr/', include('okr.urls')),
     path('api/v1/', include(router.urls)),
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

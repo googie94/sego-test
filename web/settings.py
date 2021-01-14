@@ -38,9 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sort_order_field',
     'rest_framework',
     'drf_yasg',
     'blog',
+    'okr',
+    'polls'
+    ##polls.apps.PollsConfig
 ]
 
 MIDDLEWARE = [

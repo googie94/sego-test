@@ -1,0 +1,140 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+<style type="text/css">
+body, html {
+	background-color: white;
+}
+</style>
+
+<div id="okrApp">
+
+  	<div class="okr--Wrapper">
+  		<div class="okr--container">
+  			<div class="okr--card--Wrap">
+  				<ul class="card-ul">
+					<li class="card-li" v-for="(team, index) in teams">
+						<p class="title">[[ team.name ]]</p>
+						<div class="kr-card">
+							<!-- <p v-show="team.objective.length !== 0"
+								@click="openDetail(team.objective)">
+								[[ team.objective.title ]]
+							</p> -->
+							<p class="new_list" @click="newList(index)">New List</p>
+						</div>
+					</li>
+
+					<li id="new_card" class="card-li" @click="test()">
+						<p>New Card</p>
+					</li>
+				</ul>
+  			</div>
+  		</div>
+  	</div>
+
+
+  	<div class="okr--detail" v-show="show_detail">
+  		<!-- <div>
+  			<p>[[ current_obj ]]</p>
+  		</div> -->
+  		<div>
+  			<h4>[[ current_obj.title ]]</h4>
+  			<p v-if="current_obj.type==0">도전</p>
+  			<p v-if="current_obj.type==1">필수</p>
+  			<p v-if="current_obj.type==2">개인</p>
+  			<p>목표</p>
+  			<p>[[ current_obj.rate ]]</p>
+  			<p>마감일</p>
+  			<p>[[ current_obj.end_date ]]</p>	
+  		</div>
+  	</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/locale/ko.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript">
+	var csrf_token =  '{{ csrf_token }}'
+	var config = {
+    	headers: {
+        	'X-CSRFToken': csrf_token
+    	}
+    }
+
+	var okr_app = new Vue({
+		delimiters: ['[[',']]'],
+		el: '#okrApp',
+		data: {
+			show_detail: false,
+			teams: [],
+			users: [],
+			objectives: [],
+			key_results: [],
+			okr_progresses: [],
+			user_lists: ['Q', 'Mathew', 'IRON', 'Gabriel', 'Nacho', 'Minu', 'Cus', 'Step', 'MacGook', 'Waddi', 'Yello', 'Sante', 'Girin', 'Sugar'],
+			dp: false,
+			current_obj:[],
+		},
+		created() {
+			this.getInformation()
+		},
+		methods: {
+
+			getInformation() {
+				var v=this
+				urls=[]
+				info_list=['team', 'user', 'objective', 'keyresult', 'okrprogress']
+				for (var i=0; i < info_list.length; i++){
+					urls.push(axios.get('/api/v1/'+info_list[i]+'/'))
+				}
+				axios.all(urls)
+				.then(axios.spread(function(...response){
+					v.teams=response[0].data
+					v.users=response[1].data
+					v.objectives=response[2].data
+					v.key_results=response[3].data
+					v.okr_progresses=response[4].data
+					console.log(v.teams)
+					// for (var i=0; i < v.teams.length; i++) {
+					// 	Vue.set(v.teams[i], 'objective', [])
+					// 	for (var j=0; j < v.objectives.length; j++) {
+					// 		if (v.teams[i].id == v.objectives[j].team) {
+					// 			Vue.set(v.teams[i], 'objective', v.objectives[j])
+					// 		}
+					// 	}
+					// }
+                }))
+                .catch(function(err){})
+			},
+
+			openDetail(obj) {
+				var v=this
+				v.show_detail=!v.show_detail
+				v.current_obj=obj
+			},
+
+			newList(index) {
+				var v=this
+				var n=document.getElementsByClassName('new_list')
+				for (var i=0; i < n.length; i++) {
+					if (i == index) {
+						n[i].innerHTML='Create'						
+					}
+				}
+			},
+
+			test() {
+				var v=this
+				axios.get('/api/v1/team/?max_sch=2020-01-15')
+				.then(function(res){
+					console.log(res)
+				})
+				.catch(function(err){})
+			}
+
+		},
+	})
+</script>
+
+{% endblock %}
