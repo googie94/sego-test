@@ -92,7 +92,8 @@ DATABASES = {
             'USER': 'sego_admin',
             'PASSWORD': 'googie0126!',
             'HOST': 'sego.c3jqlg47t2v5.ap-northeast-2.rds.amazonaws.com',
-            'PORT': '3306'
+            'PORT': '3306',
+            'OPTIONS': {'charset': 'utf8mb4'},
         }
 }
 
