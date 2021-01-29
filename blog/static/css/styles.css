@@ -246,6 +246,9 @@ input.inputFull, select.inputFull {
 .radius10 {
 	border-radius: 10px;
 }
+.ft12 {
+	font-size: 12px;
+}
 .no--comment {
 	text-align: center;
 	background-color: #eee;
