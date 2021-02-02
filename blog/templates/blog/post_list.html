@@ -128,6 +128,12 @@ var post_app = new Vue({
 
 		hitPost(post) {
 			var v=this;
+			var index=null
+			for (var i=0; i < post.length; i++) {
+				if (post[i].id == 43) {
+					post.splice(i, 1)
+				}
+			}
 			post.sort(function(a, b) {
 				return b.comment - a.comment
 			})
