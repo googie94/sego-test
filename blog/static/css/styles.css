@@ -331,7 +331,7 @@ input.inputFull, select.inputFull {
 	text-align: center;
 	margin: 0 -70px;
 }
-.filter__toast:before {
+/*.filter__toast:before {
 	display:inline-block!important;
 	content: '';
 	width: 0; 
@@ -343,7 +343,7 @@ input.inputFull, select.inputFull {
     left: 50%;
     right: 50%;
     top: -5px;
-}
+}*/
 @media only screen and (min-width: 1024px) {
 	.filter__toast {
 		bottom: 245px;
