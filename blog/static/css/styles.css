@@ -1,3 +1,4 @@
+@import url('//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
 @charset "utf-8";
 /*
  * default style definition
@@ -149,6 +150,11 @@ input.inputFull, select.inputFull {
 	input.inputFull, select.inputFull {
 		width: 20%;
 	}
+	.search-wrap {
+		width: 80%;
+		align-self: center;
+		margin: 0 auto;
+	}
 }
 .intro {
 	padding: 20px; 
@@ -186,6 +192,11 @@ input.inputFull, select.inputFull {
 }
 .hit-content p {
 	font-size: 12px;
+}
+.hit-content p:empty {
+  width: 100px;
+  height: 20px;
+  background: #ddd;
 }
 .feeds {
 	font-family:'Lato', sans-serif;
@@ -241,7 +252,7 @@ input.inputFull, select.inputFull {
 	padding: 10px;
 	background-color: #FFA135;
 	color: white;
-	margin: 20px 20px;
+	margin: 0px 20px;
 }
 .radius10 {
 	border-radius: 10px;
@@ -266,9 +277,87 @@ input.inputFull, select.inputFull {
 	font-size: 14px;
 }
 
+/*SEARCH*/
+.search-wrap {
+	align-self: center;
+	margin: 0 auto;
+}
+.search {
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+
+.searchTerm {
+  width: 100%;
+  border: 1px solid #FFA135;
+  border-right: none;
+  padding: 10px;
+  height: 36px;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  font-size: 12px;
+  /*color: #184C5F;*/
+}
+
+.searchTerm:focus{
+  /*color: #184C5F;*/
+}
+
+.searchButton {
+  width: 40px;
+  height: 36px;
+  border: 1px solid #FFA135;
+  background: #FFA135;
+  text-align: center;
+  color: #fff;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-size: 20px;
+}
+.fa-search:before {
+	content: "\f002";
+}
+.filter__toast {
+	position: absolute;
+	background-color: #FFC645;
+	padding: 5px 10px;
+	border-radius: 6px;
+	z-index: 1;
+	bottom: 150px;
+	right: 50%;
+	left: 60%;
+	box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.1);
+	font-size: 11px;
+	width: fit-content;
+	text-align: center;
+	margin: 0 -70px;
+}
+.filter__toast:before {
+	display:inline-block!important;
+	content: '';
+	width: 0; 
+	height: 0; 
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-bottom: 7px solid #FFC645;
+	position: absolute;
+    left: 50%;
+    right: 50%;
+    top: -5px;
+}
+@media only screen and (min-width: 1024px) {
+	.filter__toast {
+		bottom: 245px;
+	}
+}
+@media only screen and (min-width: 480px) {
+	.filter__toast {
+		bottom: 245px;
+	}
+}
 
 /*OKRs*/
-
 .sub-header {
 	padding: 10px 30px;
 	font-family: 'Roboto Mono', monospace;

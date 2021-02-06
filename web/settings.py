@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'sort_order_field',
+    #
     'rest_framework',
     'drf_yasg',
+    'django_filters',
+    #
     'blog',
     'okr',
     'polls'
