@@ -8,9 +8,17 @@ from .serializers import PostSerializer, CommentSerializer
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
 
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
+# from django.db.models import Q
+
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+    filter_backends = [SearchFilter, DjangoFilterBackend] 
+    # filter_fields = ['text']
+    search_fields = ['text']
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
@@ -19,6 +27,14 @@ class CommentViewSet(viewsets.ModelViewSet):
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'blog/post_list.html', {'posts': posts})
+
+# def search_post(request, keyword):
+#     post_list = Post.objects.filter(Q(subject__contains=keyword))
+#     context = {
+#         'category_name': keyword,
+#         'post_list': post_list,
+#     }
+#     return render(request, 'blog/post_list.html', context)
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)

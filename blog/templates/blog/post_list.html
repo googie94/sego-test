@@ -7,7 +7,7 @@
 	
 	<div class="intro">
 		<div>
-			<p class="hello">Hello!👋</p>
+			<p class="hello">Hello!👋</p> 
 		</div>
 		<br>
 		<div>
@@ -27,6 +27,13 @@
 					</a>
 				</li>
 			</ul>
+			<ul v-if="hit_posts.length==0">
+				<li v-for="hit_post in 5">
+					<a>
+						<p></p>
+					</a>
+				</li>
+			</ul>
 		</div>
 	</div>
 
@@ -35,7 +42,20 @@
 		<div style="padding: 20px;">
 			<p class="feeds">Feeds</p>
 		</div>
-		<a href="{% url 'post_new' %}" class="comment-btn radius10" style="font-size: 12px;"><span>포스트 작성</span></a>
+		<div style="display: flex; padding: 0px 20px;">
+			<a href="{% url 'post_new' %}" class="comment-btn radius10 ft12"><span>포스트 작성</span></a>
+			<div class="search-wrap">
+			   <div class="search">
+			      <input type="text" class="searchTerm" placeholder="검색하기">
+			      <button type="submit" class="searchButton">
+			        <i class="fa fa-search"></i>
+			     </button>
+			   </div>
+			</div>
+			<transition name="fade" v-if="show_release">
+                <div class="filter__toast">검색기능을 사용해보세요</div>
+            </transition>
+		</div>
 	</div>
 	
 	<div v-for="post in posts"
@@ -50,6 +70,18 @@
 				<pre class="card--content">[[ post.text ]]</pre>
 				<span style="font-size: 10px;">[[ post.comment.length ]] 개 댓글이 있습니다</span>
 				<p class="card--date">[[ moment(post.created_date).format('M월 D일 HH:mm') ]]</p>
+			</ul>
+		</a>
+	</div>
+	<div class="card--container" v-if="posts.length==0">
+		<a>
+			<div class="card--profile">
+				<img src="{% static '/img/ic_fair_limit_2w.svg' %}"></img>
+				<p>[[ keyword ]]</p>
+			</div>
+			<ul class="card--wrapper">
+				<li class="card--title">"[[ keyword ]]" 에 관련된 포스트가 없습니다</li>
+				<pre class="card--content">검색한 키워드와 관련된 포스트가 없네요.<br>"[[ keyword ]]" 에 관련된 첫 포스트를 남겨주세요</pre>
 			</ul>
 		</a>
 	</div>
@@ -68,40 +100,48 @@ var post_app = new Vue({
 		posts2: [],
 		comments_cnt: [],
 		hit_posts: [],
+		show_release: true,
+		keyword: null,
 	},
 	created() {
-		this.getPost()
+		this.getPost2()
+		this.getPost('')
+		this.searchPost()
+		setTimeout(() => this.show_release=false, 6000);
 	},
 	methods: {
 
-		getPost() {
+		getPost(keyword) {
 			var v=this;
-			axios.get('/api/v1/blog/')
+			var url='?search='+keyword
+			v.keyword=keyword
+			axios.get('/api/v1/blog/'+url)
 			.then(function(res){
-				res.data.reverse()
-				v.posts=res.data
+				v.posts=res.data.reverse()
 				for (var i=0; i < v.posts.length; i++) {
 					Vue.set(v.posts[i], 'comment', [])
 				}
-				v.getComment()
+				v.getComment(v.posts)
 			})
 			.catch(function(err){})
 		},
 
-		getComment() {
+		getComment(post) {
 			var v=this;
 			axios.get('/api/v1/comment/')
 			.then(function(res){
-				for (var i=0; i < v.posts.length; i++) {
+				for (var i=0; i < post.length; i++) {
 					for (var j=0;  j < res.data.length; j++) {
-						if (v.posts[i].id == res.data[j].post_id) {
+						if (post[i].id == res.data[j].post_id) {
 							if (!res.data[j].approved_comment) {
-								v.posts[i].comment.push(j)
+								post[i].comment.push(j)
 							}
 						}
 					}
 				}
-				v.getPost2()
+				setTimeout(function(){
+					v.hitPost(v.posts2)
+				}, 500); 
 			})
 			.catch(function(err){})
 		},
@@ -114,31 +154,29 @@ var post_app = new Vue({
 				for (var x=0; x < v.posts2.length; x++) {
 					Vue.set(v.posts2[x], 'comment', [])
 				}
-				for (var i=0; i < v.posts2.length; i++) {
-					for (var j=0; j < v.posts.length; j++) {
-						if (v.posts[i].id == v.posts2[j].id) {
-							v.posts2[j].comment=v.posts[i].comment.length
-						}
-					}
-				}
-				v.hitPost(v.posts2)
+				v.getComment(v.posts2)
 			})
 			.catch(function(err){})
 		},
 
 		hitPost(post) {
 			var v=this;
-			var index=null
-			for (var i=0; i < post.length; i++) {
-				if (post[i].id == 43) {
-					post.splice(i, 1)
-				}
-			}
 			post.sort(function(a, b) {
-				return b.comment - a.comment
+				return b.comment.length - a.comment.length
 			})
 			post.splice(5)
 			v.hit_posts=post
+		},
+
+		searchPost() {
+			var v=this
+			document.addEventListener('keypress', logKey);
+			function logKey(e) {
+				if(e.which==13) {
+					var s=document.getElementsByClassName('searchTerm')[0]
+					v.getPost(s.value)
+				}
+			}
 		}
 
 	}
