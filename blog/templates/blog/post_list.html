@@ -46,12 +46,10 @@
 			<a href="{% url 'post_new' %}" class="comment-btn radius10 ft12"><span>포스트 작성</span></a>
 			<div class="search-wrap">
 			   <div class="search">
-			      <input type="text" class="searchTerm" placeholder="검색하기">
+			   		<span data-tooltip="검색기능을 사용해보세요" v-if="show_release"></span>
+			      	<input type="text" class="searchTerm" placeholder="검색하기">
 			   </div>
 			</div>
-			<transition name="fade" v-if="show_release">
-                <div class="filter__toast">검색기능을 사용해보세요</div>
-            </transition>
 		</div>
 	</div>
 	
