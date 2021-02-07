@@ -37,7 +37,7 @@
 		</div>
 	</div>
 
-	<div>
+	<div class="main-feeds">
 		<br>
 		<div style="padding: 20px;">
 			<p class="feeds">Feeds</p>
@@ -51,34 +51,34 @@
 			   </div>
 			</div>
 		</div>
-	</div>
 	
-	<div v-for="post in posts"
-		 class="card--container">
-		<a :href="'/post/'+post.id+'/'">
-			<div class="card--profile">
-				<img src="{% static '/img/ic_fair_limit_2w.svg' %}"></img>
-				<p>[[ post.author ]]</p>
-			</div>
-			<ul class="card--wrapper">
-				<li class="card--title">[[ post.title ]]</li>
-				<pre class="card--content">[[ post.text ]]</pre>
-				<span style="font-size: 10px;">[[ post.comment.length ]] 개 댓글이 있습니다</span>
-				<p class="card--date">[[ moment(post.created_date).format('M월 D일 HH:mm') ]]</p>
-			</ul>
-		</a>
-	</div>
-	<div class="card--container" v-if="posts.length==0">
-		<a>
-			<div class="card--profile">
-				<img src="{% static '/img/ic_fair_limit_2w.svg' %}"></img>
-				<p>[[ keyword ]]</p>
-			</div>
-			<ul class="card--wrapper">
-				<li class="card--title">"[[ keyword ]]" 에 관련된 포스트가 없습니다</li>
-				<pre class="card--content">검색한 키워드와 관련된 포스트가 없네요.<br>"[[ keyword ]]" 에 관련된 첫 포스트를 남겨주세요</pre>
-			</ul>
-		</a>
+		<div v-for="post in posts"
+			 class="card--container">
+			<a :href="'/post/'+post.id+'/'">
+				<div class="card--profile">
+					<img src="{% static '/img/ic_fair_limit_2w.svg' %}"></img>
+					<p>[[ post.author ]]</p>
+				</div>
+				<ul class="card--wrapper">
+					<li class="card--title">[[ post.title ]]</li>
+					<pre class="card--content">[[ post.text ]]</pre>
+					<span style="font-size: 10px;">[[ post.comment.length ]] 개 댓글이 있습니다</span>
+					<p class="card--date">[[ moment(post.created_date).format('M월 D일 HH:mm') ]]</p>
+				</ul>
+			</a>
+		</div>
+		<div class="card--container" v-if="posts.length==0">
+			<a>
+				<div class="card--profile">
+					<img src="{% static '/img/ic_fair_limit_2w.svg' %}"></img>
+					<p>[[ keyword ]]</p>
+				</div>
+				<ul class="card--wrapper">
+					<li class="card--title">"[[ keyword ]]" 에 관련된 포스트가 없습니다</li>
+					<pre class="card--content">검색한 키워드와 관련된 포스트가 없네요.<br>"[[ keyword ]]" 에 관련된 첫 포스트를 남겨주세요</pre>
+				</ul>
+			</a>
+		</div>
 	</div>
 </div>
 
