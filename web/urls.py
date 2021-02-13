@@ -54,6 +54,8 @@ urlpatterns = [
     path('', include('blog.urls')),
     path('polls/', include('polls.urls')),
     path('okr/', include('okr.urls')),
+    # path('snippet/', include('snippets.urls')),
+    #
     path('api/v1/', include(router.urls)),
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

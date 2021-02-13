@@ -53,6 +53,7 @@
 		</div>
 	
 		<div v-for="post in posts"
+			 v-if="post.approved_post"
 			 class="card--container">
 			<a :href="'/post/'+post.id+'/'">
 				<div class="card--profile">

@@ -45,8 +45,9 @@ INSTALLED_APPS = [
     #
     'blog',
     'okr',
-    'polls'
+    'polls',
     ##polls.apps.PollsConfig
+    # 'snippets.apps.SnippetsConfig',
 ]
 
 MIDDLEWARE = [
