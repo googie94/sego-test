@@ -112,7 +112,6 @@ var post_app = new Vue({
 			v.keyword=keyword
 			axios.get('/api/v1/blog/'+url)
 			.then(function(res){
-				console.log(res)
 				v.posts=res.data.reverse()
 			})
 			.catch(function(err){})
