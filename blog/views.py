@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.views import View
 #
 from rest_framework import viewsets
 from .serializers import PostSerializer, CommentSerializer
@@ -11,6 +13,9 @@ from .forms import PostForm, CommentForm
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 # from django.db.models import Q
+
+def authorized_digital_sellers_view(request):
+    return HttpResponse("google.com, pub-8895171113569143, DIRECT, f08c47fec0942fa0")
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
