@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '(p46oggljoq)im-m-!h13j$jr&(n+b!mo9a9)_7h2kg&bomo%g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 ALLOWED_HOSTS = ['letsego.site', 'www.letsego.site', 'localhost']
