@@ -424,6 +424,9 @@ input.inputFull, select.inputFull {
 .okr--card--team .graph--horizontal-bar {
 	height: 4px;
 }
+#footer {
+	background-color: #eeeeee;
+}
 
 
 
