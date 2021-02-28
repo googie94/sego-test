@@ -29,9 +29,7 @@
 			</ul>
 			<ul v-if="hit_posts.length==0">
 				<li v-for="hit_post in 5">
-					<a>
-						<p></p>
-					</a>
+					<a><p></p></a>
 				</li>
 			</ul>
 		</div>
@@ -76,7 +74,7 @@
 				</div>
 				<ul class="card--wrapper">
 					<li class="card--title">"[[ keyword ]]" 에 관련된 포스트가 없습니다</li>
-					<pre class="card--content">검색한 키워드와 관련된 포스트가 없네요.<br>"[[ keyword ]]" 에 관련된 첫 포스트를 남겨주세요</pre>
+					<pre class="card--content">검색한 키워드와 관련된 포스트가 없어요.<br>"[[ keyword ]]" 에 관련된 첫 포스트를 남겨주세요</pre>
 				</ul>
 			</a>
 		</div>
@@ -86,7 +84,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/locale/ko.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script data-ad-client="ca-pub-8895171113569143" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <script type="text/javascript">
 
 
@@ -115,6 +112,7 @@ var post_app = new Vue({
 			axios.get('/api/v1/blog/'+url)
 			.then(function(res){
 				v.posts=res.data.reverse()
+				v.insertAds(v.posts)
 			})
 			.catch(function(err){})
 		},
@@ -147,6 +145,11 @@ var post_app = new Vue({
 					v.getPost(s.value)
 				}
 			}
+		},
+
+		insertAds(post) {
+			var v=this
+			var cards = document.getElementsByClassName('card--container')
 		}
 
 	}
