@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'blog',
     'okr',
     'polls',
+    #
+    'scraping'
     ##polls.apps.PollsConfig
     # 'snippets.apps.SnippetsConfig',
 ]

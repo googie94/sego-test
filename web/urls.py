@@ -54,6 +54,9 @@ urlpatterns = [
     path('', include('blog.urls')),
     path('polls/', include('polls.urls')),
     path('okr/', include('okr.urls')),
+    #
+    path('scraping/', include('scraping.urls')),
+    #
     # path('snippet/', include('snippets.urls')),
     #
     path('api/v1/', include(router.urls)),
