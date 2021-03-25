@@ -6,6 +6,20 @@ from bs4 import BeautifulSoup
 from urllib.request import HTTPError, URLError
 #
 
+#test13 crawler
+import requests
+
+class Crawler:
+	def getPage(self, url):
+		try:
+			req = requests.get(url)
+		except requests.exceptions.RequestException:
+			return None
+		return BeautifulSoup(req.text, 'html.parser')
+
+	def safeGet(self, pageObj, selector):
+		
+
 #test12 news scraping
 # import requests
 # #
