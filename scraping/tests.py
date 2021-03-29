@@ -5,20 +5,144 @@ from bs4 import BeautifulSoup
 #
 from urllib.request import HTTPError, URLError
 #
-
-#test13 crawler
 import requests
+# 
 
-class Crawler:
-	def getPage(self, url):
-		try:
-			req = requests.get(url)
-		except requests.exceptions.RequestException:
-			return None
-		return BeautifulSoup(req.text, 'html.parser')
 
-	def safeGet(self, pageObj, selector):
-		
+
+# 세고 크롤러 테스트
+# class Content:
+# 	def __init__(self, container, title, text):
+# 		self.container = container
+# 		self.title = title
+# 		# self.url  = url
+# 		self.text = text
+
+# def getPage(url):
+# 	req = requests.get(url)
+# 	return BeautifulSoup(req.text, 'html.parser')
+
+# def sego(url):
+# 	bs = getPage(url)
+# 	container = bs.findAll('div', {"class": "card--container"})
+# 	title = bs.select("li", {"class": "card--title"})
+# 	text = bs.select("pre", {"class": "card--content"})
+# 	return Content(container, title, text)
+
+
+# url = """
+# http://www.letsego.site/
+# """
+
+# content = sego(url)
+# print('CONTAINER: \n{}'.format(content.container))
+# # print('TITLE : \n{}'.format(content.title))
+# # print('TITLE : \n{}'.format(content.text))
+
+
+# 크롤러 실제 사용 테스트
+# class Crawler:
+
+# 	def getPage(self, url):
+# 		try:
+# 			req = requests.get(url)
+# 		except requests.exceptions.RequestException:
+# 			return None
+# 		return BeautifulSoup(req.text, 'html.parser')
+
+# 	def safeGet(self, pageObj, selector):
+# 		childObj = pageObj.select(selector)
+# 		if childObj is not None and len(childObj) > 0:
+# 			return childObj[0].get_text()
+# 		return ''
+
+# 	def search(self, topic, site):
+# 		"""
+# 		주어진 검색어로 주어진 웹사이트를 검색해 결과 페이지를 모두 기록합니다.
+# 		"""
+# 		bs = self.getPage(site.searchUrl + topic)
+# 		searchResults = bs.select(site.resultListing)
+# 		for result in searchResults:
+# 			url = result.select(site.resultUrl)[0].attrs['href']
+# 			#URL 상대/절대 경로 확인
+# 			if (site.absoluteUrl):
+# 				bs = self.getPage(url)
+# 			else:
+# 				bs = self.getPage(site.url + url)
+
+# 			if bs is None:
+# 				print('Something was wrong with that page or URL. Skipping!')
+# 				return
+# 			title = self.safeGet(bs, site.titleTag)
+# 			body = self.safeGet(bs, site.bodyTag)
+# 			if title != '' and body != '':
+# 				content = Content(topic, url, title, body)
+# 				content.print()
+
+# class Content:
+# 	"""
+# 	글/페이지 전체에 사용할 기반 클래스
+# 	"""
+# 	def __init__(self, topic, url, title, body):
+# 		self.topic = topic
+# 		self.url = url
+# 		self.title = title
+# 		self.body = body
+
+# 	def print(self):
+# 		"""
+# 		출력 결과를 원하는 대로 바꿀 수 있는 함수
+# 		"""
+# 		print('New article found for topic {}'.format(self.topic))
+# 		print('URL: {}'.format(self.url))
+# 		print('TITLE: {}'.format(self.title))
+# 		print('BODY: \n{}'.format(self.body))
+
+# class Website:
+# 	"""
+# 	웹사이트 구조에 관한 정보를 저장할 클래스
+# 	"""
+# 	def __init__(self, name, url, searchUrl, resultListing, resultUrl, absoluteUrl, titleTag, bodyTag):
+# 		self.name = name
+# 		self.url = url
+# 		self.searchUrl = searchUrl
+# 		self.resultListing = resultListing
+# 		self.resultUrl = resultUrl
+# 		self.absoluteUrl = absoluteUrl
+# 		self.titleTag = titleTag
+# 		self.bodyTag = bodyTag
+
+# crawler = Crawler()
+
+# siteData = [
+# 	["O\'Reilly Media'",
+# 		'http://oreilly.com',
+# 		'https://ssearch.oreilly.com/?q=',
+# 		'article.product-result',
+# 		'p.title a',
+# 		True,
+# 		'h1',
+# 		'section#product-description'],
+# 	['Brookings',
+# 		'http://www.brookings.edu',
+# 		'https://www.brookings.edu/search/?s=',
+# 		'div.list-content article',
+# 		'h4.title a',
+# 		True,
+# 		'h1',
+# 		'div.post-body']
+# ]
+
+# sites = []
+# for raw in siteData:
+# 	sites.append(Website(raw[0], raw[1], raw[2], raw[3], raw[4], raw[5], raw[6], raw[7]))
+
+# topics = ['python', 'data science']
+# for topic in topics:
+# 	print('GETTING INFO ABOUT ' +  topic)
+# 	for targetSite in sites:
+# 		crawler.search(topic, targetSite)
+
 
 #test12 news scraping
 # import requests
@@ -50,14 +174,14 @@ class Crawler:
 # 	body = ''
 # 	return Content(url, title, body)
 
-# # url = """
-# # https://www.brookings.edu/blog/future-development/2018/01/26/delivering-inclusive-urban-access-3-uncomfortable-truths/
-# # """
+# url = """
+# https://www.brookings.edu/blog/future-development/2018/01/26/delivering-inclusive-urban-access-3-uncomfortable-truths/
+# """
 
-# # content = scrapeBrookings(url)
-# # print('Title: {}'.format(content.title))
-# # print('URL: {}'.format(content.url))
-# # print(content.body)
+# content = scrapeBrookings(url)
+# print('Title: {}'.format(content.title))
+# print('URL: {}'.format(content.url))
+# print(content.body)
 
 # url = """
 # https://www.nytimes.com/2018/01/25/opinion/sunday/silicon-valley-immortality.html
