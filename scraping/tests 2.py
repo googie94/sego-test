@@ -9,272 +9,54 @@ import requests
 import re
 # 
 import time
-import datetime
-#
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.keys import Keys
-#
-import pyperclip
-# 
-import csv
-#
+from selenium.webdriver.support import expected_conditions as EC
+
+# Login
+# driver = webdriver.Chrome()
+# driver.implicitly_wait(5)
+
+# driver.get('http://www.plabfootball.com')
+
+# driver.find_element_by_css_selector('#userMenu > div > a:nth-child(1)').click()
+
+# login_link = WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '.btn.regist')))
+# login_link.click()
+# # driver.find_element_by_css_selector('.btn.regist').click()
+
+# driver.find_element_by_name('username').send_keys('sportfolio94@gmail.com')
+# driver.find_element_by_name('password').send_keys('tmy4834733!')
+# driver.find_element_by_css_selector('.btn.submit').click()
+
+# time.sleep(5)
+
+# driver.quit()
 
 
-# save mysql
-import pymysql
-
-host = 'sego.c3jqlg47t2v5.ap-northeast-2.rds.amazonaws.com'
-user = 'sego_admin'
-pw = 'googie0126!'
-db = 'sego'
-conn = pymysql.connect(host=host, user=user, passwd=pw, db=db, charset='utf8')
-cur = conn.cursor()
-cur.execute('USE scraping')
-
-def store(area_group, area, district, phone):
-	cur.execute(
-		'INSERT INTO agent (area_group, area, district, phone) VALUES (%s, %s, %s, %s)',
-		(area_group, area, district, phone)
-	)
-	cur.connection.commit()
-
-
-
-# -------------------------------
-
-# 5권역 - 안양, 과천, 안산, 군포, 수원
-# GET PHONE NUMBER - NAVER
-# OPEN CRHOME
-driver = webdriver.Chrome()
-driver.implicitly_wait(3)
-
-# GET URL
-driver.get('https://new.land.naver.com/offices')
-
-# LIST
-# 용인 32,33,34
-areaList=[32]
-districtList=[]
-itemList=[]
-dtindex=0
-
-# FUNCTIONS
-def clickSelector(path):
-	item = driver.find_element_by_css_selector(path)
-	item.click()
-
-def nextArea(num):
-	driver.implicitly_wait(1)
-	print("NEXTAREA START")
-	index = str(num)
-	print('AREA ID : ', index)
-	clickSelector('#region_filter > div > a > span:nth-child(2)')
-	time.sleep(1)
-	clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child(2)')
-	time.sleep(1)
-	clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child('+index+')')
-	time.sleep(1)
-	global districtList
-	districtList = driver.find_elements_by_css_selector('#region_filter > div > div > div.area_list_wrap > ul > li')
-	print('NEXTAREA END')
-
-def nextDistrict(index):
-	driver.implicitly_wait(1)
-	print("NEXTDISTRICT START")
-	print('DISTRICT LENGTH', len(districtList))
-	global dtindex
-	dtindex = str(index+1)
-	print('DISTRICT INDEX : ', dtindex)
-	clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child('+dtindex+')')
-	time.sleep(1)
-	try:
-		for i in range(100):
-			loader = driver.find_element_by_css_selector('#listContents1 > div > div > div.loader')
-			loader.click()
-			time.sleep(3)
-	except:
-		pass
-	time.sleep(1)
-	global itemList
-	itemList = driver.find_elements_by_css_selector('#listContents1 > div > div > div:nth-child(1) > div')
-	print('ITEM LENGTH', len(itemList))
-	print("NEXTDISTRICT END")
-
-def nextItem(index):
-	driver.implicitly_wait(1)
-	print('NEXTITEM START')
-	index = str(index+1)
-	# 
-	time.sleep(1)
-	try:
-		other = driver.find_element_by_css_selector('#listContents1 > div > div > div:nth-child(1) > div:nth-child('+index+') > div > div.label_area > a')
-		other.click()
-		print('LINK CLICK')
-	except:
-		clickSelector('#listContents1 > div > div > div:nth-child(1) > div:nth-child('+index+')')
-	# 
-	time.sleep(1)
-	# 
-	try:
-		ag = driver.find_element_by_css_selector('#region_filter > div > a > span:nth-child(2)').text
-		ar = driver.find_element_by_css_selector('#region_filter > div > a > span:nth-child(3)').text
-		dt = driver.find_element_by_css_selector('#region_filter > div > a > span:nth-child(4)').text
-		is_phone = driver.find_element_by_css_selector('#detailContents1 > div.detail_box--summary > table > tbody > tr:last-child > td > div > div.info_agent_wrap > dl:nth-child(2) > dd').text
-		if '010-' in is_phone:
-			phone = is_phone.split(',')
-			for phn in phone:
-				if '010-' in phn:
-					print(ag, ar, dt, phn)
-					store(ag, ar, dt, phn)
-				else:
-					print('PHONE IS NONE')
-		else:
-			print('PHONE IS NONE')
-	except:
-		pass
-	# 
-	try:
-		close = driver.find_element_by_css_selector('#ct > div.map_wrap > div.detail_panel > div > button')
-		close.click()
-	except:
-		pass
-	# 
-	print('ITEM INDEX : ', index)
-	if index == str(len(itemList)):
-		print('LAST ITEM')
-		clickSelector('#region_filter > div > a > span:nth-child(4)')
-		if dtindex == str(len(districtList)):
-			print('LAST DISTRICT')
-			clickSelector('#region_filter > div > a > span:nth-child(4)')
-	# 
-	print('----------NEXTITEM END----------')
-	
-
-# START
-for a in areaList:
-	nextArea(a)
-	for d in range(0, len(districtList)):
-		nextDistrict(d)
-		for i in range(0, len(itemList)):
-			nextItem(i)
-		
-
-time.sleep(3)
-driver.quit()
-# ------------------------------
-
-# GET PHONE NUMBER - NAVER - TEST
+# codeit TEST
 
 # unopen Chrome
 # options = webdriver.ChromeOptions()
 # options.add_argument('headless')
 # driver = webdriver.Chrome('chromedriver',options=options)
-
 # open Chrome
-# driver = webdriver.Chrome()
-# driver.implicitly_wait(3)
+driver = webdriver.Chrome()
+driver.implicitly_wait(3)
 
-# driver.get('https://land.naver.com/')
+driver.get('https://workey.codeit.kr/orangebottle/index')
 
-# LOGIN
-# login_link = driver.find_element_by_id('gnb_login_button')
-# login_link.click()
-# time.sleep(3)
+branches = driver.find_elements_by_css_selector('div.container > div.branch')
+branch_list = []
 
-# driver.find_element_by_xpath('//*[@id="id"]').click()
-# driver.execute_script("document.getElementById('id').value = 'tmy7767'")
-# driver.execute_script("document.getElementById('pw').value = 'tmy12358970'")
-# login = driver.find_element_by_id('log.login')
-# login.click()
-# 
+for branch in branches:
+    name = branch.find_element_by_class_name('city').text.strip()
+    address = branch.find_element_by_class_name('address').text.strip()
+    phone = branch.find_element_by_class_name('phoneNum').text.strip()
+    branch_list.append([name, address, phone])
 
-# 경기도 - 안산시 - 상록구
-# show_list = driver.find_element_by_xpath('//*[@id="container"]/div[1]/div/div[1]/div[1]/p/a')
-# show_list.click()
-# time.sleep(2)
-# kg = driver.find_element_by_xpath('//*[@id="cityList"]/ul/li[2]/a')
-# kg.click()
-# time.sleep(1)
-# asg = driver.find_element_by_xpath('//*[@id="dvsnList"]/ul/li[23]/a')
-# asg.click()
-# time.sleep(1)
-# spd = driver.find_element_by_xpath('//*[@id="secList"]/div/ul/li[6]/a')
-# spd.click()
-# time.sleep(1)
-# btn = driver.find_element_by_xpath('//*[@id="loc_list"]/div[4]/p[2]/a')
-# btn.click()
-# time.sleep(1)
-# # 
-
-# togi = driver.find_element_by_xpath('//*[@id="wrap"]/div[1]/a[4]')
-# togi.click()
-# time.sleep(1) 
-# for i in range(1, 100):
-# 	item = driver.find_element_by_css_selector('div:nth-child('+str(i)+') > div > a.item_link')
-# 	item.click()
-# 	time.sleep(2)
-# 	phone = driver.find_element_by_css_selector('dl.info_agent:nth-child(2) > dd').text
-# 	print(phone)
-
-# driver.quit()
-
-
-
-# show_list = driver.find_element_by_xpath('//*[@id="container"]/div[1]/div/div[1]/div[1]/p/a')
-# show_list.click()
-# time.sleep(1)
-# kg = driver.find_element_by_xpath('//*[@id="cityList"]/ul/li[2]/a')
-# kg.click()
-# time.sleep(1)
-# asg = driver.find_element_by_xpath('//*[@id="dvsnList"]/ul/li[23]/a')
-# asg.click()
-# time.sleep(1)
-# spd = driver.find_element_by_xpath('//*[@id="secList"]/div/ul/li[6]/a')
-# spd.click()
-# time.sleep(1)
-# results = driver.find_element_by_xpath('//*[@id="loc_list"]/div[4]/p[1]')
-# print(results.text)
-
-# driver.quit()
-
-
-
-
-
-
-
-
-
-# driver.get('http://www.letsego.site')
-
-# posts = driver.find_elements_by_css_selector('div.card--container')
-# post_list = []
-
-# csvFile = open('sego.csv', 'w')
-
-# for post in posts:
-#     name = post.find_element_by_css_selector('a > div > p').text
-#     title = post.find_element_by_css_selector('a > ul.card--wrapper > li.card--title').text
-#     content = post.find_element_by_css_selector('a > ul.card--wrapper > pre.card--content').text.strip()
-#     post_list.append({
-#     	'name' : name,
-#     	'title': title,
-#     	'content': content
-#     	})
-# driver.quit()
-# try:
-# 	writer = csv.writer(csvFile)
-# 	writer.writerow(['닉네임', '제목', '내용'])
-# 	for post in post_list:
-# 		print(post['name'])
-# 		print(post['title'])
-# 		print(post['content'])
-# 		writer.writerow((post['name'], post['title'], post['content']))
-# finally:
-# 	csvFile.close()
-
+print(branch_list)
 
 
 
