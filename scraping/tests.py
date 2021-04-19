@@ -15,6 +15,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
 #
 import pyperclip
 # 
@@ -34,11 +35,11 @@ cur = conn.cursor()
 cur.execute('USE scraping')
 
 def store(area_group, area, district, phone):
-	cur.execute(
-		'INSERT INTO agent (area_group, area, district, phone) VALUES (%s, %s, %s, %s)',
-		(area_group, area, district, phone)
-	)
-	cur.connection.commit()
+    cur.execute(
+	'INSERT INTO agent (area_group, area, district, phone) VALUES (%s, %s, %s, %s)',
+	(area_group, area, district, phone)
+    )
+    cur.connection.commit()
 
 
 
@@ -47,118 +48,124 @@ def store(area_group, area, district, phone):
 # 5권역 - 안양, 과천, 안산, 군포, 수원
 # GET PHONE NUMBER - NAVER
 # OPEN CRHOME
-driver = webdriver.Chrome()
+chrome_options = Options()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+driver = webdriver.Chrome(options=chrome_options)
 driver.implicitly_wait(3)
 
 # GET URL
 driver.get('https://new.land.naver.com/offices')
 
 # LIST
-# 용인 32,33,34
-areaList=[32]
+areaList=[14]
 districtList=[]
 itemList=[]
 dtindex=0
 
 # FUNCTIONS
 def clickSelector(path):
-	item = driver.find_element_by_css_selector(path)
-	item.click()
+    item = driver.find_element_by_css_selector(path)
+    item.click()
 
 def nextArea(num):
-	driver.implicitly_wait(1)
-	print("NEXTAREA START")
-	index = str(num)
-	print('AREA ID : ', index)
-	clickSelector('#region_filter > div > a > span:nth-child(2)')
-	time.sleep(1)
-	clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child(2)')
-	time.sleep(1)
-	clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child('+index+')')
-	time.sleep(1)
-	global districtList
-	districtList = driver.find_elements_by_css_selector('#region_filter > div > div > div.area_list_wrap > ul > li')
-	print('NEXTAREA END')
+    driver.implicitly_wait(1)
+    print("NEXTAREA START")
+    index = str(num)
+    print('AREA ID : ', index)
+    clickSelector('#region_filter > div > a > span:nth-child(2)')
+    time.sleep(1)
+    clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child(2)')
+    time.sleep(1)
+    clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child('+index+')')
+    time.sleep(1)
+    global districtList
+    districtList = driver.find_elements_by_css_selector('#region_filter > div > div > div.area_list_wrap > ul > li')
+    print('NEXTAREA END')
 
 def nextDistrict(index):
-	driver.implicitly_wait(1)
-	print("NEXTDISTRICT START")
-	print('DISTRICT LENGTH', len(districtList))
-	global dtindex
-	dtindex = str(index+1)
-	print('DISTRICT INDEX : ', dtindex)
-	clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child('+dtindex+')')
-	time.sleep(1)
-	try:
-		for i in range(100):
-			loader = driver.find_element_by_css_selector('#listContents1 > div > div > div.loader')
-			loader.click()
-			time.sleep(3)
-	except:
-		pass
-	time.sleep(1)
-	global itemList
-	itemList = driver.find_elements_by_css_selector('#listContents1 > div > div > div:nth-child(1) > div')
-	print('ITEM LENGTH', len(itemList))
-	print("NEXTDISTRICT END")
+    driver.implicitly_wait(1)
+    print("NEXTDISTRICT START")
+    print('DISTRICT LENGTH', len(districtList))
+    global dtindex
+    dtindex = str(index+1)
+    print('DISTRICT INDEX : ', dtindex)
+    clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child('+dtindex+')')
+    time.sleep(2)
+    try:
+        for i in range(100):
+            loader = driver.find_element_by_css_selector('#listContents1 > div > div > div.loader')
+            loader.click()
+            time.sleep(3)
+    except:
+        pass
+    global itemList
+    itemList = driver.find_elements_by_css_selector('#listContents1 > div > div > div:nth-child(1) > div')
+    print('ITEM LENGTH', len(itemList))
+    if len(itemList) == 0:
+        clickSelector('#region_filter > div > a > span:nth-child(4)')
+        time.sleep(1)
+    print("NEXTDISTRICT END")
 
 def nextItem(index):
-	driver.implicitly_wait(1)
-	print('NEXTITEM START')
-	index = str(index+1)
-	# 
-	time.sleep(1)
-	try:
-		other = driver.find_element_by_css_selector('#listContents1 > div > div > div:nth-child(1) > div:nth-child('+index+') > div > div.label_area > a')
-		other.click()
-		print('LINK CLICK')
-	except:
-		clickSelector('#listContents1 > div > div > div:nth-child(1) > div:nth-child('+index+')')
-	# 
-	time.sleep(1)
-	# 
-	try:
-		ag = driver.find_element_by_css_selector('#region_filter > div > a > span:nth-child(2)').text
-		ar = driver.find_element_by_css_selector('#region_filter > div > a > span:nth-child(3)').text
-		dt = driver.find_element_by_css_selector('#region_filter > div > a > span:nth-child(4)').text
-		is_phone = driver.find_element_by_css_selector('#detailContents1 > div.detail_box--summary > table > tbody > tr:last-child > td > div > div.info_agent_wrap > dl:nth-child(2) > dd').text
-		if '010-' in is_phone:
-			phone = is_phone.split(',')
-			for phn in phone:
-				if '010-' in phn:
-					print(ag, ar, dt, phn)
-					store(ag, ar, dt, phn)
-				else:
-					print('PHONE IS NONE')
-		else:
-			print('PHONE IS NONE')
-	except:
-		pass
-	# 
-	try:
-		close = driver.find_element_by_css_selector('#ct > div.map_wrap > div.detail_panel > div > button')
-		close.click()
-	except:
-		pass
-	# 
-	print('ITEM INDEX : ', index)
-	if index == str(len(itemList)):
-		print('LAST ITEM')
-		clickSelector('#region_filter > div > a > span:nth-child(4)')
-		if dtindex == str(len(districtList)):
-			print('LAST DISTRICT')
-			clickSelector('#region_filter > div > a > span:nth-child(4)')
-	# 
-	print('----------NEXTITEM END----------')
+    driver.implicitly_wait(1)
+    print('NEXTITEM START')
+    index = str(index+1)
+    # 
+    time.sleep(2)
+    try:
+        other = driver.find_element_by_css_selector('#listContents1 > div > div > div:nth-child(1) > div:nth-child('+index+') > div > div.label_area > a')
+        other.click()
+        print('LINK CLICK')
+    except:
+        clickSelector('#listContents1 > div > div > div:nth-child(1) > div:nth-child('+index+')')
+    # 
+    time.sleep(1)
+    #
+    try:
+        ag = driver.find_element_by_css_selector('#region_filter > div > a > span:nth-child(2)').text
+        ar = driver.find_element_by_css_selector('#region_filter > div > a > span:nth-child(3)').text
+        dt = driver.find_element_by_css_selector('#region_filter > div > a > span:nth-child(4)').text
+        is_phone = driver.find_element_by_css_selector('#detailContents1 > div.detail_box--summary > table > tbody > tr:last-child > td > div > div.info_agent_wrap > dl:nth-child(2) > dd').text
+        if '010-' in is_phone:
+            phone = is_phone.split(',')
+            for phn in phone:
+                if '010-' in phn:
+                    print(ag, ar, dt, phn)
+                    store(ag, ar, dt, phn)
+                else:
+                    print('PHONE IS NONE')
+        else:
+            print('PHONE IS NONE')
+    except:
+        pass
+    #
+    try:
+        close = driver.find_element_by_css_selector('#ct > div.map_wrap > div.detail_panel > div > button')
+        close.click()
+        time.sleep(1)
+    except:
+        pass
+    # 
+    print('ITEM INDEX : ', index)
+    if index == str(len(itemList)):
+        print('LAST ITEM')
+        clickSelector('#region_filter > div > a > span:nth-child(4)')
+        if dtindex == str(len(districtList)):
+            print('LAST DISTRICT')
+            clickSelector('#region_filter > div > a > span:nth-child(4)')
+    #
+    print('----------NEXTITEM END----------')
 	
 
 # START
 for a in areaList:
-	nextArea(a)
-	for d in range(0, len(districtList)):
-		nextDistrict(d)
-		for i in range(0, len(itemList)):
-			nextItem(i)
+    nextArea(a)
+    for d in range(0, len(districtList)):
+        nextDistrict(d)
+        for i in range(0, len(itemList)):
+            nextItem(i)
 		
 
 time.sleep(3)
