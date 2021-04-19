@@ -22,6 +22,8 @@ import csv
 #
 
 
+
+
 # save mysql
 import pymysql
 
@@ -35,10 +37,120 @@ cur.execute('USE scraping')
 
 def store(area_group, area, district, phone):
 	cur.execute(
-		'INSERT INTO agent (area_group, area, district, phone) VALUES (%s, %s, %s, %s)',
+		'INSERT INTO agent2 (area_group, area, district, phone) VALUES (%s, %s, %s, %s)',
 		(area_group, area, district, phone)
 	)
 	cur.connection.commit()
+
+
+
+# -------------------------------
+import json
+import random
+
+# USER
+payload={}
+headers = {
+  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36',
+  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlJFQUxFU1RBVEUiLCJpYXQiOjE2MTg4MTcxOTEsImV4cCI6MTYxODgyNzk5MX0.elA6vG4bfmIHmn1sshzUlFF0S48jFs8bcsbRdgrZ7CQ'
+}
+
+# AREAGROUP
+def getAreaGroup(api):
+	req = requests.get(api, headers=headers, data=payload)
+	time.sleep(random.uniform(1,4))
+	global areaGroupList
+	areaGroupList = req.json()["regionList"]
+	return areaGroupList
+
+# AREA
+def getArea(api):
+	req = requests.get(api, headers=headers, data=payload)
+	time.sleep(random.uniform(3,10))
+	global areaList
+	areaList = req.json()["regionList"]
+	return areaList
+
+# AREADETAIL
+def getAreaDetail(api):
+	req = requests.get(api, headers=headers, data=payload)
+	time.sleep(random.uniform(3,10))
+	global areaDetailList
+	areaDetailList = req.json()["regionList"]
+	return areaDetailList
+
+api = "https://new.land.naver.com/api/regions/list?cortarNo=0000000000"
+getAreaGroup(api)
+# print(areaGroupList)
+
+results = []
+for ag in areaGroupList:
+	api = "https://new.land.naver.com/api/regions/list?cortarNo={}".format(ag["cortarNo"])
+	getArea(api)
+	# print(areaList)
+	for a in areaList:
+		api = "https://new.land.naver.com/api/regions/list?cortarNo={}".format(a["cortarNo"])
+		getAreaDetail(api)
+		# print(areaDetailList)
+		for ad in areaDetailList:
+			# 
+			for i in range(1, 500):
+				print("MORE INDEX : ",i)
+				try:
+					time.sleep(random.uniform(1,4))
+					try:
+						# print("INST NUM : ", ad["cortarNo"])
+						api = "https://new.land.naver.com/api/articles?cortarNo={}&order=rank&realEstateType=SG%3ASMS%3AGJCG%3AAPTHGJ%3AGM%3ATJ&tradeType=&tag=%3A%3A%3A%3A%3A%3A%3A%3A&rentPriceMin=0&rentPriceMax=900000000&priceMin=0&priceMax=900000000&areaMin=0&areaMax=900000000&oldBuildYears&recentlyBuildYears&minHouseHoldCount&maxHouseHoldCount&showArticle=false&sameAddressGroup=false&minMaintenanceCost&maxMaintenanceCost&priceType=RETAIL&directions=&page={}".format(ad["cortarNo"], i)
+					except:
+						pass
+				except:
+					pass
+				req = requests.get(api, headers=headers, data=payload)
+				time.sleep(random.uniform(1,4))
+				# test = req.json()
+				if req.json()["isMoreData"] == False:
+					break;
+				else:
+					for t in req.json()["articleList"]:
+						# print(t["articleNo"])
+						results.append(t["articleNo"])
+
+			print("ITEM LENGTH : ", len(results))
+			# print(results)
+			if len(results) != 0:
+				for index, r in enumerate(results):
+					print("ITEM INDEX : ", index)
+					try:
+						time.sleep(random.uniform(1,4))
+						try:
+							# print("INST NUM : ", r)
+							api = "https://new.land.naver.com/api/articles/{}".format(r)
+						except:
+							pass
+					except:
+						pass
+					# 
+					req = requests.get(api, headers=headers, data=payload)
+					global final
+					final = req.json()
+					try:		
+						ag = final["articleDetail"]["cityName"]
+						a = final["articleDetail"]["divisionName"]
+						d = final["articleDetail"]["sectionName"]
+						ph = final["articleRealtor"]["cellPhoneNo"]
+						print(ag, a, d, ph)
+						store(ag, a, d, ph)
+					except:
+						pass
+					# 
+					if index+1 == len(results):
+						print('------------LAST INDEX------------')
+						results = []
+			else:
+				print('NO ITEM')
+
+			
+
 
 
 
@@ -47,122 +159,137 @@ def store(area_group, area, district, phone):
 # 5권역 - 안양, 과천, 안산, 군포, 수원
 # GET PHONE NUMBER - NAVER
 # OPEN CRHOME
-driver = webdriver.Chrome()
-driver.implicitly_wait(3)
+# driver = webdriver.Chrome()
+# driver.implicitly_wait(3)
 
-# GET URL
-driver.get('https://new.land.naver.com/offices')
+# # GET URL
+# driver.get('https://new.land.naver.com/offices')
 
-# LIST
-# 용인 32,33,34
-areaList=[32]
-districtList=[]
-itemList=[]
-dtindex=0
+# # LIST
+# # 1~21
+# areaList=[7]
+# districtList=[1]
+# itemList=[]
+# dtindex=0
 
-# FUNCTIONS
-def clickSelector(path):
-	item = driver.find_element_by_css_selector(path)
-	item.click()
+# # FUNCTIONS
+# def clickSelector(path):
+# 	item = driver.find_element_by_css_selector(path)
+# 	item.click()
 
-def nextArea(num):
-	driver.implicitly_wait(1)
-	print("NEXTAREA START")
-	index = str(num)
-	print('AREA ID : ', index)
-	clickSelector('#region_filter > div > a > span:nth-child(2)')
-	time.sleep(1)
-	clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child(2)')
-	time.sleep(1)
-	clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child('+index+')')
-	time.sleep(1)
-	global districtList
-	districtList = driver.find_elements_by_css_selector('#region_filter > div > div > div.area_list_wrap > ul > li')
-	print('NEXTAREA END')
+# def nextArea(num):
+# 	driver.implicitly_wait(1)
+# 	print("NEXTAREA START")
+# 	index = str(num)
+# 	print('AREA ID : ', index)
+# 	clickSelector('#region_filter > div > a > span:nth-child(2)')
+# 	time.sleep(1)
+# 	# 경기도
+# 	# clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child(2)')
+# 	# 인천시
+# 	clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child(3)')
+# 	# 대구시
+# 	# clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child(6)')
+# 	time.sleep(1)
+# 	clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child('+index+')')
+# 	time.sleep(1)
+# 	global districtList
+# 	# districtList = driver.find_elements_by_css_selector('#region_filter > div > div > div.area_list_wrap > ul > li')
+# 	print('NEXTAREA END')
 
-def nextDistrict(index):
-	driver.implicitly_wait(1)
-	print("NEXTDISTRICT START")
-	print('DISTRICT LENGTH', len(districtList))
-	global dtindex
-	dtindex = str(index+1)
-	print('DISTRICT INDEX : ', dtindex)
-	clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child('+dtindex+')')
-	time.sleep(1)
-	try:
-		for i in range(100):
-			loader = driver.find_element_by_css_selector('#listContents1 > div > div > div.loader')
-			loader.click()
-			time.sleep(3)
-	except:
-		pass
-	time.sleep(1)
-	global itemList
-	itemList = driver.find_elements_by_css_selector('#listContents1 > div > div > div:nth-child(1) > div')
-	print('ITEM LENGTH', len(itemList))
-	print("NEXTDISTRICT END")
+# def nextDistrict(index):
+# 	driver.implicitly_wait(1)
+# 	print("NEXTDISTRICT START")
+# 	print('DISTRICT LENGTH', len(districtList))
+# 	global dtindex
+# 	# dtindex = str(index+1)
+# 	dtindex = str(index)
+# 	print('DISTRICT INDEX : ', dtindex)
+# 	clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child('+dtindex+')')
+# 	# 
+# 	time.sleep(1)
+# 	clickSelector('#region_filter > div > a > span:nth-child(4)')
+# 	time.sleep(1)
+# 	clickSelector('#region_filter > div > div > div.area_list_wrap > ul > li:nth-child('+dtindex+')')
+# 	# 
+# 	time.sleep(2)
+# 	try:
+# 		for i in range(50):
+# 			clickSelector('#listContents1 > div > div > div.loader')
+# 			time.sleep(3)
+# 	except:
+# 		pass
+# 	global itemList
+# 	itemList = driver.find_elements_by_css_selector('#listContents1 > div > div > div:nth-child(1) > div')
+# 	print('ITEM LENGTH', len(itemList))
+# 	if len(itemList) == 0:
+# 		clickSelector('#region_filter > div > a > span:nth-child(4)')
+# 		time.sleep(1)
+# 	print("NEXTDISTRICT END")
 
-def nextItem(index):
-	driver.implicitly_wait(1)
-	print('NEXTITEM START')
-	index = str(index+1)
-	# 
-	time.sleep(1)
-	try:
-		other = driver.find_element_by_css_selector('#listContents1 > div > div > div:nth-child(1) > div:nth-child('+index+') > div > div.label_area > a')
-		other.click()
-		print('LINK CLICK')
-	except:
-		clickSelector('#listContents1 > div > div > div:nth-child(1) > div:nth-child('+index+')')
-	# 
-	time.sleep(1)
-	# 
-	try:
-		ag = driver.find_element_by_css_selector('#region_filter > div > a > span:nth-child(2)').text
-		ar = driver.find_element_by_css_selector('#region_filter > div > a > span:nth-child(3)').text
-		dt = driver.find_element_by_css_selector('#region_filter > div > a > span:nth-child(4)').text
-		is_phone = driver.find_element_by_css_selector('#detailContents1 > div.detail_box--summary > table > tbody > tr:last-child > td > div > div.info_agent_wrap > dl:nth-child(2) > dd').text
-		if '010-' in is_phone:
-			phone = is_phone.split(',')
-			for phn in phone:
-				if '010-' in phn:
-					print(ag, ar, dt, phn)
-					store(ag, ar, dt, phn)
-				else:
-					print('PHONE IS NONE')
-		else:
-			print('PHONE IS NONE')
-	except:
-		pass
-	# 
-	try:
-		close = driver.find_element_by_css_selector('#ct > div.map_wrap > div.detail_panel > div > button')
-		close.click()
-	except:
-		pass
-	# 
-	print('ITEM INDEX : ', index)
-	if index == str(len(itemList)):
-		print('LAST ITEM')
-		clickSelector('#region_filter > div > a > span:nth-child(4)')
-		if dtindex == str(len(districtList)):
-			print('LAST DISTRICT')
-			clickSelector('#region_filter > div > a > span:nth-child(4)')
-	# 
-	print('----------NEXTITEM END----------')
+# def nextItem(index):
+# 	driver.implicitly_wait(1)
+# 	print('NEXTITEM START')
+# 	index = str(index+1)
+# 	# 
+# 	try:
+# 		other = driver.find_element_by_css_selector('#listContents1 > div > div > div:nth-child(1) > div:nth-child('+index+') > div > div.label_area > a')
+# 		other.click()
+# 		print('LINK CLICK')
+# 	except:
+# 		clickSelector('#listContents1 > div > div > div:nth-child(1) > div:nth-child('+index+')')
+# 	# 
+# 	time.sleep(2)
+# 	# 
+# 	try:
+# 		ag = driver.find_element_by_css_selector('#region_filter > div > a > span:nth-child(2)').text
+# 		ar = driver.find_element_by_css_selector('#region_filter > div > a > span:nth-child(3)').text
+# 		dt = driver.find_element_by_css_selector('#region_filter > div > a > span:nth-child(4)').text
+# 		is_phone = driver.find_element_by_css_selector('#detailContents1 > div.detail_box--summary > table > tbody > tr:last-child > td > div > div.info_agent_wrap > dl:nth-child(2) > dd').text
+# 		if '010-' in is_phone:
+# 			phone = is_phone.split(',')
+# 			for phn in phone:
+# 				if '010-' in phn:
+# 					print(ag, ar, dt, phn)
+# 					store(ag, ar, dt, phn)
+# 				else:
+# 					print('PHONE IS NONE')
+# 		else:
+# 			print('PHONE IS NONE')
+# 	except:
+# 		pass
+# 	# 
+# 	try:
+# 		close = driver.find_element_by_css_selector('#ct > div.map_wrap > div.detail_panel > div > button')
+# 		close.click()
+# 	except:
+# 		pass
+# 	# 
+# 	print('ITEM INDEX : ', index)
+# 	if index == str(len(itemList)):
+# 		print('LAST ITEM')
+# 		clickSelector('#region_filter > div > a > span:nth-child(4)')
+# 		time.sleep(1)
+# 		if dtindex == str(len(districtList)):
+# 			print('LAST DISTRICT')
+# 			clickSelector('#region_filter > div > a > span:nth-child(4)')
+# 			time.sleep(1)
+# 	# 
+# 	print('----------NEXTITEM END----------')
 	
 
-# START
-for a in areaList:
-	nextArea(a)
-	for d in range(0, len(districtList)):
-		nextDistrict(d)
-		for i in range(0, len(itemList)):
-			nextItem(i)
+# # START
+# for a in areaList:
+# 	nextArea(a)
+# 	# for d in range(0, len(districtList)):
+# 	for d in districtList:
+# 		nextDistrict(d)
+# 		for i in range(0, len(itemList)):
+# 			nextItem(i)
 		
 
-time.sleep(3)
-driver.quit()
+# time.sleep(3)
+# driver.quit()
 # ------------------------------
 
 # GET PHONE NUMBER - NAVER - TEST
@@ -352,7 +479,50 @@ driver.quit()
 # # print('TITLE : \n{}'.format(content.text))
 
 
-# 크롤러 실제 사용 테스트
+# 
+# 네이버 크롤러 만들기
+# 
+
+# class Crawler:
+
+# 	def getPage(self, url):
+# 		try:
+# 			req = requests.get(url)
+# 		except requests.exceptions.RequestException:
+# 			return None
+# 		return BeautifulSoup(req.text, 'html.parser')
+
+
+# 	def search(self, area, site):
+# 		"""
+# 		검색 지역으로 나온 결과를 담는다
+# 		"""
+
+# class Content:
+# 	"""
+# 	페이지 전체 사용 기반 클래스
+# 	"""
+# 	def __init__(self, topic, url, title, body):
+# 		# self.topic = topic
+# 		# self.url = url
+# 		# self.title = title
+# 		# self.body = body
+
+# 	def print(self):
+# 		"""
+# 		출력 결과를 원하는 대로 바꿀 수 있는 함수
+# 		"""
+# 		# print('New article found for topic {}'.format(self.topic))
+# 		# print('URL: {}'.format(self.url))
+# 		# print('TITLE: {}'.format(self.title))
+# 		# print('BODY: \n{}'.format(self.body))
+
+# class Website:
+
+
+
+
+# # 크롤러 실제 사용 테스트
 # class Crawler:
 
 # 	def getPage(self, url):
@@ -678,4 +848,3 @@ driver.quit()
 # html = urlopen('http://www.pythonscraping.com/pages/page1.html')
 # bs = BeautifulSoup(html, 'html.parser')
 # print(bs.h1)
-
