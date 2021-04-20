@@ -57,26 +57,26 @@ headers = {
 
 # AREAGROUP
 def getAreaGroup(api):
-	req = requests.get(api, headers=headers, data=payload)
+	req = requests.get(api, headers=headers, data=payload).json()
 	time.sleep(random.uniform(1,4))
 	global areaGroupList
-	areaGroupList = req.json()["regionList"]
+	areaGroupList = req["regionList"]
 	return areaGroupList
 
 # AREA
 def getArea(api):
-	req = requests.get(api, headers=headers, data=payload)
+	req = requests.get(api, headers=headers, data=payload).json()
 	time.sleep(random.uniform(3,10))
 	global areaList
-	areaList = req.json()["regionList"]
+	areaList = req["regionList"]
 	return areaList
 
 # AREADETAIL
 def getAreaDetail(api):
-	req = requests.get(api, headers=headers, data=payload)
+	req = requests.get(api, headers=headers, data=payload).json()
 	time.sleep(random.uniform(3,10))
 	global areaDetailList
-	areaDetailList = req.json()["regionList"]
+	areaDetailList = req["regionList"]
 	return areaDetailList
 
 api = "https://new.land.naver.com/api/regions/list?cortarNo=0000000000"
@@ -105,13 +105,13 @@ for ag in areaGroupList:
 						pass
 				except:
 					pass
-				req = requests.get(api, headers=headers, data=payload)
+				req = requests.get(api, headers=headers, data=payload).json()
 				time.sleep(random.uniform(1,4))
 				# test = req.json()
-				if req.json()["isMoreData"] == False:
+				if req["isMoreData"] == False:
 					break;
 				else:
-					for t in req.json()["articleList"]:
+					for t in req["articleList"]:
 						# print(t["articleNo"])
 						results.append(t["articleNo"])
 
@@ -119,29 +119,32 @@ for ag in areaGroupList:
 			# print(results)
 			if len(results) != 0:
 				for index, r in enumerate(results):
+					print('----------------------')
 					print("ITEM INDEX : ", index)
+					print("INST NUM : ", r)
 					try:
-						time.sleep(random.uniform(1,4))
-						try:
-							# print("INST NUM : ", r)
-							api = "https://new.land.naver.com/api/articles/{}".format(r)
-						except:
-							pass
-					except:
-						pass
-					# 
-					req = requests.get(api, headers=headers, data=payload)
-					global final
-					final = req.json()
-					try:		
-						ag = final["articleDetail"]["cityName"]
-						a = final["articleDetail"]["divisionName"]
-						d = final["articleDetail"]["sectionName"]
-						ph = final["articleRealtor"]["cellPhoneNo"]
+						# print("INST NUM : ", r)
+						api = "https://new.land.naver.com/api/articles/{}".format(r)
+						req = requests.get(api, headers=headers, data=payload).json()
+						time.sleep(random.uniform(3,6))
+						ag = req["articleDetail"]["cityName"]
+						a = req["articleDetail"]["divisionName"]
+						d = req["articleDetail"]["sectionName"]
+						ph = req["articleRealtor"]["cellPhoneNo"]
 						print(ag, a, d, ph)
 						store(ag, a, d, ph)
 					except:
 						pass
+					# 
+					# try:		
+					# 	ag = req["articleDetail"]["cityName"]
+					# 	a = req["articleDetail"]["divisionName"]
+					# 	d = req["articleDetail"]["sectionName"]
+					# 	ph = req["articleRealtor"]["cellPhoneNo"]
+					# 	print(ag, a, d, ph)
+					# 	# store(ag, a, d, ph)
+					# except:
+					# 	pass
 					# 
 					if index+1 == len(results):
 						print('------------LAST INDEX------------')
