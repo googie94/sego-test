@@ -94,7 +94,7 @@ for ag in areaGroupList:
 		# print(areaDetailList)
 		for ad in areaDetailList:
 			# 
-			for i in range(1, 2):
+			for i in range(1, 500):
 				print("MORE INDEX : ",i)
 				try:
 					time.sleep(random.uniform(1,4))
