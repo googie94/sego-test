@@ -94,7 +94,7 @@ for ag in areaGroupList:
 		# print(areaDetailList)
 		for ad in areaDetailList:
 			# 
-			for i in range(1, 500):
+			for i in range(1, 2):
 				print("MORE INDEX : ",i)
 				try:
 					time.sleep(random.uniform(1,4))
@@ -114,10 +114,9 @@ for ag in areaGroupList:
 					for t in req["articleList"]:
 						# print(t["articleNo"])
 						results.append(t["articleNo"])
-
+			# 
 			print("ITEM LENGTH : ", len(results))
-			# print(results)
-
+			# 
 			if len(results) != 0:
 				for index, r in enumerate(results):
 					print('----------------------')
@@ -136,24 +135,12 @@ for ag in areaGroupList:
 						store(ag, a, d, ph)
 					except:
 						pass
-						
-			if index+1 == len(results):
-				print('------------LAST INDEX------------')
-				results = []
 					# 
-					# try:		
-					# 	ag = req["articleDetail"]["cityName"]
-					# 	a = req["articleDetail"]["divisionName"]
-					# 	d = req["articleDetail"]["sectionName"]
-					# 	ph = req["articleRealtor"]["cellPhoneNo"]
-					# 	print(ag, a, d, ph)
-					# 	# store(ag, a, d, ph)
-					# except:
-					# 	pass
-					# 
+					if index+1 == len(results):
+						print('------------LAST INDEX------------')
+						results = []
 			else:
 				print('NO ITEM')
-
 			
 
 
