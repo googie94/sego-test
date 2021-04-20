@@ -117,6 +117,7 @@ for ag in areaGroupList:
 
 			print("ITEM LENGTH : ", len(results))
 			# print(results)
+
 			if len(results) != 0:
 				for index, r in enumerate(results):
 					print('----------------------')
@@ -135,6 +136,10 @@ for ag in areaGroupList:
 						store(ag, a, d, ph)
 					except:
 						pass
+						
+			if index+1 == len(results):
+				print('------------LAST INDEX------------')
+				results = []
 					# 
 					# try:		
 					# 	ag = req["articleDetail"]["cityName"]
@@ -146,9 +151,6 @@ for ag in areaGroupList:
 					# except:
 					# 	pass
 					# 
-					if index+1 == len(results):
-						print('------------LAST INDEX------------')
-						results = []
 			else:
 				print('NO ITEM')
 
