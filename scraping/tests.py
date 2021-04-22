@@ -86,21 +86,22 @@ getAreaGroup(api)
 del areaGroupList[0]
 
 results = []
+
 for ag in areaGroupList:
 	api = "https://new.land.naver.com/api/regions/list?cortarNo={}".format(ag["cortarNo"])
 	getArea(api)
 	# print(areaList)
-	for a in areaList:
+	for a in areaList[::-1]:
 		api = "https://new.land.naver.com/api/regions/list?cortarNo={}".format(a["cortarNo"])
 		getAreaDetail(api)
 		# print(areaDetailList)
 		for ad in areaDetailList:
 			# 
 			print(ad)
-			for i in range(1, 500):
+			for i in range(1, 300):
 				print("MORE INDEX : ",i)
 				try:
-					time.sleep(random.uniform(1,4))
+					time.sleep(random.uniform(3,6))
 					try:
 						# print("INST NUM : ", ad["cortarNo"])
 						api = "https://new.land.naver.com/api/articles?cortarNo={}&order=rank&realEstateType=SG%3ASMS%3AGJCG%3AAPTHGJ%3AGM%3ATJ&tradeType=&tag=%3A%3A%3A%3A%3A%3A%3A%3A&rentPriceMin=0&rentPriceMax=900000000&priceMin=0&priceMax=900000000&areaMin=0&areaMax=900000000&oldBuildYears&recentlyBuildYears&minHouseHoldCount&maxHouseHoldCount&showArticle=false&sameAddressGroup=false&minMaintenanceCost&maxMaintenanceCost&priceType=RETAIL&directions=&page={}".format(ad["cortarNo"], i)
@@ -109,7 +110,7 @@ for ag in areaGroupList:
 				except:
 					pass
 				req = requests.get(api, headers=headers, data=payload).json()
-				time.sleep(random.uniform(1,4))
+				time.sleep(random.uniform(1,3))
 				# test = req.json()
 				if req["isMoreData"] == False:
 					break;
@@ -125,11 +126,12 @@ for ag in areaGroupList:
 							print('----------------------')
 							print("ITEM INDEX : ", index)
 							print("INST NUM : ", r)
+							time.sleep(2)
 							try:
 								# print("INST NUM : ", r)
 								api = "https://new.land.naver.com/api/articles/{}".format(r)
 								req = requests.get(api, headers=headers, data=payload).json()
-								time.sleep(random.uniform(3,6))
+								time.sleep(random.uniform(1,3))
 								ag = req["articleDetail"]["cityName"]
 								a = req["articleDetail"]["divisionName"]
 								d = req["articleDetail"]["sectionName"]
