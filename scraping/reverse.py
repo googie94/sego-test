@@ -51,8 +51,8 @@ import random
 # USER
 payload={}
 headers = {
-  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36',
-  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlJFQUxFU1RBVEUiLCJpYXQiOjE2MTkwNTk0NTIsImV4cCI6MTYxOTA3MDI1Mn0.LmoSIYnvrDWYsXvKYJGEgkX7ELW8IvgL5Mb9IxFz8Qo'
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36',
+  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlJFQUxFU1RBVEUiLCJpYXQiOjE2MTkxMTE2OTgsImV4cCI6MTYxOTEyMjQ5OH0.CangUObHaAtP0thxGAmHcwayh0JXImaJeA7qGSBu7IQ'
 }
 
 # AREAGROUP
@@ -82,9 +82,10 @@ def getAreaDetail(api):
 api = "https://new.land.naver.com/api/regions/list?cortarNo=0000000000"
 getAreaGroup(api)
 # print(areaGroupList)
+del areaGroupList[0]
 
 results = []
-for ag in areaGroupList[::-1]:
+for ag in areaGroupList:
 	api = "https://new.land.naver.com/api/regions/list?cortarNo={}".format(ag["cortarNo"])
 	getArea(api)
 	# print(areaList)
