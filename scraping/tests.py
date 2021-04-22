@@ -135,7 +135,7 @@ for ag in areaGroupList:
 								d = req["articleDetail"]["sectionName"]
 								ph = req["articleRealtor"]["cellPhoneNo"]
 								print(ag, a, d, ph)
-								# store(ag, a, d, ph)
+								store(ag, a, d, ph)
 							except:
 								pass
 							# 
