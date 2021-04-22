@@ -51,8 +51,8 @@ import random
 # USER
 payload={}
 headers = {
-  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36',
-  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlJFQUxFU1RBVEUiLCJpYXQiOjE2MTg4MTcxOTEsImV4cCI6MTYxODgyNzk5MX0.elA6vG4bfmIHmn1sshzUlFF0S48jFs8bcsbRdgrZ7CQ'
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36',
+  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlJFQUxFU1RBVEUiLCJpYXQiOjE2MTkwNTg4NjIsImV4cCI6MTYxOTA2OTY2Mn0.gCJMC5qfUt3a-HK3uOeA5qOCL__Z0LuC78qj9zI8pug'
 }
 
 # AREAGROUP

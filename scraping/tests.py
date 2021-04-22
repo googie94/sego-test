@@ -82,6 +82,7 @@ def getAreaDetail(api):
 api = "https://new.land.naver.com/api/regions/list?cortarNo=0000000000"
 getAreaGroup(api)
 # print(areaGroupList)
+del areaGroupList[0]
 
 results = []
 for ag in areaGroupList:
@@ -133,7 +134,7 @@ for ag in areaGroupList:
 								d = req["articleDetail"]["sectionName"]
 								ph = req["articleRealtor"]["cellPhoneNo"]
 								print(ag, a, d, ph)
-								store(ag, a, d, ph)
+								# store(ag, a, d, ph)
 							except:
 								pass
 							# 
