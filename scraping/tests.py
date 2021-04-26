@@ -84,6 +84,7 @@ api = "https://new.land.naver.com/api/regions/list?cortarNo=0000000000"
 getAreaGroup(api)
 # print(areaGroupList)
 del areaGroupList[0]
+del areaGroupList[0]
 
 results = []
 
@@ -91,13 +92,12 @@ for ag in areaGroupList:
 	api = "https://new.land.naver.com/api/regions/list?cortarNo={}".format(ag["cortarNo"])
 	getArea(api)
 	# print(areaList)
-	for a in areaList[::-1]:
+	for a in areaList:
 		api = "https://new.land.naver.com/api/regions/list?cortarNo={}".format(a["cortarNo"])
 		getAreaDetail(api)
 		# print(areaDetailList)
 		for ad in areaDetailList:
 			# 
-			print(ad)
 			for i in range(1, 300):
 				print("MORE INDEX : ",i)
 				try:
@@ -113,6 +113,36 @@ for ag in areaGroupList:
 				time.sleep(random.uniform(1,3))
 				# test = req.json()
 				if req["isMoreData"] == False:
+					for t in req["articleList"]:
+						# print(t["articleNo"])
+						results.append(t["articleNo"])
+					# 
+					print("ITEM LENGTH : ", len(results))
+					# 
+					if len(results) != 0:
+						for index, r in enumerate(results):
+							print('----------------------')
+							print("ITEM INDEX : ", index)
+							print("INST NUM : ", r)
+							try:
+								# print("INST NUM : ", r)
+								api = "https://new.land.naver.com/api/articles/{}".format(r)
+								req = requests.get(api, headers=headers, data=payload).json()
+								time.sleep(random.uniform(3,6))
+								ag = req["articleDetail"]["cityName"]
+								a = req["articleDetail"]["divisionName"]
+								d = req["articleDetail"]["sectionName"]
+								ph = req["articleRealtor"]["cellPhoneNo"]
+								print(ag, a, d, ph)
+								store(ag, a, d, ph)
+							except:
+								pass
+							# 
+							if index+1 == len(results):
+								print('------------LAST INDEX------------')
+								results = []
+					else:
+						print('NO ITEM')
 					break;
 				else:
 					for t in req["articleList"]:
