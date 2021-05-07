@@ -83,8 +83,6 @@ def getAreaDetail(api):
 api = "https://new.land.naver.com/api/regions/list?cortarNo=0000000000"
 getAreaGroup(api)
 # print(areaGroupList)
-del areaGroupList[0]
-del areaGroupList[0]
 
 results = []
 
