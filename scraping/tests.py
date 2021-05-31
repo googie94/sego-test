@@ -90,11 +90,11 @@ for ag in areaGroupList:
 	api = "https://new.land.naver.com/api/regions/list?cortarNo={}".format(ag["cortarNo"])
 	getArea(api)
 	# print(areaList)
-	for a in areaList:
+        for a in areaList[::-1]:
 		api = "https://new.land.naver.com/api/regions/list?cortarNo={}".format(a["cortarNo"])
 		getAreaDetail(api)
 		# print(areaDetailList)
-		for ad in areaDetailList:
+                for ad in areaDetailList[::-1]:
 			# 
 			for i in range(1, 300):
 				print("MORE INDEX : ",i)
