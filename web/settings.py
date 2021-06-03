@@ -25,7 +25,6 @@ SECRET_KEY = my_settings.DJANGO_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-APPEND_SLASH = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -67,7 +66,7 @@ MIDDLEWARE = [
 ]
 
 #REMOVE_APPEND_SLASH_WARNING
-APPEND_SLASH = False
+# APPEND_SLASH = False
 
 ##CORS
 CORS_ORIGIN_ALLOW_ALL=True
