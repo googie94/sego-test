@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import my_settings
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -95,8 +96,8 @@ DATABASES = {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'sego',
             'USER': 'sego_admin',
-            'PASSWORD': 'googie0126!',
-            'HOST': 'sego.c3jqlg47t2v5.ap-northeast-2.rds.amazonaws.com',
+            'PASSWORD': my_settings.MYSQL_PASSWORD,
+            'HOST': my_settings.MYSQL_HOST,
             'PORT': '3306',
             'OPTIONS': {'charset': 'utf8mb4'},
         }

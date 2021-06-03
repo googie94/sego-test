@@ -5,3 +5,6 @@ segovenv
 db.sqlite3
 /static
 .DS_Store
+
+### SECURITY ###
+my_settings.py
