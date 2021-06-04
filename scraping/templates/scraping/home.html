@@ -1,0 +1,43 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+<style type="text/css">
+body, html {
+	background-color: #41775D;
+}
+</style>
+
+<div class="main-feeds" style="max-width: 820px; margin: 0 auto;">
+	<div style="text-align: center;">
+		<iframe src="https://www.instagram.com/p/CPktXxIF3Ea/embed" width="400" height="450" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
+	</div>
+	<br>
+	<div style="padding: 20px;">
+		<p class="feeds">Feeds</p>
+	</div>
+	{% for post in posts %}
+	<div class="card--container"
+		 style="box-shadow: 2px 2px 20px #000000; border-radius: 20px; margin-bottom: 40px;">
+		<!-- <a :href="'/post/'+post.id+'/'"> -->
+		<a href="{% url 'scraping_detail' pk=post.id %}">
+			<ul class="card--wrapper">
+				<div class="card--profile">
+					<img src="{% static '/img/naver.svg' %}" style="width: 42px;"></img>
+					<span style="padding: 0px 6px; margin-left: 5px; font-size: 12px; background-color: #FFC645; border-radius: 3px; align-self: center;"><strong>깔끔한</strong></span>
+					<span style="padding: 0px 6px; margin-left: 5px; font-size: 12px; background-color: #FFC645; border-radius: 3px; align-self: center;"><strong>화목한</strong></span>
+					<span style="padding: 0px 6px; margin-left: 5px; font-size: 12px; background-color: #FFC645; border-radius: 3px; align-self: center;"><strong>배고픈</strong></span>
+					<span style="padding: 0px 6px; margin-left: 5px; font-size: 12px; background-color: #FFC645; border-radius: 3px; align-self: center;"><strong>파이팅있는</strong></span>
+				</div>
+				<strong class="card--title" v-if="post.title">{{ post.title }}</strong>
+				<pre class="card--content" style="font-size: 16px; line-height: 1.5em; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; height: 6.6em;">{{ post.content }}</pre>
+				<!-- <span style="font-size: 10px;">[[ post.comments.length ]] 개 댓글이 있습니다</span> -->
+				<p class="card--date">{{ post.created_date }}</p>
+				<!-- <iframe src="https://www.instagram.com/p/BFKjVxkBsCC/embed" width="400" height="450" frameborder="0" scrolling="no" allowtransparency="true"></iframe> -->
+			</ul>
+		</a>
+	</div>
+	{% endfor %}
+</div>
+
+{% include "blog/footer.html" %}
+{% endblock %}

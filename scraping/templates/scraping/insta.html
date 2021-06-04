@@ -1,0 +1,30 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+<style type="text/css">
+body, html {
+	background-color: white;
+}
+</style>
+
+<div style="padding: 20px;">
+	<div style="max-width: 820px; margin: 0 auto;">
+		<div style="padding: 60px; text-align-last: center;">
+			<span style="border-bottom: 6px solid #FFC645; font-weight: 700; font-size: 60px;">TAG 200</span>
+		</div>
+		{% for tag in tags %}
+			<ul>
+				<li style="border-bottom: 1px solid #ddd; width: 100%; padding: 20px; border: none; box-shadow: 0px 5px 15px 0px rgb(0 0 0 / 10%); border-radius: 10px; margin-bottom: 15px; align-items: center;">
+					<div style="display: flex; justify-content: space-between; align-items: center;">
+						<span style="font-size: 19px;">{{ forloop.counter }}</span>
+						<span style="font-size: 16px; font-weight: 700;">{{ tag.0 }}</span>
+						<span style="font-size: 19px;">{{ tag.1 }}</span>
+					</div>
+				</li>
+			</ul>
+		{% endfor %}
+	</div>
+</div>
+
+{% include "blog/footer.html" %}
+{% endblock %}
