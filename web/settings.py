@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import my_settings
+from celery.schedules import crontab
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -44,12 +45,15 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'django_filters',
+    'django_celery_results',
+    'django_celery_beat',
     #
     'blog',
     'okr',
     'polls',
     #
-    'scraping'
+    'scraping',
+    'celery_app',
     ##polls.apps.PollsConfig
     # 'snippets.apps.SnippetsConfig',
 ]
@@ -178,3 +182,20 @@ STATICFILES_DIR = [
 ]
 # STATIC_ROOT = os.path.join(BASE_DIR, '.static_root')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+CELERY_BROKER_URL = 'pyamqp://localhost:5672'
+CELERY_RESULT_BACKEND = 'pyamqp://localhost:5672'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Seoul'
+CELERY_ENABLE_UTC = False
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'
+#CELERY_BEAT_SCHEDUEL = {
+#    'task-number-one': {
+#        'task': 'celery_app.tasks.say_hello',
+#        'schedule': crontab(minute = 1),
+#        'args': ('googie')
+#    }
+#}

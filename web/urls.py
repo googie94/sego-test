@@ -56,6 +56,7 @@ urlpatterns = [
     path('okr/', include('okr.urls')),
     #
     path('scraping/', include('scraping.urls')),
+    path('celery-app/', include('celery_app.urls')),
     #
     # path('snippet/', include('snippets.urls')),
     #
