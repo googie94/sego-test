@@ -21,6 +21,7 @@ from django.conf.urls import url
 from rest_framework import routers
 from blog.views import PostViewSet, CommentViewSet
 from okr.views import TeamViewSet, UserViewSet, ObjectiveViewSet, KeyResultViewSet, OkrProgressViewSet
+from scraping.views import NaverPostViewSet, InstaPostViewSet
 #
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -41,12 +42,17 @@ schema_view = get_schema_view(
 router = routers.DefaultRouter()
 router.register(r'blog', PostViewSet)
 router.register(r'comment', CommentViewSet)
+# 
+router.register(r'naver-post', NaverPostViewSet)
+router.register(r'insta-post', InstaPostViewSet)
 #
 router.register(r'team', TeamViewSet)
 router.register(r'user', UserViewSet)
 router.register(r'objective', ObjectiveViewSet)
 router.register(r'keyresult', KeyResultViewSet)
 router.register(r'okrprogress', OkrProgressViewSet)
+# 
+
 
 
 urlpatterns = [

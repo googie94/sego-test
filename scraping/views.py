@@ -1,12 +1,23 @@
 from django.shortcuts import render
+# 
 from django.utils import timezone
 import re
 from konlpy.tag import Okt
 from collections import Counter
 # 
-from .models import NaverPost, InstaTag
+from rest_framework import viewsets
+from .models import NaverPost, InstaPost, InstaTag
+from .serializers import NaverPostSerializer, InstaPostSerializer
 
 # Create your views here.
+
+class NaverPostViewSet(viewsets.ModelViewSet):
+    queryset = NaverPost.objects.all()
+    serializer_class = NaverPostSerializer
+
+class InstaPostViewSet(viewsets.ModelViewSet):
+    queryset = InstaPost.objects.all()
+    serializer_class = InstaPostSerializer
 
 
 def scraping_home(request):
