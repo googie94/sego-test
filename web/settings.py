@@ -198,10 +198,17 @@ CELERY_TIMEZONE = 'Asia/Seoul'
 CELERY_ENABLE_UTC = False
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'django-cache'
-#CELERY_BEAT_SCHEDUEL = {
-#    'task-number-one': {
-#        'task': 'celery_app.tasks.say_hello',
-#        'schedule': crontab(minute = 1),
-#        'args': ('googie')
-#    }
-#}
+
+SCHEDULE_MINUTE = 60
+SCHEDULE_HOUR = 60 * SCHEDULE_MINUTE
+SCHEDULE_DAY = 24 * SCHEDULE_HOUR
+SCHEDULE_WEEK = 7 * SCHEDULE_DAY
+SCHEDULE_MONTH = 30 * SCHEDULE_DAY
+
+CELERYBEAT_SCHEDUEL = {
+    'test_task': {
+        'task': 'web.tasks.sum',
+        'schedule': SCHEDULE_MINUTE,
+        'args' : (1,2)
+    }
+}
