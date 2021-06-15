@@ -111,7 +111,7 @@ var post_app = new Vue({
 			v.keyword=keyword
 			axios.get('/api/v1/blog/'+url)
 			.then(function(res){
-				v.posts=res.data.reverse()
+				v.posts=res.data.results.reverse()
 				v.insertAds(v.posts)
 			})
 			.catch(function(err){})
@@ -121,7 +121,7 @@ var post_app = new Vue({
 			var v=this;
 			axios.get('/api/v1/blog/')
 			.then(function(res){
-				v.posts2=res.data
+				v.posts2=res.data.results
 				v.hitPost(v.posts2)
 			})
 			.catch(function(err){})
