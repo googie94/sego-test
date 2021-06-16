@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from .models import NaverPost, InstaPost
+from .models import NaverPost, InstaPost, InstaTag
+# 
+from collections import Counter
 
 class NaverPostSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -10,3 +12,8 @@ class InstaPostSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = InstaPost
 		fields = ['id', 'short_code', 'content', 'created_date', 'like_count']
+
+class InstaTagSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = InstaTag
+		fields = ['tag', 'count']

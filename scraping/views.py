@@ -7,7 +7,7 @@ from collections import Counter
 # 
 from rest_framework import viewsets
 from .models import NaverPost, InstaPost, InstaTag
-from .serializers import NaverPostSerializer, InstaPostSerializer
+from .serializers import NaverPostSerializer, InstaPostSerializer, InstaTagSerializer
 
 # Create your views here.
 
@@ -18,6 +18,27 @@ class NaverPostViewSet(viewsets.ModelViewSet):
 class InstaPostViewSet(viewsets.ModelViewSet):
     queryset = InstaPost.objects.all()
     serializer_class = InstaPostSerializer
+
+class InstaTagViewSet(viewsets.ModelViewSet):
+	queryset = InstaTag.objects.all()
+	serializer_class = InstaTagSerializer
+
+	def get_queryset(self):
+		queryset = super().get_queryset()
+		total = list()
+		for q in queryset:
+			if q.hangul() != '':
+				total.append(q.hangul())
+		counter = Counter(total)
+		result = counter.most_common(20)
+		most_list = []
+		for i in range(0,20):
+			dt = {
+				'tag': result[i][0],
+				'count': result[i][1]
+			}
+			most_list.append(dt)
+		return most_list
 
 
 def scraping_home(request):
@@ -45,8 +66,9 @@ def scraping_insta(request):
 			total.append(tag.hangul())
 	counter = Counter(total)
 	result = counter.most_common(200)
-	for r in result:
-		print(r[0])
+	# print(result)
+	# for r in result:
+		# print(r[0])
 
 
 	return render(request, 'scraping/insta.html', {'tags': result})

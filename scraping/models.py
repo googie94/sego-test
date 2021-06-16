@@ -43,6 +43,7 @@ class InstaPost(models.Model):
 class InstaTag(models.Model):
     short_code = models.CharField(max_length=45, blank=True, null=True)
     tag = models.CharField(max_length=45, blank=True, null=True)
+    count = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
         db_table = 'insta_tag'
