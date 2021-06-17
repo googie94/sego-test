@@ -195,8 +195,8 @@ def get_blog_post(url):
 				# print(post_id, tag)
 				# store_tag(post_id, tag)
 	except:
-		# print('NONE TAG')
 		pass
+		# print('NONE TAG')
 	# SENT COMMENT
 	user_name = url.split('/')[3]
 	get_blog_post_comment(user_name, post_id)
@@ -230,6 +230,7 @@ def get_blog_post_comment(user_name, post_id):
 		comment_count = res['result']['count']['total']
 		# print('댓글 수 : ', comment_count)
 	except:
+		pass
 		# print('DONT COMMENT')
 	# 
 	try:
