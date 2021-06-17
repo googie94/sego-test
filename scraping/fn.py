@@ -51,7 +51,7 @@ keyword.encode('utf-8')
 today = datetime.today().strftime('%Y%m%d')
 yesterday = datetime.today() - timedelta(days=1)
 yesterday = yesterday.strftime('%Y%m%d')
-print(yesterday, ' TO ', today)
+# print(yesterday, ' TO ', today)
 # LIST 
 blog_urls = []
 cafe_urls = []
