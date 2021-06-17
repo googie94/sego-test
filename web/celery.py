@@ -10,14 +10,6 @@ app = Celery('web')
 
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
-# app.conf.beat_schedule = {
-# 	'every-15-seconds' : {
-# 		'task': 'web.tasks.hello',
-# 		'schedule': crontab(minute='*'),
-# 		'args': ('googie',)
-# 	}
-# }
-
 app.autodiscover_tasks()
 
 @app.task(bind=True)
