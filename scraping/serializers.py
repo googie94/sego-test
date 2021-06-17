@@ -14,6 +14,7 @@ class InstaPostSerializer(serializers.ModelSerializer):
 		fields = ['id', 'short_code', 'content', 'created_date', 'like_count']
 
 class InstaTagSerializer(serializers.ModelSerializer):
+	count = serializers.IntegerField()
 	class Meta:
 		model = InstaTag
 		fields = ['tag', 'count']
