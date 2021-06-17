@@ -70,9 +70,9 @@ def get_total(index):
 
 def get_post_url(index):
 	index = str(index)
-	print('index', index)
+	# print('index', index)
 	url = 'https://s.search.naver.com/p/review/search.naver?rev=44&where=m_view&api_type=2&start='+index+'&query='+keyword+'&nso=so:dd,p:from'+yesterday+'to'+today+'&_callback=jQuery22408904023140404929_1623601229725'
-	print(url)
+	# print(url)
 	html = urlopen(url)
 	bs = BeautifulSoup(html, 'html.parser')
 	blog_hrefs = bs.findAll('a', href = re.compile('(https://m.blog.naver.com/)[^A-Z]*/'))
@@ -87,16 +87,16 @@ def get_post_url(index):
 	for href in cafe_hrefs:
 		if href.attrs['href'].replace('\\"','').replace(' ','') not in cafe_urls:
 			cafe_urls.append(href.attrs['href'].replace('\\"','').replace(' ',''))
-	print('blog : ', len(blog_urls))
-	print(blog_urls)
-	print('cafe : ', len(cafe_urls))
-	print(cafe_urls)
+	# print('blog : ', len(blog_urls))
+	# print(blog_urls)
+	# print('cafe : ', len(cafe_urls))
+	# print(cafe_urls)
 	# return url_list
 
 def get_blog_post(url):
 	category = 'blog'
-	print('===============주소===============')
-	print(url)
+	# print('===============주소===============')
+	# print(url)
 	post_id = url.split('/')[4]
 	# 
 	html = urlopen(url)
@@ -128,28 +128,28 @@ def get_blog_post(url):
 			for date in dates:
 				date_arr.append(date.replace(' ','').replace('\n\t', ''))
 			date = str(date_arr[0]+'-'+date_arr[1]+'-'+date_arr[2]+' '+date_arr[3])
-			print('before', date)
+			# print('before', date)
 		date = datetime.strptime(date,'%Y-%m-%d %H:%M')
 		# CONTENT
 		try:
 			title = bs.find('div', {'class': 'se-module se-module-text se-title-text'}).text
 			contents = bs.findAll('div', {'class': 'se-module se-module-text'})
-			print('===============제목===============')
-			print(date)
-			print(title)
-			print('===============내용===============')
+			# print('===============제목===============')
+			# print(date)
+			# print(title)
+			# print('===============내용===============')
 			arr = []
 			for content in contents:
 				arr.append(content.get_text())
 			content = ''.join(arr)
-			print(content)
+			# print(content)
 
 			# IMAGE
 			try:
 				images = bs.findAll('img')
 				for img in images:
 					if 'https://mblogthumb-phinf.pstatic.net' in img.attrs['src']:
-						print(img.attrs['src'].replace('_blur', '0'))
+						# print(img.attrs['src'].replace('_blur', '0'))
 			except:
 				pass
 			post_save(post_id, category, title, content, date, url)
@@ -158,11 +158,11 @@ def get_blog_post(url):
 		except:
 			title = bs.find('h3').text
 			content = bs.find('p', {'class': 'se_textarea'}).text
-			print('===============제목===============')
-			print(date)
-			print(title)
-			print('===============내용===============')
-			print(content)
+			# print('===============제목===============')
+			# print(date)
+			# print(title)
+			# print('===============내용===============')
+			# print(content)
 			post_save(post_id, category, title, content, date, url)
 
 	# 아니라면
@@ -177,11 +177,11 @@ def get_blog_post(url):
 		date = datetime.strptime(date,'%Y-%m-%d %H:%M')
 		title = bs.find('h3').text
 		content = bs.find('div', {'id': 'viewTypeSelector'}).text
-		print('===============제목===============')
-		print(date)
-		print(title)
-		print('===============내용===============')
-		print(content)
+		# print('===============제목===============')
+		# print(date)
+		# print(title)
+		# print('===============내용===============')
+		# print(content)
 		post_save(post_id, category, title, content, date, url)
 
 	# 
@@ -192,17 +192,18 @@ def get_blog_post(url):
 			if "#" in tag.text[0]:
 				tag = tag.text
 				tag = tag.replace('#','')
-				print(post_id, tag)
+				# print(post_id, tag)
 				# store_tag(post_id, tag)
 	except:
-		print('NONE TAG')
+		# print('NONE TAG')
+		pass
 	# SENT COMMENT
 	user_name = url.split('/')[3]
 	get_blog_post_comment(user_name, post_id)
 
 def get_blog_post_comment(user_name, post_id):
-	print('COMMENT START')
-	print('SECCESS', user_name, post_id)
+	# print('COMMENT START')
+	# print('SECCESS', user_name, post_id)
 	url = 'https://blog.naver.com/PostList.nhn?blogId='+user_name
 	html = urlopen(url)
 	bs = BeautifulSoup(html.read(), 'html.parser')
@@ -224,18 +225,18 @@ def get_blog_post_comment(user_name, post_id):
 	a = res.find(');')
 	res = res[:a]
 	res = json.loads(res)
-	print('===============댓글===============')
+	# print('===============댓글===============')
 	try:
 		comment_count = res['result']['count']['total']
 		# print('댓글 수 : ', comment_count)
 	except:
-		print('DONT COMMENT')
+		# print('DONT COMMENT')
 	# 
 	try:
 		comments = res['result']['commentList']
 		for comment in comments:
 			if comment['contents'] == "": 
-				print('숨김')
+				# print('숨김')
 			else:
 				content = comment['contents'].replace('<br>','')
 				dates = comment['modTime'].replace('T', ' ')
@@ -243,16 +244,16 @@ def get_blog_post_comment(user_name, post_id):
 				# print(date)
 				created_date = datetime.strptime(date,'%Y-%m-%d %H:%M')
 				# print(created_date)
-				print(post_id, content, created_date)
+				# print(post_id, content, created_date)
 				# store_comment(post_id, content, created_date)
 	except:
 		pass
-	print('POST END')
+	# print('POST END')
 
 def get_cafe_post(url):
 	category = 'cafe'
-	print('===============주소===============')
-	print(url)
+	# print('===============주소===============')
+	# print(url)
 	link = url
 	url = url[25:]
 	find_cafe_index = url.find('/')
@@ -265,21 +266,21 @@ def get_cafe_post(url):
 	buid = '8957b977-a4ae-4cae-b947-5d0be546d7db'
 	# api_url = 'https://apis.naver.com/cafe-web/cafe-articleapi/v2/cafes/{}/articles/{}?useCafeId=false&art={}&query={}'.format(cafe_nm, cafe_id, cafe_code, keyword)
 	api_url = 'https://apis.naver.com/cafe-web/cafe-articleapi/v2/cafes/{}/articles/{}?useCafeId=false&buid={}'.format(cafe_nm, cafe_id, buid)
-	print(api_url)
+	# print(api_url)
 	req = requests.get(api_url, headers=headers, data=payload).json()
 	try:
 		req = requests.get(api_url, headers=headers, data=payload).json()
-		print('===============POST===============')
+		# print('===============POST===============')
 		post_id = str(req['result']['article']['id'])
-		print(post_id)
-		print('===============날짜===============')
+		# print(post_id)
+		# print('===============날짜===============')
 		date = str(req['result']['article']['writeDate'])
 		date = date[:10]
 		date = datetime.fromtimestamp(int(date)).strftime('%Y-%m-%d %H:%M:%S')
-		print(date)
-		print('===============제목===============')
+		# print(date)
+		# print('===============제목===============')
 		title = req['result']['article']['subject']
-		print(title)
+		# print(title)
 		content_html = req['result']['article']['contentHtml']
 		content = BeautifulSoup(content_html, 'html.parser')
 		# IMAGE
@@ -287,26 +288,26 @@ def get_cafe_post(url):
 			images = content.findAll('img')
 			for img in images:
 				if 'https://cafeptthumb-phinf.pstatic.net' in img.attrs['src']:
-					print(img.attrs['src'].replace('_blur', '0'))
+					# print(img.attrs['src'].replace('_blur', '0'))
 		except:
 			pass
-		print('===============내용===============')
+		# print('===============내용===============')
 		content = content.get_text()
 		content = content.strip()
 		content = content.replace('\n','')
-		print(content)
+		# print(content)
 		# 
 		# store_post(post_id, category, title, content, date, link)
 		# 
-		print('===============댓글===============')
+		# print('===============댓글===============')
 		comment_list = req['result']['comments']['items']
 		for comment in comment_list:
 			comment_content = comment['content']
-			print(comment_content)
+			# print(comment_content)
 			comment_date = str(comment['updateDate'])
 			comment_date = comment_date[:10]
 			comment_date = datetime.fromtimestamp(int(comment_date)).strftime('%Y-%m-%d %H:%M:%S')
-			print(comment_date)
+			# print(comment_date)
 			# store_comment(post_id, comment_content, comment_date)
 	except:
 		pass
@@ -323,9 +324,9 @@ def get_cafe_post(url):
 # 	index += 15
 
 def scraping_start():
-	print('START FUNCTION2')
+	print('START FUNCTION')
 	total = get_total(1)
-	print('total : ', total)
+	# print('total : ', total)
 	index = 1
 	while index <= total:
 		get_post_url(index)
