@@ -52,6 +52,7 @@ today = datetime.today().strftime('%Y%m%d')
 yesterday = datetime.today() - timedelta(days=1)
 yesterday = yesterday.strftime('%Y%m%d')
 # print(yesterday, ' TO ', today)
+print('START FUNCTION1')
 # LIST 
 blog_urls = []
 cafe_urls = []
@@ -323,6 +324,7 @@ def get_cafe_post(url):
 # 	index += 15
 
 def scraping_start():
+	print('START FUNCTION2')
 	total = get_total(1)
 	print('total : ', total)
 	index = 1
