@@ -3,6 +3,7 @@ import os
 from celery import Celery
 from datetime import datetime, timedelta
 from celery.schedules import crontab
+from scraping.fn import scraping_start
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web.settings')
 
@@ -22,8 +23,8 @@ app.autodiscover_tasks()
 
 
 @app.task
-def print_hello():
-	print('hello celery!')
+def naver_scraping():
+	scraping_start()
 
 @app.task(bind=True)
 def debug_task(self):
