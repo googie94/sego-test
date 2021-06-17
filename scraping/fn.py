@@ -145,13 +145,13 @@ def get_blog_post(url):
 			# print(content)
 
 			# IMAGE
-			try:
-				images = bs.findAll('img')
-				for img in images:
-					if 'https://mblogthumb-phinf.pstatic.net' in img.attrs['src']:
-						# print(img.attrs['src'].replace('_blur', '0'))
-			except:
-				pass
+			# try:
+			# 	images = bs.findAll('img')
+			# 	for img in images:
+			# 		if 'https://mblogthumb-phinf.pstatic.net' in img.attrs['src']:
+			# 			# print(img.attrs['src'].replace('_blur', '0'))
+			# except:
+			# 	pass
 			post_save(post_id, category, title, content, date, url)
 
 
@@ -237,7 +237,7 @@ def get_blog_post_comment(user_name, post_id):
 		comments = res['result']['commentList']
 		for comment in comments:
 			if comment['contents'] == "": 
-				# print('숨김')
+				print('숨김')
 			else:
 				content = comment['contents'].replace('<br>','')
 				dates = comment['modTime'].replace('T', ' ')
@@ -285,13 +285,13 @@ def get_cafe_post(url):
 		content_html = req['result']['article']['contentHtml']
 		content = BeautifulSoup(content_html, 'html.parser')
 		# IMAGE
-		try:
-			images = content.findAll('img')
-			for img in images:
-				if 'https://cafeptthumb-phinf.pstatic.net' in img.attrs['src']:
-					# print(img.attrs['src'].replace('_blur', '0'))
-		except:
-			pass
+		# try:
+		# 	images = content.findAll('img')
+		# 	for img in images:
+		# 		if 'https://cafeptthumb-phinf.pstatic.net' in img.attrs['src']:
+		# 			# print(img.attrs['src'].replace('_blur', '0'))
+		# except:
+		# 	pass
 		# print('===============내용===============')
 		content = content.get_text()
 		content = content.strip()
