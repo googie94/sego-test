@@ -49,7 +49,7 @@ keyword.encode('utf-8')
 
 # '%Y%m%d %H:%M'
 today = datetime.today().strftime('%Y%m%d')
-yesterday = datetime.today() - timedelta(days=1)
+yesterday = datetime.today() - timedelta(days=3)
 yesterday = yesterday.strftime('%Y%m%d')
 print(yesterday, ' TO ', today)
 # LIST 
@@ -152,7 +152,7 @@ def get_blog_post(url):
 						print(img.attrs['src'].replace('_blur', '0'))
 			except:
 				pass
-			# post_save(post_id, category, title, content, date, url)
+			post_save(post_id, category, title, content, date, url)
 
 
 		except:
@@ -163,7 +163,7 @@ def get_blog_post(url):
 			print(title)
 			print('===============내용===============')
 			print(content)
-			# post_save(post_id, category, title, content, date, url)
+			post_save(post_id, category, title, content, date, url)
 
 	# 아니라면
 	except:
@@ -182,7 +182,7 @@ def get_blog_post(url):
 		print(title)
 		print('===============내용===============')
 		print(content)
-		# post_save(post_id, category, title, content, date, url)
+		post_save(post_id, category, title, content, date, url)
 
 	# 
 	# print('===============태그===============')
