@@ -3,7 +3,6 @@ import os
 from celery import Celery
 from datetime import datetime, timedelta
 from celery.schedules import crontab
-from scraping.fn import scraping_start
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web.settings')
 

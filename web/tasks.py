@@ -2,8 +2,8 @@ from __future__ import absolute_import, unicode_literals
 from celery import shared_task
 from .celery import app
 # 
-from scraping.fn import scraping_start
+from scraping import fn
 
 @app.task
 def naver_scraping():
-	scraping_start()
+	fn.scraping_start()
