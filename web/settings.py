@@ -205,10 +205,10 @@ SCHEDULE_DAY = 24 * SCHEDULE_HOUR
 SCHEDULE_WEEK = 7 * SCHEDULE_DAY
 SCHEDULE_MONTH = 30 * SCHEDULE_DAY
 
-CELERYBEAT_SCHEDUEL = {
-    'test_task': {
-        'task': 'web.tasks.sum',
-        'schedule': SCHEDULE_MINUTE,
-        'args' : (1,2)
-    }
-}
+# CELERYBEAT_SCHEDUEL = {
+#     'test_task': {
+#         'task': 'web.tasks.sum',
+#         'schedule': SCHEDULE_MINUTE,
+#         'args' : (1,2)
+#     }
+# }
