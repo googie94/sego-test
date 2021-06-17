@@ -49,7 +49,7 @@ keyword.encode('utf-8')
 
 # '%Y%m%d %H:%M'
 today = datetime.today().strftime('%Y%m%d')
-yesterday = datetime.today() - timedelta(days=3)
+yesterday = datetime.today() - timedelta(days=1)
 yesterday = yesterday.strftime('%Y%m%d')
 print(yesterday, ' TO ', today)
 # LIST 
@@ -311,22 +311,30 @@ def get_cafe_post(url):
 	except:
 		pass
 
-total = get_total(1)
-print('total : ', total)
-index = 1
-while index <= total:
-	get_post_url(index)
-	for url in blog_urls:
-		get_blog_post(url)
-	for url in cafe_urls:
-		get_cafe_post(url)
-	index += 15
+# total = get_total(1)
+# print('total : ', total)
+# index = 1
+# while index <= total:
+# 	get_post_url(index)
+# 	for url in blog_urls:
+# 		get_blog_post(url)
+# 	for url in cafe_urls:
+# 		get_cafe_post(url)
+# 	index += 15
 
+def scraping_start():
+	total = get_total(1)
+	print('total : ', total)
+	index = 1
+	while index <= total:
+		get_post_url(index)
+		for url in blog_urls:
+			get_blog_post(url)
+		for url in cafe_urls:
+			get_cafe_post(url)
+		index += 15	
 
-
-
-
-
+scraping_start()
 
 
 
