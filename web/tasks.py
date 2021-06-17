@@ -5,5 +5,5 @@ from .celery import app
 from scraping.fn import scraping_start
 
 @app.task
-def naver_scarping():
-	scarping_start()
+def naver_scraping():
+	scraping_start()
