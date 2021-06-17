@@ -334,8 +334,6 @@ def scraping_start():
 			get_cafe_post(url)
 		index += 15	
 
-scraping_start()
-
 
 
 
