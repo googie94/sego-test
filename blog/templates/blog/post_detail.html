@@ -78,33 +78,30 @@
 		},
 		created() {
 			this.getPost()
-			this.getComment()
 		},
 		methods: {
-
-			getComment() {
-				var v=this;
-				axios.get('/api/v1/comment/')
-				.then(function(res){
-					for (var i=0; i < res.data.length; i++) {
-						if (res.data[i].post_id == post_id) {
-							if (!res.data[i].approved_comment) {
-								v.comments.push(res.data[i])
-							}
-						}
-					}
-				})
-				.catch(function(err){})
-			},
-
 			getPost() {
 				var v=this;
 				axios.get('/api/v1/blog/'+post_id+'/')
 				.then(function(res){
 					v.post=res.data
+					v.getComment(res.data.comments)
 					setTimeout(function() { v.autolink() }, 1000)
 				})
 				.catch(function(err){})
+			},
+			
+			getComment(comment_links) {
+				var v=this;
+				for (var i = 0; i < comment_links.length; i++) {
+					axios.get(comment_links[i])
+					.then(function(res){
+						if (!res.data.approved_comment) {
+							v.comments.push(res.data)
+						}
+					})
+					.catch(function(err){})
+				}
 			},
 
 			autolink() {
