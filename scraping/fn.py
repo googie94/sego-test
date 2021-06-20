@@ -21,17 +21,59 @@ conn = pymysql.connect(host=host, user=user, passwd=pw, db=db, charset='utf8')
 cur = conn.cursor()
 cur.execute('USE sego')
 
-def store_post(params):
+# def store_post(params):
+# 	cur.execute(
+# 		'INSERT INTO table (params) VALUES (%s)',
+# 		(params)
+# 	)
+# 	cur.connection.commit()
+
+# def post_naver_save(post_id, author, category, title, content, created_date, url):
+# 	cur.execute(
+# 		'INSERT INTO post_naver_save (post_id, author, category, title, content, created_date, url) VALUES (%s, %s, %s, %s, %s, %s)',
+# 		(post_id, author, category, title, content, created_date, url)
+# 	)
+# 	cur.connection.commit()
+
+# def store_post(params):
+# 	cur.execute(
+# 		'INSERT INTO table (params) VALUES (%s)',
+# 		(params)
+# 	)
+# 	cur.connection.commit()
+# 
+
+def save_post_naver(category, post_id, bc_id, author, title, content, created_date, url):
 	cur.execute(
-		'INSERT INTO table (params) VALUES (%s)',
-		(params)
+		'INSERT INTO post_naver (category, post_id, bc_id, author, title, content, created_date, url) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)',
+		(category, post_id, bc_id, author, title, content, created_date, url)
 	)
 	cur.connection.commit()
 
-def post_save(post_id, category, title, content, created_date, link):
+def save_post_naver_image(post_id, url):
 	cur.execute(
-		'INSERT INTO naver_post (post_id, category, title, content, created_date, link) VALUES (%s, %s, %s, %s, %s, %s)',
-		(post_id, category, title, content, created_date, link)
+		'INSERT INTO post_naver_image (post_id, url) VALUES (%s, %s)',
+		(post_id, url)
+	)
+	cur.connection.commit()
+
+def save_post_naver_tag(post_id, tag):
+	cur.execute(
+		'INSERT INTO post_naver_tag (post_id, tag) VALUES (%s, %s)',
+		(post_id, tag)
+	)
+	cur.connection.commit()
+def store_post(category, post_id, author, content, created_date, url):
+	cur.execute(
+		'INSERT INTO post_instagram (category, post_id, author, content, created_date, url) VALUES (%s, %s, %s, %s, %s, %s)',
+		(category, post_id, author, content, created_date, url)
+	)
+	cur.connection.commit()
+
+def store_tag(post_id, tag):
+	cur.execute(
+		'INSERT INTO post_instagram_tag (post_id, tag) VALUES (%s, %s)',
+		(post_id, tag)
 	)
 	cur.connection.commit()
 
@@ -51,7 +93,13 @@ keyword.encode('utf-8')
 today = datetime.today().strftime('%Y%m%d')
 yesterday = datetime.today() - timedelta(days=1)
 yesterday = yesterday.strftime('%Y%m%d')
-# print(yesterday, ' TO ', today)
+
+# INSTAGRAM
+is_next = True
+end_cursor = ''
+insta_yesterday = datetime.today() - timedelta(days=1)
+insta_yesterday = insta_yesterday.strftime('%Y-%m-%d')
+
 # LIST 
 blog_urls = []
 cafe_urls = []
@@ -95,15 +143,15 @@ def get_post_url(index):
 
 def get_blog_post(url):
 	category = 'blog'
-	# print('===============주소===============')
-	# print(url)
 	post_id = url.split('/')[4]
+	link = url
 	# 
 	html = urlopen(url)
 	bs = BeautifulSoup(html, 'html.parser')
-	# print(bs)
 	# 최근 블로그
 	try:
+		# print('===============POST===============')
+		author = bs.find('div', {'class': 'blog_author'}).text
 		# DATE
 		date = bs.find('p', {'class': 'blog_date'}).text
 		if '시간' in date:
@@ -115,7 +163,7 @@ def get_blog_post(url):
 			date = str(date)
 			date = date[:16]
 		elif '분' in date:
-			time = date.replace('시간 전', '')
+			time = date.replace('분 전', '')
 			time = int(time)
 			time = -time
 			now = datetime.now()
@@ -152,7 +200,7 @@ def get_blog_post(url):
 			# 			# print(img.attrs['src'].replace('_blur', '0'))
 			# except:
 			# 	pass
-			post_save(post_id, category, title, content, date, url)
+			# post_naver_save(post_id, category, title, content, date, url)
 
 
 		except:
@@ -163,10 +211,11 @@ def get_blog_post(url):
 			# print(title)
 			# print('===============내용===============')
 			# print(content)
-			post_save(post_id, category, title, content, date, url)
+			# post_naver_save(post_id, category, title, content, date, url)
 
 	# 아니라면
 	except:
+		author = bs.find('div', {'class': 'se_author'}).text
 		date = bs.find('p', {'class': 'se_date'}).text
 		dates = date.split('.')
 		date_arr = []
@@ -182,8 +231,61 @@ def get_blog_post(url):
 		# print(title)
 		# print('===============내용===============')
 		# print(content)
-		post_save(post_id, category, title, content, date, url)
-
+		# post_naver_save(post_id, category, title, content, date, url)
+	# BLOG-ID
+	try:
+		user_name = url.split('/')[3]
+		url = 'https://blog.naver.com/PostList.nhn?blogId='+user_name
+		print(url)
+		html = urlopen(url)
+		bs1 = BeautifulSoup(html.read(), 'html.parser')
+		scripts = bs1.findAll("script")
+		for script in scripts:
+			if "blogNo" in script.text:
+				text = script.text
+				var = text.split("var")
+				for v in var:
+					if "blogNo" in v:
+						blog_id = v.split("'")[1]
+	except:
+		pass
+	# 
+	print('CATEGORY')
+	print(category)
+	print('POST-ID')
+	print(post_id)
+	print('BLOG-ID')
+	print(blog_id)
+	print('AUTHOR')
+	print(author)
+	print('TITLE')
+	print(title)
+	print('DATE')
+	print(date)
+	print('COTENT')
+	print('content')
+	print('URL')
+	print(link)
+	# SAVE-POINT
+	# save_post_naver(category, post_id, blog_id, author, title, content, date, link)
+	print('IMAGE-URL')
+	# IMAGE
+	try:
+		img_urls = []
+		images = bs.findAll('img')
+		for img in images:
+			if 'https://mblogthumb-phinf.pstatic.net' in img.attrs['src']:
+				img_urls.append(img.attrs['src'].replace('_blur', '0'))
+		if len(img_urls) == 0:
+			print('NOT IMAGE')
+		else:
+			for url in img_urls:
+				# SAVE-POINT
+				print(post_id, url)
+				# save_post_naver_image(post_id, url)
+	except:
+		print('UNDIFINEDED')
+	# 
 	# 
 	# print('===============태그===============')
 	try:
@@ -192,64 +294,14 @@ def get_blog_post(url):
 			if "#" in tag.text[0]:
 				tag = tag.text
 				tag = tag.replace('#','')
-				# print(post_id, tag)
-				# store_tag(post_id, tag)
+				print(post_id, tag)
+				# save_post_naver_tag(post_id, tag)
 	except:
 		pass
-		# print('NONE TAG')
+		print('NONE TAG')
 	# SENT COMMENT
-	user_name = url.split('/')[3]
-	get_blog_post_comment(user_name, post_id)
-
-def get_blog_post_comment(user_name, post_id):
-	# print('COMMENT START')
-	# print('SECCESS', user_name, post_id)
-	url = 'https://blog.naver.com/PostList.nhn?blogId='+user_name
-	html = urlopen(url)
-	bs = BeautifulSoup(html.read(), 'html.parser')
-	scripts = bs.findAll("script")
-	for script in scripts:
-		if "blogNo" in script.text:
-			text = script.text
-			var = text.split("var")
-			for v in var:
-				if "blogNo" in v:
-					blog_no = v.split("'")[1]
-	api_url = 'https://apis.naver.com/commentBox/cbox/web_naver_list_jsonp.json?ticket=blog&templateId=default&pool=cbox9&lang=ko&objectId='
-	content_no = post_id
-	object_id = blog_no + '_201_' + content_no
-	api_url = api_url + object_id + '&groupId=' + blog_no
-	res = requests.get(api_url, headers=headers)
-	res = res.text
-	res = res[10:]
-	a = res.find(');')
-	res = res[:a]
-	res = json.loads(res)
-	# print('===============댓글===============')
-	try:
-		comment_count = res['result']['count']['total']
-		# print('댓글 수 : ', comment_count)
-	except:
-		pass
-		# print('DONT COMMENT')
-	# 
-	try:
-		comments = res['result']['commentList']
-		for comment in comments:
-			if comment['contents'] == "": 
-				print('숨김')
-			else:
-				content = comment['contents'].replace('<br>','')
-				dates = comment['modTime'].replace('T', ' ')
-				date = dates[:16]
-				# print(date)
-				created_date = datetime.strptime(date,'%Y-%m-%d %H:%M')
-				# print(created_date)
-				# print(post_id, content, created_date)
-				# store_comment(post_id, content, created_date)
-	except:
-		pass
-	# print('POST END')
+	# user_name = url.split('/')[3]
+	# get_blog_post_comment(user_name, post_id)
 
 def get_cafe_post(url):
 	category = 'cafe'
@@ -267,8 +319,9 @@ def get_cafe_post(url):
 	buid = '8957b977-a4ae-4cae-b947-5d0be546d7db'
 	# api_url = 'https://apis.naver.com/cafe-web/cafe-articleapi/v2/cafes/{}/articles/{}?useCafeId=false&art={}&query={}'.format(cafe_nm, cafe_id, cafe_code, keyword)
 	api_url = 'https://apis.naver.com/cafe-web/cafe-articleapi/v2/cafes/{}/articles/{}?useCafeId=false&buid={}'.format(cafe_nm, cafe_id, buid)
-	# print(api_url)
+	# print('API_URL', api_url)
 	req = requests.get(api_url, headers=headers, data=payload).json()
+	# print('REQ', req)
 	try:
 		req = requests.get(api_url, headers=headers, data=payload).json()
 		# print('===============POST===============')
@@ -280,38 +333,127 @@ def get_cafe_post(url):
 		date = datetime.fromtimestamp(int(date)).strftime('%Y-%m-%d %H:%M:%S')
 		# print(date)
 		# print('===============제목===============')
+		author = req['result']['article']['writer']['nick']
 		title = req['result']['article']['subject']
 		# print(title)
 		content_html = req['result']['article']['contentHtml']
 		content = BeautifulSoup(content_html, 'html.parser')
-		# IMAGE
-		# try:
-		# 	images = content.findAll('img')
-		# 	for img in images:
-		# 		if 'https://cafeptthumb-phinf.pstatic.net' in img.attrs['src']:
-		# 			# print(img.attrs['src'].replace('_blur', '0'))
-		# except:
-		# 	pass
+		content_for_img = content
 		# print('===============내용===============')
 		content = content.get_text()
 		content = content.strip()
 		content = content.replace('\n','')
 		# print(content)
 		# 
-		# store_post(post_id, category, title, content, date, link)
+		print('CATEGORY')
+		print(category)
+		print('POST-ID')
+		print(post_id)
+		print('CAFE-ID')
+		print(cafe_id)
+		print('AUTHOR')
+		print(author)
+		print('TITLE')
+		print(title)
+		print('DATE')
+		print(date)
+		print('COTENT')
+		print('content')
+		print('URL')
+		print(link)
+		# save_post_naver(category, post_id, cafe_id, author, title, content, date, link)
 		# 
+		print('IMAGE-URL')
+		# IMAGE
+		try:
+			img_urls = []
+			images = content_for_img.findAll('img')
+			for img in images:
+				if 'https://cafeptthumb-phinf.pstatic.net' in img.attrs['src']:
+					img_urls.append(img.attrs['src'].replace('_blur', '0'))
+			if len(img_urls) == 0:
+				print('NOT IMAGE')
+			else:
+				for url in img_urls:
+					# SAVE-POINT
+					print(post_id, url)
+					# save_post_naver_image(post_id, url)
+		except:
+			print('UNDIFINEDED')
 		# print('===============댓글===============')
-		comment_list = req['result']['comments']['items']
-		for comment in comment_list:
-			comment_content = comment['content']
-			# print(comment_content)
-			comment_date = str(comment['updateDate'])
-			comment_date = comment_date[:10]
-			comment_date = datetime.fromtimestamp(int(comment_date)).strftime('%Y-%m-%d %H:%M:%S')
-			# print(comment_date)
-			# store_comment(post_id, comment_content, comment_date)
+		# comment_list = req['result']['comments']['items']
+		# for comment in comment_list:
+		# 	comment_content = comment['content']
+		# 	# print(comment_content)
+		# 	comment_date = str(comment['updateDate'])
+		# 	comment_date = comment_date[:10]
+		# 	comment_date = datetime.fromtimestamp(int(comment_date)).strftime('%Y-%m-%d %H:%M:%S')
+		# 	# print(comment_date)
+		# 	# store_comment(post_id, comment_content, comment_date)
 	except:
 		pass
+
+def get_instagram_post():
+	global is_next
+	global end_cursor
+	api_url = 'https://www.instagram.com/graphql/query/?query_hash=298b92c8d7cad703f7565aa892ede943&variables={"tag_name":"'+keyword+'","first":50,"after":"'+end_cursor+'"}'
+	# print(api_url)
+	res = requests.get(api_url, headers=headers, data=payload).json()
+	res = res['data']['hashtag']
+	# 
+	is_next = res['edge_hashtag_to_media']['page_info']['has_next_page']
+	end_cursor = res['edge_hashtag_to_media']['page_info']['end_cursor']
+	# 
+	posts = res['edge_hashtag_to_media']['edges']
+	# print('POSTS LENGTH', len(posts))
+	time.sleep(10)
+	try:
+		for index, post in enumerate(posts):
+			print('================= POST '+ str(index+1) +' =================')
+			# print('==GET CODE')
+			post_id = post['node']['shortcode']
+			# print(post_id)
+			# print('== GET CONTENT')
+			content = post['node']['edge_media_to_caption']['edges'][0]['node']['text']
+			# print(content)
+			# print('==GET DATE')
+			date = datetime.fromtimestamp(post['node']['taken_at_timestamp'])
+			created_date = date.strftime('%Y-%m-%d %H:%M:%S')
+			# print(created_date)
+			# print('==GET LIKE')
+			author = post['node']['owner']['id']
+			# print(author)
+			# like_count = post['node']['edge_liked_by']['count']
+			# print(like_count)
+			tags = re.findall(r"#(\w+)", content)
+			# print(tags)
+			url = 'https://www.instagram.com/p/'+post_id+'/'
+			#
+			if created_date > insta_yesterday:
+				print('CONFIRM')
+				print('==GET CODE')
+				print(post_id)
+				print('== GET CONTENT')
+				print(content)
+				print('==GET DATE')
+				print(created_date)
+				print('==GET AUTHOR')
+				print(author)
+				print('==GET URL')
+				print(url)
+				# store_post(category, post_id, author, content, created_date, url)
+				for tag in tags:
+					print('==GET TAG')
+					print(post_id, tag)
+					# store_tag(post_id, tag)
+			else:
+				print('NONONO')
+				is_next=False
+	except:
+		pass
+	time.sleep(20)
+
+
 
 # total = get_total(1)
 # print('total : ', total)
@@ -324,10 +466,13 @@ def get_cafe_post(url):
 # 		get_cafe_post(url)
 # 	index += 15
 
+
+
 def scraping_start():
 	print('START FUNCTION')
+	# NAVER
 	total = get_total(1)
-	# print('total : ', total)
+	print('TOTAL', total)
 	index = 1
 	while index <= total:
 		get_post_url(index)
@@ -335,13 +480,70 @@ def scraping_start():
 			get_blog_post(url)
 		for url in cafe_urls:
 			get_cafe_post(url)
-		index += 15	
+		index += 30
+	# INSTAGRAM
+	for i in range(100):
+		print('======================= INDEX', i+1, '=======================')
+		if is_next == True:
+			get_instagram_post()
+		else:
+			break;
 
 
 
+# scraping_start()
 
 
 
+#def get_blog_post_comment(user_name, post_id):
+# 	# print('COMMENT START')
+# 	# print('SECCESS', user_name, post_id)
+# 	url = 'https://blog.naver.com/PostList.nhn?blogId='+user_name
+# 	html = urlopen(url)
+# 	bs = BeautifulSoup(html.read(), 'html.parser')
+# 	scripts = bs.findAll("script")
+# 	for script in scripts:
+# 		if "blogNo" in script.text:
+# 			text = script.text
+# 			var = text.split("var")
+# 			for v in var:
+# 				if "blogNo" in v:
+# 					blog_no = v.split("'")[1]
+# 	api_url = 'https://apis.naver.com/commentBox/cbox/web_naver_list_jsonp.json?ticket=blog&templateId=default&pool=cbox9&lang=ko&objectId='
+# 	content_no = post_id
+# 	object_id = blog_no + '_201_' + content_no
+# 	api_url = api_url + object_id + '&groupId=' + blog_no
+# 	res = requests.get(api_url, headers=headers)
+# 	res = res.text
+# 	res = res[10:]
+# 	a = res.find(');')
+# 	res = res[:a]
+# 	res = json.loads(res)
+# 	# print('===============댓글===============')
+# 	try:
+# 		comment_count = res['result']['count']['total']
+# 		# print('댓글 수 : ', comment_count)
+# 	except:
+# 		pass
+# 		# print('DONT COMMENT')
+# 	# 
+# 	try:
+# 		comments = res['result']['commentList']
+# 		for comment in comments:
+# 			if comment['contents'] == "": 
+# 				print('숨김')
+# 			else:
+# 				content = comment['contents'].replace('<br>','')
+# 				dates = comment['modTime'].replace('T', ' ')
+# 				date = dates[:16]
+# 				# print(date)
+# 				created_date = datetime.strptime(date,'%Y-%m-%d %H:%M')
+# 				# print(created_date)
+# 				# print(post_id, content, created_date)
+# 				# store_comment(post_id, content, created_date)
+# 	except:
+# 		pass
+# 	# print('POST END')
 
 
 
