@@ -393,14 +393,14 @@ def get_cafe_post(url):
 	except:
 		pass
 
-def get_instagriam_post():
+def get_instagram_post():
 	global is_next
 	global end_cursor
 	api_url = 'https://www.instagram.com/graphql/query/?query_hash=298b92c8d7cad703f7565aa892ede943&variables={"tag_name":"'+keyword+'","first":50,"after":"'+end_cursor+'"}'
 	# print(api_url)
 	res = requests.get(api_url, headers=headers, data=payload)
 	print('BF-RES',res)
-	res = res.json()
+	res = json.loads(res):
 	print('AF-RES',res)
 	res = res['data']['hashtag']
 	# 
