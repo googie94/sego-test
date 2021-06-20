@@ -236,7 +236,7 @@ def get_blog_post(url):
 	try:
 		user_name = url.split('/')[3]
 		url = 'https://blog.naver.com/PostList.nhn?blogId='+user_name
-		print(url)
+		# print(url)
 		html = urlopen(url)
 		bs1 = BeautifulSoup(html.read(), 'html.parser')
 		scripts = bs1.findAll("script")
@@ -250,25 +250,25 @@ def get_blog_post(url):
 	except:
 		pass
 	# 
-	print('CATEGORY')
-	print(category)
-	print('POST-ID')
-	print(post_id)
-	print('BLOG-ID')
-	print(blog_id)
-	print('AUTHOR')
-	print(author)
-	print('TITLE')
-	print(title)
-	print('DATE')
-	print(date)
-	print('COTENT')
-	print('content')
-	print('URL')
-	print(link)
+	# print('CATEGORY')
+	# print(category)
+	# print('POST-ID')
+	# print(post_id)
+	# print('BLOG-ID')
+	# print(blog_id)
+	# print('AUTHOR')
+	# print(author)
+	# print('TITLE')
+	# print(title)
+	# print('DATE')
+	# print(date)
+	# print('COTENT')
+	# print('content')
+	# print('URL')
+	# print(link)
 	# SAVE-POINT
-	# save_post_naver(category, post_id, blog_id, author, title, content, date, link)
-	print('IMAGE-URL')
+	save_post_naver(category, post_id, blog_id, author, title, content, date, link)
+	# print('IMAGE-URL')
 	# IMAGE
 	try:
 		img_urls = []
@@ -281,8 +281,8 @@ def get_blog_post(url):
 		else:
 			for url in img_urls:
 				# SAVE-POINT
-				print(post_id, url)
-				# save_post_naver_image(post_id, url)
+				# print(post_id, url)
+				save_post_naver_image(post_id, url)
 	except:
 		print('UNDIFINEDED')
 	# 
@@ -295,10 +295,10 @@ def get_blog_post(url):
 				tag = tag.text
 				tag = tag.replace('#','')
 				print(post_id, tag)
-				# save_post_naver_tag(post_id, tag)
+				save_post_naver_tag(post_id, tag)
 	except:
 		pass
-		print('NONE TAG')
+		# print('NONE TAG')
 	# SENT COMMENT
 	# user_name = url.split('/')[3]
 	# get_blog_post_comment(user_name, post_id)
@@ -345,25 +345,25 @@ def get_cafe_post(url):
 		content = content.replace('\n','')
 		# print(content)
 		# 
-		print('CATEGORY')
-		print(category)
-		print('POST-ID')
-		print(post_id)
-		print('CAFE-ID')
-		print(cafe_id)
-		print('AUTHOR')
-		print(author)
-		print('TITLE')
-		print(title)
-		print('DATE')
-		print(date)
-		print('COTENT')
-		print('content')
-		print('URL')
-		print(link)
-		# save_post_naver(category, post_id, cafe_id, author, title, content, date, link)
+		# print('CATEGORY')
+		# print(category)
+		# print('POST-ID')
+		# print(post_id)
+		# print('CAFE-ID')
+		# print(cafe_id)
+		# print('AUTHOR')
+		# print(author)
+		# print('TITLE')
+		# print(title)
+		# print('DATE')
+		# print(date)
+		# print('COTENT')
+		# print('content')
+		# print('URL')
+		# print(link)
+		save_post_naver(category, post_id, cafe_id, author, title, content, date, link)
 		# 
-		print('IMAGE-URL')
+		# print('IMAGE-URL')
 		# IMAGE
 		try:
 			img_urls = []
@@ -376,8 +376,8 @@ def get_cafe_post(url):
 			else:
 				for url in img_urls:
 					# SAVE-POINT
-					print(post_id, url)
-					# save_post_naver_image(post_id, url)
+					# print(post_id, url)
+					save_post_naver_image(post_id, url)
 		except:
 			print('UNDIFINEDED')
 		# print('===============댓글===============')
@@ -398,10 +398,11 @@ def get_instagram_post():
 	global end_cursor
 	api_url = 'https://www.instagram.com/graphql/query/?query_hash=298b92c8d7cad703f7565aa892ede943&variables={"tag_name":"'+keyword+'","first":50,"after":"'+end_cursor+'"}'
 	# print(api_url)
-	res = requests.get(api_url, headers=headers, data=payload)
-	print('BF-RES',res)
-	res = json.loads(res):
-	print('AF-RES',res)
+	# html = urlopen(api_url)
+	# bs = BeautifulSoup(html.read(), 'html.parser')
+	# print('BS', bs)
+	time.sleep(10)
+	res = requests.get(api_url, headers=headers, data=payload).json()
 	res = res['data']['hashtag']
 	# 
 	is_next = res['edge_hashtag_to_media']['page_info']['has_next_page']
@@ -409,10 +410,9 @@ def get_instagram_post():
 	# 
 	posts = res['edge_hashtag_to_media']['edges']
 	# print('POSTS LENGTH', len(posts))
-	time.sleep(10)
 	try:
 		for index, post in enumerate(posts):
-			print('================= POST '+ str(index+1) +' =================')
+			# print('================= POST '+ str(index+1) +' =================')
 			# print('==GET CODE')
 			post_id = post['node']['shortcode']
 			# print(post_id)
@@ -433,24 +433,24 @@ def get_instagram_post():
 			url = 'https://www.instagram.com/p/'+post_id+'/'
 			#
 			if created_date > insta_yesterday:
-				print('CONFIRM')
-				print('==GET CODE')
-				print(post_id)
-				print('== GET CONTENT')
-				print(content)
-				print('==GET DATE')
-				print(created_date)
-				print('==GET AUTHOR')
-				print(author)
-				print('==GET URL')
-				print(url)
-				# store_post(category, post_id, author, content, created_date, url)
+				# print('CONFIRM')
+				# print('==GET CODE')
+				# print(post_id)
+				# print('== GET CONTENT')
+				# print(content)
+				# print('==GET DATE')
+				# print(created_date)
+				# print('==GET AUTHOR')
+				# print(author)
+				# print('==GET URL')
+				# print(url)
+				store_post(category, post_id, author, content, created_date, url)
 				for tag in tags:
-					print('==GET TAG')
-					print(post_id, tag)
-					# store_tag(post_id, tag)
+					# print('==GET TAG')
+					# print(post_id, tag)
+					store_tag(post_id, tag)
 			else:
-				print('NONONO')
+				# print('NONONO')
 				is_next=False
 	except:
 		pass
