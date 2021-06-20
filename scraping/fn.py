@@ -294,7 +294,7 @@ def get_blog_post(url):
 			if "#" in tag.text[0]:
 				tag = tag.text
 				tag = tag.replace('#','')
-				print(post_id, tag)
+				# print(post_id, tag)
 				save_post_naver_tag(post_id, tag)
 	except:
 		pass
@@ -486,7 +486,6 @@ def scraping_start():
 		index += 30
 	# INSTAGRAM
 	for i in range(100):
-		print('======================= INDEX', i+1, '=======================')
 		if is_next == True:
 			get_instagram_post()
 		else:
