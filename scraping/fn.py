@@ -400,8 +400,7 @@ def get_instagram_post():
 	# print(api_url)
 	res = requests.get(api_url, headers=headers, data=payload)
 	print('BF-RES',res)
-        print(json.loads(res))
-	res = res.json()
+	res = json.loads(res)
 	print('AF-RES',res)
 	res = res['data']['hashtag']
 	# 
