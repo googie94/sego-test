@@ -17,6 +17,13 @@ class PostNaverViewSet(viewsets.ModelViewSet):
 	queryset = PostNaver.objects.all()
 	serializer_class = PostNaverSerializer
 
+	def get_queryset(self):
+		queryset = super().get_queryset()
+		for q in queryset:
+			q.author = q.author.replace('\n', '')
+			q.title = q.title.replace('\n', '')
+		return queryset
+
 class PostNaverImageViewSet(viewsets.ModelViewSet):
 	queryset = PostNaverImage.objects.all()
 	serializer_class = PostNaverImageSerializer
@@ -60,6 +67,12 @@ class MostPostNaverTagViewSet(viewsets.ModelViewSet):
 class PostInstagramViewSet(viewsets.ModelViewSet):
 	queryset = PostInstagram.objects.all()
 	serializer_class = PostInstagramSerializer
+
+	def get_queryset(self):
+		queryset = super().get_queryset()
+		for q in queryset:
+			q.content = q.content.replace('????', '')
+		return queryset
 
 class PostInstagramTagViewSet(viewsets.ModelViewSet):
 	queryset = PostInstagramTag.objects.all()
