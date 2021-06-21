@@ -22,6 +22,7 @@ from rest_framework import routers
 from blog.views import PostViewSet, CommentViewSet
 from okr.views import TeamViewSet, UserViewSet, ObjectiveViewSet, KeyResultViewSet, OkrProgressViewSet
 from scraping.views import NaverPostViewSet, InstaPostViewSet, InstaTagViewSet
+from scraping.views import PostNaverViewSet, PostNaverImageViewSet, PostNaverTagViewSet, PostInstagramViewSet, PostInstagramTagViewSet
 #
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -43,9 +44,14 @@ router = routers.DefaultRouter()
 router.register(r'blog', PostViewSet)
 router.register(r'comment', CommentViewSet)
 # 
-router.register(r'naver-post', NaverPostViewSet)
-router.register(r'insta-post', InstaPostViewSet)
-router.register(r'insta-tag', InstaTagViewSet)
+# router.register(r'naver-post', NaverPostViewSet)
+# router.register(r'insta-post', InstaPostViewSet)
+# router.register(r'insta-tag', InstaTagViewSet)
+router.register(r'post-naver', PostNaverViewSet)
+router.register(r'post-naver-image', PostNaverImageViewSet)
+router.register(r'post-naver-tag', PostNaverTagViewSet)
+router.register(r'post-instagram', PostInstagramViewSet)
+router.register(r'post-instagram-tag', PostInstagramTagViewSet)
 #
 router.register(r'team', TeamViewSet)
 router.register(r'user', UserViewSet)

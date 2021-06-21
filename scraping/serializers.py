@@ -1,7 +1,39 @@
 from rest_framework import serializers
 from .models import NaverPost, InstaPost, InstaTag
+from .models import PostNaver, PostNaverImage, PostNaverTag, PostInstagram, PostInstagramTag
 # 
 from collections import Counter
+
+
+class PostNaverSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = PostNaver
+		fields = '__all__'
+
+class PostNaverImageSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = PostNaverImage
+		fields = '__all__'
+
+class PostNaverTagSerializer(serializers.ModelSerializer):
+	count = serializers.IntegerField()
+	class Meta:
+		model = PostNaverTag
+		fields = ('tag', 'count')
+
+class PostInstagramSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = PostInstagram
+		fields = '__all__'
+
+class PostInstagramTagSerializer(serializers.ModelSerializer):
+	count = serializers.IntegerField()
+	class Meta:
+		model = PostInstagramTag
+		fields = ('tag', 'count')
+
+
+######################################################
 
 class NaverPostSerializer(serializers.ModelSerializer):
 	class Meta:

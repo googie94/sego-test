@@ -43,6 +43,11 @@ class PostNaverTag(models.Model):
         verbose_name = '네이버 포스트 태그'
         verbose_name_plural = '네이버 포스트 태그'
 
+    def hangul(self):
+        hangul = re.compile('[^ ㄱ-ㅣ 가-힣]')
+        result = hangul.sub('', self.tag)
+        return result
+
 class PostInstagram(models.Model):
     post_id = models.CharField(max_length=45, blank=True, null=True)
     category = models.CharField(max_length=45, blank=True, null=True)
@@ -65,6 +70,11 @@ class PostInstagramTag(models.Model):
         db_table = 'post_instagram_tag'
         verbose_name = '인스타그램 포스트 태그'
         verbose_name_plural = '인스타그램 포스트 태그'
+
+    def hangul(self):
+        hangul = re.compile('[^ ㄱ-ㅣ 가-힣]')
+        result = hangul.sub('', self.tag)
+        return result
 
 
 ##################################################################### 

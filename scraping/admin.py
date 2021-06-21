@@ -5,7 +5,6 @@ from .models import PostNaver, PostNaverImage, PostNaverTag, PostInstagram, Post
 @admin.register(PostNaver)
 class PostNaverAdmin(admin.ModelAdmin):
 	list_display = ('created_date', 'author', 'title',)
-	# readonly_fields = ('id', 'category', '', '', '', '', '', '',)
 	ordering = ('-created_date',)
 
 @admin.register(PostInstagram)
