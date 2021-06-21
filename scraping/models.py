@@ -8,6 +8,67 @@
 from django.db import models
 import re
 
+
+class PostNaver(models.Model):
+    post_id = models.CharField(max_length=45, blank=True, null=True)
+    category = models.CharField(max_length=45, blank=True, null=True)
+    bc_id = models.CharField(max_length=45, blank=True, null=True)
+    author = models.CharField(max_length=45, blank=True, null=True)
+    title = models.CharField(max_length=100, blank=True, null=True)
+    content = models.TextField(blank=True, null=True)
+    created_date = models.DateTimeField(blank=True, null=True)
+    url = models.CharField(max_length=200, blank=True, null=True)
+    is_hidden = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'post_naver'
+        verbose_name = '네이버 포스트'
+        verbose_name_plural = '네이버 포스트'
+
+class PostNaverImage(models.Model):
+    post_id = models.CharField(max_length=45, blank=True, null=True)
+    url = models.CharField(max_length=300, blank=True, null=True)
+
+    class Meta:
+        db_table = 'post_naver_image'
+        verbose_name = '네이버 포스트 이미지'
+        verbose_name_plural = '네이버 포스트 이미지'
+
+class PostNaverTag(models.Model):
+    post_id = models.CharField(max_length=45, blank=True, null=True)
+    tag = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        db_table = 'post_naver_tag'
+        verbose_name = '네이버 포스트 태그'
+        verbose_name_plural = '네이버 포스트 태그'
+
+class PostInstagram(models.Model):
+    post_id = models.CharField(max_length=45, blank=True, null=True)
+    category = models.CharField(max_length=45, blank=True, null=True)
+    author = models.CharField(max_length=45, blank=True, null=True)
+    content = models.TextField(blank=True, null=True)
+    created_date = models.DateTimeField(blank=True, null=True)
+    url = models.CharField(max_length=300, blank=True, null=True)
+    is_hidden = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'post_instagram'
+        verbose_name = '인스타그램 포스트'
+        verbose_name_plural = '인스타그램 포스트'
+
+class PostInstagramTag(models.Model):
+    post_id = models.CharField(max_length=45, blank=True, null=True)
+    tag = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        db_table = 'post_instagram_tag'
+        verbose_name = '인스타그램 포스트 태그'
+        verbose_name_plural = '인스타그램 포스트 태그'
+
+
+##################################################################### 
+
 class NaverPost(models.Model):
     post_id = models.CharField(max_length=45, blank=True, null=True)
     category = models.CharField(max_length=20, blank=True, null=True)
