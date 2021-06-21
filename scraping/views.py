@@ -9,7 +9,7 @@ from rest_framework import viewsets
 from .models import NaverPost, InstaPost, InstaTag
 from .serializers import NaverPostSerializer, InstaPostSerializer, InstaTagSerializer
 from .models import PostNaver, PostNaverImage, PostNaverTag, PostInstagram, PostInstagramTag
-from .serializers import PostNaverSerializer, PostNaverImageSerializer, PostNaverTagSerializer, PostInstagramSerializer, PostInstagramTagSerializer
+from .serializers import PostNaverSerializer, PostNaverImageSerializer, PostNaverTagSerializer, MostPostNaverTagSerializer, PostInstagramSerializer, PostInstagramTagSerializer, MostPostInstagramTagSerializer
 
 # Create your views here.
 
@@ -24,6 +24,13 @@ class PostNaverImageViewSet(viewsets.ModelViewSet):
 class PostNaverTagViewSet(viewsets.ModelViewSet):
 	queryset = PostNaverTag.objects.all()
 	serializer_class = PostNaverTagSerializer
+
+	def get_queryset(self):
+		return super().get_queryset()
+
+class MostPostNaverTagViewSet(viewsets.ModelViewSet):
+	queryset = PostNaverTag.objects.all()
+	serializer_class = MostPostNaverTagSerializer
 
 	def get_queryset(self):
 		queryset = super().get_queryset()
@@ -57,6 +64,13 @@ class PostInstagramViewSet(viewsets.ModelViewSet):
 class PostInstagramTagViewSet(viewsets.ModelViewSet):
 	queryset = PostInstagramTag.objects.all()
 	serializer_class = PostInstagramTagSerializer
+
+	def get_queryset(self):
+		return super().get_queryset()
+
+class MostPostInstagramTagViewSet(viewsets.ModelViewSet):
+	queryset = PostInstagramTag.objects.all()
+	serializer_class = MostPostInstagramTagSerializer
 
 	def get_queryset(self):
 		queryset = super().get_queryset()

@@ -16,6 +16,11 @@ class PostNaverImageSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 class PostNaverTagSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = PostNaverTag
+		fields = '__all__'
+
+class MostPostNaverTagSerializer(serializers.ModelSerializer):
 	count = serializers.IntegerField()
 	class Meta:
 		model = PostNaverTag
@@ -27,6 +32,11 @@ class PostInstagramSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 class PostInstagramTagSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = PostInstagramTag
+		fields = '__all__'
+
+class MostPostInstagramTagSerializer(serializers.ModelSerializer):
 	count = serializers.IntegerField()
 	class Meta:
 		model = PostInstagramTag
