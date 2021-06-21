@@ -43,7 +43,7 @@ class MostPostNaverTagViewSet(viewsets.ModelViewSet):
 		queryset = super().get_queryset()
 		total = list()
 		post_authors = list()
-		posts = PostNaver.objects.all().exclude(author='\n플랩풋볼\n')
+		posts = PostNaver.objects.all().exclude(author='플랩풋볼')
 		for p in posts:
 			post_authors.append(p.post_id)
 		for q in queryset:
@@ -51,7 +51,7 @@ class MostPostNaverTagViewSet(viewsets.ModelViewSet):
 				if q.hangul() != '':
 					total.append(q.hangul())
 		counter = Counter(total)
-		ignore = ['\n플랩풋볼\n']
+		ignore = ['플랩풋볼']
 		for x in ignore:
 			del counter[x]
 		result = counter.most_common(20)
