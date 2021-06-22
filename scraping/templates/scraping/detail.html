@@ -49,6 +49,10 @@ body, html {
 				<button @click="add_like(1)" style="width: 30%; padding: 10px; border: none; background: #2D4AC8; border-radius: 10px; color: white;">긍정적</button>
 				<button @click="add_unlike(1)" style="width: 30%; padding: 10px; border: none; background: #FF5D5D; border-radius: 10px; color: white;">부정적</button>
 			</div>
+			<div style="display: flex; justify-content: space-around; margin-top: 10px;">
+				<p style="font-size: 25px; font-weight: 700;">[[ post.is_good_count ]]</p>
+				<p style="font-size: 25px; font-weight: 700;">[[ post.is_bad_count ]]</p>
+			</div>
 		</ul>
 	</div>
 </div>
