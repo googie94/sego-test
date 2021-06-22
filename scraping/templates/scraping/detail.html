@@ -28,8 +28,8 @@ body, html {
 				</li>
 			</ul>
 		</div>
-		<div style="text-align: center;" v-if="post.category == 'instagram'">
-			<iframe :src="'https://www.instagram.com/p/'+post.post_id+'/embed'" width="400" height="450" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
+		<div class="feed-wrapper" v-if="post.category == 'instagram'">
+			<iframe :src="'https://www.instagram.com/p/'+post.post_id+'/embed'" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
 		</div>
 		<strong class="card--title" v-if="post.title">[[ post.title ]]</strong><br>
 		<div style="padding: 10px 0px;">
