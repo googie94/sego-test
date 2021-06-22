@@ -87,6 +87,7 @@ body, html {
 				}
 				axios.get(url)
 				.then(function(res){
+					res.data.content = res.data.content.replace('????', '')
 					v.post = res.data
 					setTimeout(function() { v.slick() }, 1000)
 				})
