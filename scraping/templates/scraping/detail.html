@@ -39,6 +39,16 @@ body, html {
 			</div>
 			<pre class="card--content" style="font-size: 16px; line-height: 1.5em;">[[ post.content ]]</pre>
 			<p class="card--date">[[ moment(post.created_date).format('Y년 M월 D일 HH:mm') ]]</p>
+			<hr>
+			<div style="display: flex; justify-content: center;">
+				<button v-show="post.is_hidden" @click="post_hide(0)" style="width: 80%; padding: 10px; border: none; background: #41775d; border-radius: 10px; color: white;">보이기</button>
+				<button v-show="!post.is_hidden" @click="post_hide(1)" style="width: 80%; padding: 10px; border: none; background: #41775d; border-radius: 10px; color: white;">숨기기</button>
+			</div>
+			<hr>
+			<div style="display: flex; justify-content: space-around;">
+				<button @click="add_like(1)" style="width: 30%; padding: 10px; border: none; background: #2D4AC8; border-radius: 10px; color: white;">긍정적</button>
+				<button @click="add_unlike(1)" style="width: 30%; padding: 10px; border: none; background: #FF5D5D; border-radius: 10px; color: white;">부정적</button>
+			</div>
 		</ul>
 	</div>
 </div>
@@ -88,6 +98,49 @@ body, html {
                         arrows: false,
                     });
 				});
+			},
+
+			post_hide(bool) {
+				var v=this
+				if (type == 'instagram') {
+					url = '/api/v1/post-instagram/'+post_id+'/'	
+				} else {
+					url = '/api/v1/post-naver/'+post_id+'/'
+				}
+				axios.patch(url, {'is_hidden': bool})
+				.then(function(res){
+					console.log(res)
+					v.post.is_hidden = res.data.is_hidden
+				})
+				.catch(function(err){})
+			},
+
+			add_like(count) {
+				var v=this
+				if (type == 'instagram') {
+					url = '/api/v1/post-instagram/'+post_id+'/'	
+				} else {
+					url = '/api/v1/post-naver/'+post_id+'/'
+				}
+				axios.patch(url, {'is_good_count': v.post.is_good_count + count})
+				.then(function(res){
+					v.post.is_good_count = res.data.is_good_count
+				})
+				.catch(function(err){})
+			},
+
+			add_unlike(count) {
+				var v=this
+				if (type == 'instagram') {
+					url = '/api/v1/post-instagram/'+post_id+'/'	
+				} else {
+					url = '/api/v1/post-naver/'+post_id+'/'
+				}
+				axios.patch(url, {'is_bad_count': v.post.is_bad_count + count})
+				.then(function(res){
+					v.post.is_bad_count = res.data.is_bad_count
+				})
+				.catch(function(err){})
 			}
 
 		},
