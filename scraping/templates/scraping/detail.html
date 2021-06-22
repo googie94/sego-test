@@ -45,6 +45,7 @@ body, html {
 				<button v-show="!post.is_hidden" @click="post_hide(1)" style="width: 80%; padding: 10px; border: none; background: #41775d; border-radius: 10px; color: white;">숨기기</button>
 			</div>
 			<hr>
+			<p style="text-align: center; padding: 15px; font-weight: 400; color: #666;">이 글의 성격은 어떤 것 같아?</p>
 			<div style="display: flex; justify-content: space-around;">
 				<button @click="add_like(1)" style="width: 30%; padding: 10px; border: none; background: #2D4AC8; border-radius: 10px; color: white;">긍정적</button>
 				<button @click="add_unlike(1)" style="width: 30%; padding: 10px; border: none; background: #FF5D5D; border-radius: 10px; color: white;">부정적</button>
