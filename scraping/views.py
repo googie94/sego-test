@@ -16,7 +16,8 @@ from .serializers import PostNaverSerializer, PostNaverImageSerializer, PostNave
 # Create your views here.
 
 class PostNaverViewSet(viewsets.ModelViewSet):
-	queryset = PostNaver.objects.all()
+	ignore_id = [1901,5526, 19090207, 3096]
+	queryset = PostNaver.objects.all().order_by('-created_date').exclude(bc_id__in=ignore_id)
 	serializer_class = PostNaverSerializer
 	filter_backends = [SearchFilter, DjangoFilterBackend] 
 	search_fields = ['content']
@@ -26,6 +27,7 @@ class PostNaverViewSet(viewsets.ModelViewSet):
 		for q in queryset:
 			q.author = q.author.replace('\n', '')
 			q.title = q.title.replace('\n', '')
+			q.content = re.sub("(\[\[\[[A-Z])\D+([A-Z])\D\d\]\]\]", "", q.content)
 		return queryset
 
 class PostNaverImageViewSet(viewsets.ModelViewSet):
@@ -69,7 +71,7 @@ class MostPostNaverTagViewSet(viewsets.ModelViewSet):
 		return most_list
 
 class PostInstagramViewSet(viewsets.ModelViewSet):
-	queryset = PostInstagram.objects.all()
+	queryset = PostInstagram.objects.all().order_by('-created_date')
 	serializer_class = PostInstagramSerializer
 	filter_backends = [SearchFilter, DjangoFilterBackend] 
 	search_fields = ['content']
@@ -160,9 +162,16 @@ def scraping_home(request):
 	# 		post.content = re.sub("(\[\[\[[A-Z])\D+([A-Z])\D\d\]\]\]", "", post.content)
 	return render(request, 'scraping/home.html', {})
 
-def scraping_detail(request, pk):
-	post = NaverPost.objects.get(pk=pk)
-	return render(request, 'scraping/detail.html', {'post_id': post.id})
+def scraping_detail(request, post_id):
+	post_id = str(post_id)
+	if post_id.isdigit():
+		post = PostNaver.objects.get(post_id=post_id)
+		is_type = 'naver'
+	else:
+		post = PostInstagram.objects.get(post_id=post_id)
+		is_type = 'instagram'
+	print(is_type)
+	return render(request, 'scraping/detail.html', {'post_id': post.id, 'is_type': is_type})
 
 
 def scraping_insta(request):
