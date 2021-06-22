@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
 # 
 from django.utils import timezone
 import re
@@ -16,6 +18,8 @@ from .serializers import PostNaverSerializer, PostNaverImageSerializer, PostNave
 class PostNaverViewSet(viewsets.ModelViewSet):
 	queryset = PostNaver.objects.all()
 	serializer_class = PostNaverSerializer
+	filter_backends = [SearchFilter, DjangoFilterBackend] 
+	search_fields = ['content']
 
 	def get_queryset(self):
 		queryset = super().get_queryset()
@@ -67,6 +71,8 @@ class MostPostNaverTagViewSet(viewsets.ModelViewSet):
 class PostInstagramViewSet(viewsets.ModelViewSet):
 	queryset = PostInstagram.objects.all()
 	serializer_class = PostInstagramSerializer
+	filter_backends = [SearchFilter, DjangoFilterBackend] 
+	search_fields = ['content']
 
 	def get_queryset(self):
 		queryset = super().get_queryset()
