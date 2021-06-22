@@ -165,11 +165,12 @@ def scraping_home(request):
 def scraping_detail(request, post_id):
 	post_id = str(post_id)
 	if post_id.isdigit():
-		post = PostNaver.objects.get(post_id=post_id)
+		post = PostNaver.objects.filter(post_id=post_id)
 		is_type = 'naver'
 	else:
-		post = PostInstagram.objects.get(post_id=post_id)
+		post = PostInstagram.objects.filter(post_id=post_id)
 		is_type = 'instagram'
+	post = post.first()
 	print(is_type)
 	return render(request, 'scraping/detail.html', {'post_id': post.id, 'is_type': is_type})
 
