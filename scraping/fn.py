@@ -18,6 +18,7 @@ user = 'sego_admin'
 pw = 'googie0126!'
 db = 'sego'
 conn = pymysql.connect(host=host, user=user, passwd=pw, db=db, charset='utf8')
+conn.ping (True)
 cur = conn.cursor()
 cur.execute('USE sego')
 
