@@ -19,6 +19,8 @@ class PostNaver(models.Model):
     created_date = models.DateTimeField(blank=True, null=True)
     url = models.CharField(max_length=200, blank=True, null=True)
     is_hidden = models.BooleanField(default=False)
+    is_good_count = models.IntegerField(default=0)
+    is_bad_count = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'post_naver'
@@ -56,6 +58,8 @@ class PostInstagram(models.Model):
     created_date = models.DateTimeField(blank=True, null=True)
     url = models.CharField(max_length=300, blank=True, null=True)
     is_hidden = models.BooleanField(default=False)
+    is_good_count = models.IntegerField(default=0)
+    is_bad_count = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'post_instagram'
