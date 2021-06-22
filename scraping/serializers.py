@@ -6,6 +6,21 @@ from collections import Counter
 
 
 class PostNaverSerializer(serializers.ModelSerializer):
+	pictures = serializers.SerializerMethodField('get_pictures')
+	tags = serializers.SerializerMethodField('get_tags')
+
+	def get_pictures(self, post):
+		post_id = post.post_id
+		queryset = PostNaverImage.objects.filter(post_id=post_id)
+		serializer = PostNaverImageSerializer(instance=queryset, many=True)
+		return serializer.data
+
+	def get_tags(self, post):
+		post_id = post.post_id
+		queryset = PostNaverTag.objects.filter(post_id=post_id)
+		serializer = PostNaverTagSerializer(instance=queryset, many=True)
+		return serializer.data	
+
 	class Meta:
 		model = PostNaver
 		fields = '__all__'
