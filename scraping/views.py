@@ -151,18 +151,18 @@ class InstaTagViewSet(viewsets.ModelViewSet):
 
 
 def scraping_home(request):
-	posts = NaverPost.objects.all().order_by('-created_date')
-	posts = list(posts)
-	for index, post in enumerate(posts):
-		if post.content == '':
-			del posts[index]
-		else:
-			post.content = re.sub("(\[\[\[[A-Z])\D+([A-Z])\D\d\]\]\]", "", post.content)
-	return render(request, 'scraping/home.html', {'posts': posts})
+	# posts = NaverPost.objects.all().order_by('-created_date')
+	# posts = list(posts)
+	# for index, post in enumerate(posts):
+	# 	if post.content == '':
+	# 		del posts[index]
+	# 	else:
+	# 		post.content = re.sub("(\[\[\[[A-Z])\D+([A-Z])\D\d\]\]\]", "", post.content)
+	return render(request, 'scraping/home.html', {})
 
 def scraping_detail(request, pk):
 	post = NaverPost.objects.get(pk=pk)
-	return render(request, 'scraping/detail.html', {'post': post})
+	return render(request, 'scraping/detail.html', {'post_id': post.id})
 
 
 def scraping_insta(request):
