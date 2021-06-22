@@ -16,12 +16,19 @@ body, html {
 		 v-for="(post, index) in post_list"
 		 style="box-shadow: 2px 2px 20px #00000080; border-radius: 20px; margin-bottom: 40px;">
 		<a :href="'/scraping/'+post.post_id+'/'">
-			<img src="{% static '/img/naver.svg' %}" 
+			<div style="display: flex; justify-content: left; align-items: center;">
+				<img src="{% static '/img/naver.svg' %}" 
 				 style="width: 42px;"
 				 v-if="post.category == 'cafe' || post.category == 'blog'"></img>
-			<img src="{% static '/img/insta.svg' %}" 
-				 style="width: 42px;"
-				 v-if="post.category == 'instagram'"></img>
+				<img src="{% static '/img/insta.svg' %}" 
+					 style="width: 42px;"
+					 v-if="post.category == 'instagram'"></img>
+				<span v-if="post.is_good_count > post.is_bad_count" style="align-items: center; text-align: center; margin-left: 10px; width: 30%; padding: 5px; border: none; background: #2D4AC8; border-radius: 10px; color: white;">긍정적</p></span>
+				<span v-if="post.is_good_count < post.is_bad_count" style="align-items: center; text-align: center; margin-left: 10px; width: 30%; padding: 5px; border: none; background: #FF5D5D; border-radius: 10px; color: white;">부정적</span>
+				<span v-if="post.is_good_count == post.is_bad_count" style="align-items: center; text-align: center; margin-left: 10px; width: 30%; padding: 5px; border: none; background: #41775d; border-radius: 10px; color: white;">평가해줘</span>
+				<span v-if="post.is_hidden" style="align-items: center; text-align: center; margin-left: 10px; width: 30%; padding: 5px; border: none; background: #DDD; border-radius: 10px; color: white;">숨겨져있어</span>
+				<span v-if="!post.is_hidden" style="align-items: center; text-align: center; margin-left: 10px; width: 30%; padding: 5px; border: none; background: #DDD; border-radius: 10px; color: white;">보이고있어</span>
+			</div>
 			<ul class="card--wrapper">
 				<strong class="card--title" v-if="post.title">[[ post.title ]]</strong>
 				<pre class="card--content" style="font-size: 16px; line-height: 1.5em; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; height: 6.6em;">[[ post.content ]]</pre>
