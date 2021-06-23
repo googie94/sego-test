@@ -268,7 +268,7 @@ def get_blog_post(url):
 	# print('URL')
 	# print(link)
 	# SAVE-POINT
-	# save_post_naver(category, post_id, blog_id, author, title, content, date, link)
+	save_post_naver(category, post_id, blog_id, author, title, content, date, link)
 	# print('IMAGE-URL')
 	# IMAGE
 	try:
@@ -283,8 +283,7 @@ def get_blog_post(url):
 			for url in img_urls:
 				# SAVE-POINT
 				# print(post_id, url)
-				print('')
-				# save_post_naver_image(post_id, url)
+				save_post_naver_image(post_id, url)
 	except:
 		print('UNDIFINEDED')
 	# 
@@ -297,7 +296,7 @@ def get_blog_post(url):
 				tag = tag.text
 				tag = tag.replace('#','')
 				# print(post_id, tag)
-				# save_post_naver_tag(post_id, tag)
+				save_post_naver_tag(post_id, tag)
 	except:
 		pass
 		# print('NONE TAG')
@@ -363,7 +362,7 @@ def get_cafe_post(url):
 		# print('content')
 		# print('URL')
 		# print(link)
-		# save_post_naver(category, post_id, cafe_id, author, title, content, date, link)
+		save_post_naver(category, post_id, cafe_id, author, title, content, date, link)
 		# 
 		# print('IMAGE-URL')
 		# IMAGE
@@ -379,8 +378,7 @@ def get_cafe_post(url):
 				for url in img_urls:
 					# SAVE-POINT
 					# print(post_id, url)
-					print('')
-					# save_post_naver_image(post_id, url)
+					save_post_naver_image(post_id, url)
 		except:
 			print('UNDIFINEDED')
 		# print('===============댓글===============')
@@ -483,16 +481,16 @@ def get_instagram_post():
 def scraping_start():
 	print('START FUNCTION')
 	# NAVER
-	# total = get_total(1)
-	# print('TOTAL', total)
-	# index = 1
-	# while index <= total:
-	# 	get_post_url(index)
-	# 	for url in blog_urls:
-	# 		get_blog_post(url)
-	# 	for url in cafe_urls:
-	# 		get_cafe_post(url)
-	# 	index += 30
+	total = get_total(1)
+	print('TOTAL', total)
+	index = 1
+	while index <= total:
+		get_post_url(index)
+		for url in blog_urls:
+			get_blog_post(url)
+		for url in cafe_urls:
+			get_cafe_post(url)
+		index += 30
 	# INSTAGRAM
 	for i in range(100):
 		if is_next == True:
@@ -500,9 +498,7 @@ def scraping_start():
 		else:
 			break;
 
-
-
-scraping_start()
+# scraping_start()
 
 
 
