@@ -83,7 +83,8 @@ payload={}
 headers = {
   'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36',
   'Referer': 'https://apis.naver.com/',
-  'cookie': 'NID_AUT=E+4QhvIhxFfc+sNaRX3LxBxS9NQPpK1epH+UtEstJ13QwhB3aZW8VtlnCtfHhLVo; NID_SES=AAABk2NnrqkevXufdsIWmK2uXWcaUI4qwrWBx6YqudKIT+rbkY97ndl44XegPbAGlW+2cpK/dKLnYZOlyCb3EHeQ52v4YFxbhVzobzBXJys7NLBPUGuBevH3JNRpnw6Zk0bFIONfJIqU6sxveGNZHvzZXVRS333FB3Za8wqm+SLNryUIMVex4mbiNL1bBNvGMIrVOrl55dTX6Ar+3rWQYuWqmeY0zOKGbZUoH/IokZrGQMHupDSJqgMHjwMKPy1AZ0w6Tik+fAd4UDHUuNTAJ0BVp2+rD4MxucGKcCm+dVMEXQUBP3Hvth7FxcS/y//RTWDwJcd7X8rbRCjuJOzuF9ffhOfWFZiaH21xLlJ5QPxzeadcPv7OwCm0d28Ue2nD0OhSBNfcbOdaMvDi27kMdYoCrAHt8oZ5FHtG1zZ4Qlb4OwTqJlz6KMDVjuu83zpOIz8qb8pd2D7nq7jwaXpWsXT3Jm/aiQvXnuvHMyQIugyqWX1AkBEIvjq5CiZs7dbggiss8tvYoVXPCEdD41kCFeqJtBv7iOSS2GNIpdreRx/0+2jQ'
+  'cookie': 'NID_AUT=E+4QhvIhxFfc+sNaRX3LxBxS9NQPpK1epH+UtEstJ13QwhB3aZW8VtlnCtfHhLVo; NID_SES=AAABk2NnrqkevXufdsIWmK2uXWcaUI4qwrWBx6YqudKIT+rbkY97ndl44XegPbAGlW+2cpK/dKLnYZOlyCb3EHeQ52v4YFxbhVzobzBXJys7NLBPUGuBevH3JNRpnw6Zk0bFIONfJIqU6sxveGNZHvzZXVRS333FB3Za8wqm+SLNryUIMVex4mbiNL1bBNvGMIrVOrl55dTX6Ar+3rWQYuWqmeY0zOKGbZUoH/IokZrGQMHupDSJqgMHjwMKPy1AZ0w6Tik+fAd4UDHUuNTAJ0BVp2+rD4MxucGKcCm+dVMEXQUBP3Hvth7FxcS/y//RTWDwJcd7X8rbRCjuJOzuF9ffhOfWFZiaH21xLlJ5QPxzeadcPv7OwCm0d28Ue2nD0OhSBNfcbOdaMvDi27kMdYoCrAHt8oZ5FHtG1zZ4Qlb4OwTqJlz6KMDVjuu83zpOIz8qb8pd2D7nq7jwaXpWsXT3Jm/aiQvXnuvHMyQIugyqWX1AkBEIvjq5CiZs7dbggiss8tvYoVXPCEdD41kCFeqJtBv7iOSS2GNIpdreRx/0+2jQ',
+  'Content-type': 'application/json'
 }
 
 # KEYWORD
