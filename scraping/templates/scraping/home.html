@@ -115,6 +115,7 @@ body, html {
 							for (var i = 0; i < res.data.results.length; i++) {
 								v.post_list.push(res.data.results[i])
 							} 
+							alert('complete naver!')
 							v.is_loading = false
 						})
 						.catch(function(err){ console.log('naver-post-none') })
@@ -135,6 +136,7 @@ body, html {
 							for (var i = 0; i < res.data.results.length; i++) {
 								v.post_list.push(res.data.results[i])
 							} 
+							alert('complete insta!')
 							v.is_loading = false
 						})
 						.catch(function(err){ console.log('insta-post-none') })
