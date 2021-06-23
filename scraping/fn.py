@@ -17,66 +17,66 @@ host = 'sego.c3jqlg47t2v5.ap-northeast-2.rds.amazonaws.com'
 user = 'sego_admin'
 pw = 'googie0126!'
 db = 'sego'
-conn = pymysql.connect(host=host, user=user, passwd=pw, db=db, charset='utf8')
-conn.ping(True)
-cur = conn.cursor()
-cur.execute('USE sego')
-
-# def store_post(params):
-# 	cur.execute(
-# 		'INSERT INTO table (params) VALUES (%s)',
-# 		(params)
-# 	)
-# 	cur.connection.commit()
-
-# def post_naver_save(post_id, author, category, title, content, created_date, url):
-# 	cur.execute(
-# 		'INSERT INTO post_naver_save (post_id, author, category, title, content, created_date, url) VALUES (%s, %s, %s, %s, %s, %s)',
-# 		(post_id, author, category, title, content, created_date, url)
-# 	)
-# 	cur.connection.commit()
-
-# def store_post(params):
-# 	cur.execute(
-# 		'INSERT INTO table (params) VALUES (%s)',
-# 		(params)
-# 	)
-# 	cur.connection.commit()
 # 
-
 def save_post_naver(category, post_id, bc_id, author, title, content, created_date, url):
+	conn = pymysql.connect(host=host, user=user, passwd=pw, db=db, charset='utf8')
+	cur = conn.cursor()
+	cur.execute('USE sego')
 	cur.execute(
 		'INSERT INTO post_naver (category, post_id, bc_id, author, title, content, created_date, url) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)',
 		(category, post_id, bc_id, author, title, content, created_date, url)
 	)
 	cur.connection.commit()
+	cur.close()
+	conn.close()
 
 def save_post_naver_image(post_id, url):
+	conn = pymysql.connect(host=host, user=user, passwd=pw, db=db, charset='utf8')
+	cur = conn.cursor()
+	cur.execute('USE sego')
 	cur.execute(
 		'INSERT INTO post_naver_image (post_id, url) VALUES (%s, %s)',
 		(post_id, url)
 	)
 	cur.connection.commit()
+	cur.close()
+	conn.close()
 
 def save_post_naver_tag(post_id, tag):
+	conn = pymysql.connect(host=host, user=user, passwd=pw, db=db, charset='utf8')
+	cur = conn.cursor()
+	cur.execute('USE sego')
 	cur.execute(
 		'INSERT INTO post_naver_tag (post_id, tag) VALUES (%s, %s)',
 		(post_id, tag)
 	)
 	cur.connection.commit()
+	cur.close()
+	conn.close()
+
 def store_post(category, post_id, author, content, created_date, url):
+	conn = pymysql.connect(host=host, user=user, passwd=pw, db=db, charset='utf8')
+	cur = conn.cursor()
+	cur.execute('USE sego')
 	cur.execute(
 		'INSERT INTO post_instagram (category, post_id, author, content, created_date, url) VALUES (%s, %s, %s, %s, %s, %s)',
 		(category, post_id, author, content, created_date, url)
 	)
 	cur.connection.commit()
+	cur.close()
+	conn.close()
 
 def store_tag(post_id, tag):
+	conn = pymysql.connect(host=host, user=user, passwd=pw, db=db, charset='utf8')
+	cur = conn.cursor()
+	cur.execute('USE sego')
 	cur.execute(
 		'INSERT INTO post_instagram_tag (post_id, tag) VALUES (%s, %s)',
 		(post_id, tag)
 	)
 	cur.connection.commit()
+	cur.close()
+	conn.close()
 
 # USER
 payload={}
