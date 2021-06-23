@@ -268,7 +268,7 @@ def get_blog_post(url):
 	# print('URL')
 	# print(link)
 	# SAVE-POINT
-	save_post_naver(category, post_id, blog_id, author, title, content, date, link)
+	# save_post_naver(category, post_id, blog_id, author, title, content, date, link)
 	# print('IMAGE-URL')
 	# IMAGE
 	try:
@@ -283,7 +283,8 @@ def get_blog_post(url):
 			for url in img_urls:
 				# SAVE-POINT
 				# print(post_id, url)
-				save_post_naver_image(post_id, url)
+				print('')
+				# save_post_naver_image(post_id, url)
 	except:
 		print('UNDIFINEDED')
 	# 
@@ -296,7 +297,7 @@ def get_blog_post(url):
 				tag = tag.text
 				tag = tag.replace('#','')
 				# print(post_id, tag)
-				save_post_naver_tag(post_id, tag)
+				# save_post_naver_tag(post_id, tag)
 	except:
 		pass
 		# print('NONE TAG')
@@ -362,7 +363,7 @@ def get_cafe_post(url):
 		# print('content')
 		# print('URL')
 		# print(link)
-		save_post_naver(category, post_id, cafe_id, author, title, content, date, link)
+		# save_post_naver(category, post_id, cafe_id, author, title, content, date, link)
 		# 
 		# print('IMAGE-URL')
 		# IMAGE
@@ -378,7 +379,8 @@ def get_cafe_post(url):
 				for url in img_urls:
 					# SAVE-POINT
 					# print(post_id, url)
-					save_post_naver_image(post_id, url)
+					print('')
+					# save_post_naver_image(post_id, url)
 		except:
 			print('UNDIFINEDED')
 		# print('===============댓글===============')
@@ -398,10 +400,7 @@ def get_instagram_post():
 	global is_next
 	global end_cursor
 	api_url = 'https://www.instagram.com/graphql/query/?query_hash=298b92c8d7cad703f7565aa892ede943&variables={"tag_name":"'+keyword+'","first":50,"after":"'+end_cursor+'"}'
-	# print(api_url)
-	# html = urlopen(api_url)
-	# bs = BeautifulSoup(html.read(), 'html.parser')
-	# print('BS', bs)
+	print(api_url)
 	time.sleep(10)
 	res = requests.get(api_url, headers=headers, data=payload).json()
 	res = res['data']['hashtag']
@@ -412,8 +411,9 @@ def get_instagram_post():
 	posts = res['edge_hashtag_to_media']['edges']
 	# print('POSTS LENGTH', len(posts))
 	try:
+		category = 'instagram'
 		for index, post in enumerate(posts):
-			# print('================= POST '+ str(index+1) +' =================')
+			print('================= POST '+ str(index+1) +' =================')
 			# print('==GET CODE')
 			post_id = post['node']['shortcode']
 			# print(post_id)
@@ -433,8 +433,16 @@ def get_instagram_post():
 			# print(tags)
 			url = 'https://www.instagram.com/p/'+post_id+'/'
 			#
-			if created_date > insta_yesterday:
-				# print('CONFIRM')
+			a = created_date.split('-')
+			b = insta_yesterday.split('-')
+			a[2] = a[2].split(' ')
+			a1 = a[2][1]
+			a1 = a1.split(':')
+			a[2] = a[2][0]
+			time1 = datetime(int(a[0]), int(a[1]), int(a[2]), int(a1[0]), int(a1[1]), int(a1[2]))
+			time2 = datetime(int(b[0]),int(b[1]) ,int(b[2]), 0, 0, 0)
+			if time1 > time2:
+				print('CONFIRM')
 				# print('==GET CODE')
 				# print(post_id)
 				# print('== GET CONTENT')
@@ -451,7 +459,7 @@ def get_instagram_post():
 					# print(post_id, tag)
 					store_tag(post_id, tag)
 			else:
-				# print('NONONO')
+				print('NONONO')
 				is_next=False
 	except:
 		pass
@@ -475,16 +483,16 @@ def get_instagram_post():
 def scraping_start():
 	print('START FUNCTION')
 	# NAVER
-	total = get_total(1)
-	print('TOTAL', total)
-	index = 1
-	while index <= total:
-		get_post_url(index)
-		for url in blog_urls:
-			get_blog_post(url)
-		for url in cafe_urls:
-			get_cafe_post(url)
-		index += 30
+	# total = get_total(1)
+	# print('TOTAL', total)
+	# index = 1
+	# while index <= total:
+	# 	get_post_url(index)
+	# 	for url in blog_urls:
+	# 		get_blog_post(url)
+	# 	for url in cafe_urls:
+	# 		get_cafe_post(url)
+	# 	index += 30
 	# INSTAGRAM
 	for i in range(100):
 		if is_next == True:
@@ -494,7 +502,7 @@ def scraping_start():
 
 
 
-# scraping_start()
+scraping_start()
 
 
 
