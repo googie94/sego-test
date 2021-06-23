@@ -401,7 +401,9 @@ def get_instagram_post():
 	api_url = 'https://www.instagram.com/graphql/query/?query_hash=298b92c8d7cad703f7565aa892ede943&variables={"tag_name":"'+keyword+'","first":50,"after":"'+end_cursor+'"}'
 	print(api_url)
 	time.sleep(10)
-	res = requests.get(api_url, headers=headers, data=payload).json()
+	res = requests.get(api_url, headers=headers, data=payload)
+	res = json.loads(res.text)
+	print(res)
 	res = res['data']['hashtag']
 	# 
 	is_next = res['edge_hashtag_to_media']['page_info']['has_next_page']
@@ -452,11 +454,11 @@ def get_instagram_post():
 				# print(author)
 				# print('==GET URL')
 				# print(url)
-				store_post(category, post_id, author, content, created_date, url)
+				# store_post(category, post_id, author, content, created_date, url)
 				for tag in tags:
 					# print('==GET TAG')
 					# print(post_id, tag)
-					store_tag(post_id, tag)
+					# store_tag(post_id, tag)
 			else:
 				print('NONONO')
 				is_next=False
