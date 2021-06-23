@@ -62,9 +62,8 @@ body, html {
 		methods: {
 			getInstaPost() {
 				var v=this
-				axios.get('/api/v1/post-instagram')
+				axios.get('/api/v1/post-instagram/')
 				.then(function(res){
-					console.log(res)
 					for (var i = 0; i < res.data.results.length; i++) {
 						v.post_list.push(res.data.results[i])
 					}
@@ -74,7 +73,6 @@ body, html {
 						v.insta_url = null
 					}
 					// 
-					console.log(v.insta_url)
 					v.post_list.sort(function(a,b){
 						return new Date(b.created_date) - new Date(a.created_date);
 					})
@@ -98,8 +96,11 @@ body, html {
 			},
 			morePost() {
 				var v = this
-				alert('naver_url \n'+v.url)
-				alert('insta_url \n'+v.insta_url)
+				var link = document.location.href
+				links = link.split('/')
+				links.splice(3)
+				base_url = links.join('/')
+				// 
 				v.is_loading = true
 				if (!v.url && !v.insta_url) {
 					document.getElementById('more').style.display = 'none'
@@ -110,7 +111,7 @@ body, html {
 						urls = v.url.split('/')
 						urls = urls.splice(3)
 						url = urls.join('/')
-						axios.get(url, {baseURL: 'http://localhost:8000'})
+						axios.get(url, {baseURL: base_url})
 						.then(function(res){
 							v.url = res.data.next
 							res.data.results.sort(function(a,b){
@@ -119,7 +120,6 @@ body, html {
 							for (var i = 0; i < res.data.results.length; i++) {
 								v.post_list.push(res.data.results[i])
 							} 
-							alert('complete naver!')
 							v.is_loading = false
 						})
 						.catch(function(err){ console.log('naver-post-none') })
@@ -131,7 +131,7 @@ body, html {
 						insta_urls = v.insta_url.split('/')
 						insta_urls = insta_urls.splice(3)
 						insta_url = insta_urls.join('/')
-						axios.get(insta_url, {baseURL: 'http://localhost:8000'})
+						axios.get(insta_url, {baseURL: base_url})
 						.then(function(res){
 							v.insta_url = res.data.next
 							res.data.results.sort(function(a,b){
@@ -140,7 +140,6 @@ body, html {
 							for (var i = 0; i < res.data.results.length; i++) {
 								v.post_list.push(res.data.results[i])
 							} 
-							alert('complete insta!')
 							v.is_loading = false
 						})
 						.catch(function(err){ console.log('insta-post-none') })
