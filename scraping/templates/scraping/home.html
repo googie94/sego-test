@@ -37,7 +37,7 @@ body, html {
 			</ul>
 		</a>
 	</div>
-	<div id="more" @click="morePost(url, insta_url)" v-if="!is_loading" style="padding: 30px; background-color: white; border-radius: 20px; display: block; margin: 20px; font-weight: 700; font-size: 18px; text-align: center;">
+	<div id="more" @click="morePost()" v-if="!is_loading" style="padding: 30px; background-color: white; border-radius: 20px; display: block; margin: 20px; font-weight: 700; font-size: 18px; text-align: center;">
 		<p>더보기</p>
 	</div>
 </div>
@@ -64,6 +64,7 @@ body, html {
 				var v=this
 				axios.get('/api/v1/post-instagram')
 				.then(function(res){
+					console.log(res)
 					for (var i = 0; i < res.data.results.length; i++) {
 						v.post_list.push(res.data.results[i])
 					}
@@ -73,6 +74,7 @@ body, html {
 						v.insta_url = null
 					}
 					// 
+					console.log(v.insta_url)
 					v.post_list.sort(function(a,b){
 						return new Date(b.created_date) - new Date(a.created_date);
 					})
@@ -94,17 +96,18 @@ body, html {
 				})
 				.catch(function(err){})
 			},
-			morePost(url, insta_url) {
+			morePost() {
 				var v = this
-				alert(url, insta_url)
+				alert('naver_url \n'+v.url)
+				alert('insta_url \n'+v.insta_url)
 				v.is_loading = true
-				if (!url && !insta_url) {
+				if (!v.url && !v.insta_url) {
 					document.getElementById('more').style.display = 'none'
 				} else {
-					if (!url) {
+					if (!v.url) {
 						console.log('none-url')
 					} else {
-						urls = url.split('/')
+						urls = v.url.split('/')
 						urls = urls.splice(3)
 						url = urls.join('/')
 						axios.get(url, {baseURL: 'http://localhost:8000'})
@@ -122,10 +125,10 @@ body, html {
 						.catch(function(err){ console.log('naver-post-none') })
 					}
 					// 
-					if (!insta_url) {
+					if (!v.insta_url) {
 						console.log('none-url')
 					} else {
-						insta_urls = insta_url.split('/')
+						insta_urls = v.insta_url.split('/')
 						insta_urls = insta_urls.splice(3)
 						insta_url = insta_urls.join('/')
 						axios.get(insta_url, {baseURL: 'http://localhost:8000'})
