@@ -481,16 +481,16 @@ def get_instagram_post():
 def scraping_start():
 	print('START FUNCTION')
 	# NAVER
-	total = get_total(1)
-	print('TOTAL', total)
-	index = 1
-	while index <= total:
-		get_post_url(index)
-		for url in blog_urls:
-			get_blog_post(url)
-		for url in cafe_urls:
-			get_cafe_post(url)
-		index += 30
+	# total = get_total(1)
+	# print('TOTAL', total)
+	# index = 1
+	# while index <= total:
+	# 	get_post_url(index)
+	# 	for url in blog_urls:
+	# 		get_blog_post(url)
+	# 	for url in cafe_urls:
+	# 		get_cafe_post(url)
+	# 	index += 30
 	# INSTAGRAM
 	for i in range(100):
 		if is_next == True:
