@@ -457,6 +457,7 @@ def get_instagram_post():
 				# store_post(category, post_id, author, content, created_date, url)
 				for tag in tags:
 					# print('==GET TAG')
+					print('')
 					# print(post_id, tag)
 					# store_tag(post_id, tag)
 			else:
