@@ -19,7 +19,7 @@ class PostNaverSerializer(serializers.ModelSerializer):
 		post_id = post.post_id
 		queryset = PostNaverTag.objects.filter(post_id=post_id)
 		serializer = PostNaverTagSerializer(instance=queryset, many=True)
-		return serializer.data	
+		return serializer.data
 
 	class Meta:
 		model = PostNaver

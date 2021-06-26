@@ -17,18 +17,18 @@ from .serializers import PostNaverSerializer, PostNaverImageSerializer, PostNave
 
 class PostNaverViewSet(viewsets.ModelViewSet):
 	ignore_id = [1901,5526, 19090207, 3096]
-	queryset = PostNaver.objects.all().order_by('-created_date').exclude(bc_id__in=ignore_id)
+	queryset = PostNaver.objects.all().order_by('-created_date').defer('content',).exclude(bc_id__in=ignore_id)
 	serializer_class = PostNaverSerializer
 	filter_backends = [SearchFilter, DjangoFilterBackend] 
 	search_fields = ['content']
 
-	def get_queryset(self):
-		queryset = super().get_queryset()
-		for q in queryset:
-			q.author = q.author.replace('\n', '')
-			q.title = q.title.replace('\n', '')
-			q.content = re.sub("(\[\[\[[A-Z])\D+([A-Z])\D\d\]\]\]", "", q.content)
-		return queryset
+	# def get_queryset(self):
+	# 	queryset = super().get_queryset()
+	# 	for q in queryset:
+	# 		q.author = q.author.replace('\n', '')
+	# 		q.title = q.title.replace('\n', '')
+	# 		q.content = re.sub("(\[\[\[[A-Z])\D+([A-Z])\D\d\]\]\]", "", q.content)
+	# 	return queryset
 
 class PostNaverImageViewSet(viewsets.ModelViewSet):
 	queryset = PostNaverImage.objects.all()

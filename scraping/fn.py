@@ -401,8 +401,7 @@ def get_instagram_post():
 	api_url = 'https://www.instagram.com/graphql/query/?query_hash=298b92c8d7cad703f7565aa892ede943&variables={"tag_name":"'+keyword+'","first":50,"after":"'+end_cursor+'"}'
 	print(api_url)
 	time.sleep(10)
-	res = requests.get(api_url, headers=headers, data=payload)
-	res = json.loads(res.text)
+	res = requests.get(api_url, headers=headers, data=payload).json()
 	print(res)
 	res = res['data']['hashtag']
 	# 
