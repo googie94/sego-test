@@ -9,6 +9,43 @@ from django.db import models
 import re
 
 
+
+class HashPost(models.Model):
+    post_id = models.CharField(verbose_name="포스트아이디", max_length=45, unique=True)
+    domain = models.CharField(verbose_name="도메인", max_length=45, null=True, blank=True)
+    bc_id = models.CharField(verbose_name="블로그/카페아이디", max_length=45, null=True, blank=True)
+    author = models.CharField(verbose_name="작성자", max_length=100, null=True, blank=True)
+    title = models.CharField(verbose_name="제목", max_length=100, null=True, blank=True)
+    content = models.TextField(verbose_name="내용", null=True, blank=True)
+    created_date = models.DateTimeField(verbose_name="작성일", null=True, blank=True)
+    url = models.CharField(verbose_name="본문주소", max_length=200, null=True, blank=True)
+    is_hidden = models.BooleanField(verbose_name="숨김여부", default=False)
+
+    class Meta:
+        db_table = 'hash_post'
+        verbose_name = '포스트'
+        verbose_name_plural = '포스트'
+
+class HashPostTag(models.Model):
+    post_id = models.CharField(verbose_name="포스트아이디", max_length=45)
+    tag = models.CharField(max_length=100, null=True, blank=True)
+
+    class Meta:
+        db_table = 'hash_post_tag'
+        verbose_name = '태그'
+        verbose_name_plural = '태그'
+
+class HashPostImage(models.Model):
+    post_id = models.CharField(verbose_name="포스트아이디", max_length=45)
+    url = models.CharField(max_length=300, null=True, blank=True)
+
+    class Meta:
+        db_table = 'hash_post_image'
+        verbose_name = '이미지'
+        verbose_name_plural = '이미지'
+
+# ---------------------------------------
+
 class PostNaver(models.Model):
     post_id = models.CharField(max_length=45, blank=True, null=True)
     category = models.CharField(max_length=45, blank=True, null=True)

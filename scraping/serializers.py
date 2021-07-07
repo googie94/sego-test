@@ -1,9 +1,42 @@
 from rest_framework import serializers
 from .models import NaverPost, InstaPost, InstaTag
 from .models import PostNaver, PostNaverImage, PostNaverTag, PostInstagram, PostInstagramTag
+from .models import HashPost, HashPostTag, HashPostImage
 # 
 from collections import Counter
 
+class HashPostSerializer(serializers.ModelSerializer):
+	pictures = serializers.SerializerMethodField()
+	tags = serializers.SerializerMethodField()
+
+	def get_pictures(self, post):
+		post_id = post.post_id
+		queryset = HashPostImage.objects.filter(post_id=post_id)
+		serializer = HashPostImageSerializer(instance=queryset, many=True)
+		return serializer.data
+
+	def get_tags(self, post):
+		post_id = post.post_id
+		queryset = HashPostTag.objects.filter(post_id=post_id)
+		serializer = HashPostTagSerializer(instance=queryset, many=True)
+		return serializer.data
+
+	class Meta:
+		model = HashPost
+		fields = '__all__'
+
+
+class HashPostImageSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = HashPostImage
+		fields = '__all__'
+
+class HashPostTagSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = HashPostTag
+		fields = '__all__'
+
+# -------------------------------------------------------
 
 class PostNaverSerializer(serializers.ModelSerializer):
 	pictures = serializers.SerializerMethodField('get_pictures')
@@ -42,6 +75,14 @@ class MostPostNaverTagSerializer(serializers.ModelSerializer):
 		fields = ('tag', 'count')
 
 class PostInstagramSerializer(serializers.ModelSerializer):
+	tags = serializers.SerializerMethodField('get_tags')
+
+	def get_tags(self, post):
+		post_id = post.post_id
+		queryset = PostInstagramTag.objects.filter(post_id=post_id)
+		serializer = PostInstagramTagSerializer(instance=queryset, many=True)
+		return serializer.data
+
 	class Meta:
 		model = PostInstagram
 		fields = '__all__'

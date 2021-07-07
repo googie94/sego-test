@@ -12,8 +12,32 @@ from .models import NaverPost, InstaPost, InstaTag
 from .serializers import NaverPostSerializer, InstaPostSerializer, InstaTagSerializer
 from .models import PostNaver, PostNaverImage, PostNaverTag, PostInstagram, PostInstagramTag
 from .serializers import PostNaverSerializer, PostNaverImageSerializer, PostNaverTagSerializer, MostPostNaverTagSerializer, PostInstagramSerializer, PostInstagramTagSerializer, MostPostInstagramTagSerializer
+from .models import HashPost, HashPostImage, HashPostTag
+from .serializers import HashPostSerializer, HashPostImageSerializer, HashPostTagSerializer
 
 # Create your views here.
+
+class HashPostViewSet(viewsets.ModelViewSet):
+	queryset = HashPost.objects.all().order_by('-created_date')
+	serializer_class = HashPostSerializer
+	filter_backends = [SearchFilter, DjangoFilterBackend]
+	search_fields = ['content']
+
+	def get_queryset(self):
+		self.paginator.page_size = 10
+		queryset = super().get_queryset()
+		return queryset
+
+class HashPostImageViewSet(viewsets.ModelViewSet):
+	queryset = HashPostImage.objects.all()
+	serializer_class = HashPostImageSerializer
+
+class HashPostTagViewSet(viewsets.ModelViewSet):
+	queryset = HashPostTag.objects.all()
+	serializer_class = HashPostTagSerializer
+
+
+# ------------------------------------------------
 
 class PostNaverViewSet(viewsets.ModelViewSet):
 	ignore_id = [1901,5526, 19090207, 3096]
@@ -76,11 +100,11 @@ class PostInstagramViewSet(viewsets.ModelViewSet):
 	filter_backends = [SearchFilter, DjangoFilterBackend] 
 	search_fields = ['content']
 
-	def get_queryset(self):
-		queryset = super().get_queryset()
-		for q in queryset:
-			q.content = q.content.replace('????', '')
-		return queryset
+	# def get_queryset(self):
+	# 	queryset = super().get_queryset()
+	# 	for q in queryset:
+	# 		q.content = q.content.replace('????', '')
+	# 	return queryset
 
 class PostInstagramTagViewSet(viewsets.ModelViewSet):
 	queryset = PostInstagramTag.objects.all()
@@ -117,7 +141,6 @@ class MostPostInstagramTagViewSet(viewsets.ModelViewSet):
 			}
 			most_list.append(dt)
 		return most_list
-
 
 
 ############################################################# 
